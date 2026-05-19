@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Meal Planner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FDFAF6;
+    --surface: #FFFFFF;
+    --surface2: #F5F0E8;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.14);
+    --text: #1C1A17;
+    --text-muted: #7A7468;
+    --text-faint: #B0A99E;
+    --accent: #C4602A;
+    --accent-light: #FAF0E9;
+    --weekend: #8B3A3A;
+    --weekend-light: #FDF0F0;
+    --green: #3A6B42;
+    --green-light: #EEF5EE;
+    --blue: #2A5A8B;
+    --blue-light: #EEF3FA;
+    --amber: #7A5A1A;
+    --amber-light: #FAF5E4;
+    --teal: #1A6B5A;
+    --teal-light: #EAF5F2;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 2.5rem; }
+  .header-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .header h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+  .header p { font-size: 0.95rem; color: var(--text-muted); font-weight: 300; }
+  .header-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 500; background: var(--accent-light); color: var(--accent); padding: 4px 12px; border-radius: 20px; margin-top: 0.75rem; border: 1px solid rgba(196,96,42,0.2); }
+
+  /* Actions */
+  .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+  .btn { cursor: pointer; font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; padding: 10px 20px; border-radius: var(--radius-sm); border: 1.5px solid var(--border-strong); background: var(--surface); color: var(--text); transition: all 0.15s; display: inline-flex; align-items: center; gap: 7px; }
+  .btn:hover { background: var(--surface2); border-color: rgba(0,0,0,0.2); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #b05520; border-color: #b05520; }
+  .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Weekend notice */
+  .notice { display: flex; align-items: flex-start; gap: 10px; background: var(--weekend-light); border: 1px solid rgba(139,58,58,0.2); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 1.5rem; font-size: 0.83rem; color: var(--weekend); line-height: 1.5; }
+  .notice svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Week grid */
+  .week-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+
+  .day-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; position: relative; transition: box-shadow 0.15s, transform 0.15s; }
+  .day-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); transform: translateY(-2px); }
+  .day-card.weekend { border-left: 3px solid var(--weekend); }
+
+  .day-label { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
+  .day-card.weekend .day-label { color: var(--weekend); }
+
+  .protein-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 500; padding: 3px 9px; border-radius: 20px; margin-bottom: 8px; }
+  .meal-name { font-size: 0.9rem; font-weight: 400; color: var(--text); line-height: 1.45; }
+  .meal-name em { font-style: normal; font-family: var(--font-display); font-weight: 500; }
+
+  .reroll { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; }
+  .reroll svg { width: 13px; height: 13px; color: var(--text-muted); }
+  .day-card:hover .reroll { opacity: 1; }
+  .reroll:hover { background: var(--surface); border-color: var(--accent); }
+  .reroll:hover svg { color: var(--accent); }
+
+  /* Protein colours */
+  .p-salmon { background: var(--blue-light); color: var(--blue); }
+  .p-beef { background: #FFF0EE; color: #8B3A2A; }
+  .p-chicken { background: var(--green-light); color: var(--green); }
+  .p-pork { background: var(--amber-light); color: var(--amber); }
+  .p-vegetarian { background: var(--teal-light); color: var(--teal); }
+  .p-weekend { background: var(--weekend-light); color: var(--weekend); }
+  .p-fish { background: var(--blue-light); color: var(--blue); }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  /* Shopping list */
+  .list-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
+  .list-header h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; }
+  .list-actions { display: flex; gap: 8px; margin-left: auto; }
+
+  .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .shop-cat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; }
+  .cat-title { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .cat-icon { font-size: 14px; }
+
+  .shop-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; cursor: pointer; user-select: none; }
+  .shop-item.done .item-text { text-decoration: line-through; color: var(--text-faint); }
+  .checkbox { width: 16px; height: 16px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+  .shop-item.done .checkbox { background: var(--accent); border-color: var(--accent); }
+  .checkbox svg { width: 10px; height: 10px; color: white; display: none; }
+  .shop-item.done .checkbox svg { display: block; }
+  .item-text { font-size: 0.875rem; color: var(--text); line-height: 1.4; }
+
+  .progress-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: #fff; font-size: 0.875rem; padding: 10px 20px; border-radius: var(--radius-sm); transition: transform 0.25s; z-index: 999; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 3rem; font-size: 0.78rem; color: var(--text-faint); }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.7rem; }
+    .week-grid { grid-template-columns: 1fr 1fr; }
+    .shop-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-icon">🍽️</div>
+    <h1>Weekly Meal Planner</h1>
+    <p>Evening meals for two — low calorie, high protein</p>
+    <div class="header-tag">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      No repeat proteins on consecutive days · Weekend treats on Sat & Sun
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="generateWeek()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
+      Generate new week
+    </button>
+    <button class="btn" onclick="showList()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M3 7h10M3 11h6"/></svg>
+      Build shopping list
+    </button>
+    <button class="btn" id="copyBtn" onclick="copyAll()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="8" height="9" rx="1"/><path d="M3 11V3a1 1 0 0 1 1-1h8"/></svg>
+      Copy plan &amp; list
+    </button>
+  </div>
+
+  <div class="notice">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5h.01"/></svg>
+    <span><strong>Weekend meals</strong> (Sat &amp; Sun) include higher-calorie treats — pizza, burgers, roast, pie, nachos &amp; more. All weekday meals are lean and filling. Tap the ↻ on any card to swap just that meal.</span>
+  </div>
+
+  <div class="week-grid" id="weekGrid"></div>
+
+  <div id="listSection" style="display:none">
+    <hr class="divider">
+    <div class="list-header">
+      <h2>🛒 Shopping list</h2>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+    <div class="progress-bar" style="margin-top:1.5rem"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <p id="progressText" style="font-size:0.8rem;color:var(--text-muted);text-align:right;margin-top:6px">0 items ticked off</p>
+  </div>
+
+  <div class="footer">Made with ❤️ — open in any browser, no internet needed after first load</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MEALS = {
+  salmon: [
+    { name: "Salmon egg fried rice", i: { proteins:["Salmon fillets ×2"], produce:["Spring onions","Frozen peas","Garlic"], fridge:["Eggs ×3"], pantry:["Soy sauce","Sesame oil","Jasmine rice"] } },
+    { name: "Pesto salmon with roasted greens & sweet potato", i: { proteins:["Salmon fillets ×2"], produce:["Sweet potato","Tenderstem broccoli","Courgette"], pantry:["Green pesto","Olive oil"] } },
+    { name: "Honey garlic butter baked salmon with sesame noodles", i: { proteins:["Salmon fillets ×2"], produce:["Garlic","Spring onions","Lemon"], fridge:["Butter"], pantry:["Honey","Soy sauce","Sesame oil","Rice noodles","Sesame seeds"] } },
+  ],
+  beef: [
+    { name: "Beef & bell pepper black bean stir fry", i: { proteins:["Lean beef mince 400g"], produce:["Bell peppers ×3","Garlic","Ginger","Spring onions"], pantry:["Black bean sauce","Soy sauce","Sesame oil","Jasmine rice"] } },
+    { name: "Burger bowl", i: { proteins:["Lean beef mince 300g"], produce:["Lettuce","Tomatoes","Red onion","Avocado"], fridge:["Low-fat mayo"], pantry:["Burger seasoning","Rice"] } },
+    { name: "Burrito bowl", i: { proteins:["Lean beef mince 400g"], produce:["Bell peppers","Red onion","Garlic","Lime","Fresh coriander"], fridge:["Low-fat sour cream"], pantry:["Cumin","Smoked paprika","Chilli flakes","Tinned black beans","Jasmine rice"] } },
+    { name: "Lean beef chilli", i: { proteins:["Lean beef mince 500g"], produce:["Red onion","Garlic","Red pepper"], pantry:["Tinned tomatoes","Kidney beans","Cumin","Smoked paprika","Chilli powder","Beef stock cube"] } },
+    { name: "Spag Bol", i: { proteins:["Lean beef mince 500g"], produce:["Onion","Garlic","Carrot","Celery"], pantry:["Tinned tomatoes","Tomato purée","Spaghetti","Beef stock cube","Dried mixed herbs"] } },
+    { name: "Spag & meatballs", i: { proteins:["Lean beef mince 400g"], produce:["Onion","Garlic","Fresh basil"], fridge:["Parmesan (small)","Egg ×1"], pantry:["Tinned tomatoes","Spaghetti","Dried herbs","Breadcrumbs"] } },
+  ],
+  chicken: [
+    { name: "Cajun chicken orzo", i: { proteins:["Chicken breasts ×2"], produce:["Red onion","Garlic","Bell pepper","Spinach"], pantry:["Cajun seasoning","Orzo","Chicken stock","Tinned tomatoes"] } },
+    { name: "Chicken veg stir fry", i: { proteins:["Chicken breasts ×2"], produce:["Broccoli","Snap peas","Carrot","Garlic","Ginger"], pantry:["Soy sauce","Oyster sauce","Sesame oil","Jasmine rice"] } },
+    { name: "Coconut chicken", i: { proteins:["Chicken thighs ×4"], produce:["Onion","Garlic","Ginger","Lime","Fresh coriander"], pantry:["Tinned coconut milk","Thai curry paste","Jasmine rice","Fish sauce"] } },
+    { name: "Creamy garlic chicken with spinach", i: { proteins:["Chicken breasts ×2"], produce:["Garlic","Spinach","Onion"], fridge:["Low-fat crème fraîche","Parmesan (small)"], pantry:["Chicken stock","Pasta"] } },
+    { name: "Crispy lemon sesame chicken", i: { proteins:["Chicken breasts ×2"], produce:["Garlic","Spring onions","Lemon"], pantry:["Sesame seeds","Soy sauce","Honey","Cornflour","Jasmine rice"] } },
+    { name: "Honey BBQ chicken", i: { proteins:["Chicken thighs ×4"], produce:["Garlic","Sweet potato or rice"], pantry:["Honey","BBQ sauce","Smoked paprika"] } },
+    { name: "Mexican lime chicken", i: { proteins:["Chicken breasts ×2"], produce:["Lime","Garlic","Fresh coriander","Red onion","Avocado"], pantry:["Cumin","Smoked paprika","Chilli flakes","Jasmine rice"] } },
+    { name: "One pot chicken tikka with rice", i: { proteins:["Chicken thighs ×4"], produce:["Onion","Garlic","Ginger","Fresh coriander"], pantry:["Tikka masala paste","Tinned tomatoes","Jasmine rice","Coconut milk (small tin)"] } },
+    { name: "Creamy Tuscan chicken pasta", i: { proteins:["Chicken breasts ×2"], produce:["Garlic","Cherry tomatoes","Spinach","Onion"], fridge:["Low-fat crème fraîche","Parmesan (small)"], pantry:["Pasta","Chicken stock","Sun-dried tomatoes"] } },
+    { name: "Jerk chicken pasta", i: { proteins:["Chicken breasts ×2"], produce:["Bell peppers","Onion","Garlic","Spring onions"], fridge:["Low-fat cream cheese"], pantry:["Jerk seasoning","Pasta","Chicken stock"] } },
+    { name: "Stuffed chicken", i: { proteins:["Large chicken breasts ×2"], produce:["Garlic","Spinach"], fridge:["Low-fat cream cheese","Mozzarella (small)"], pantry:["Sun-dried tomatoes","Olive oil"] } },
+    { name: "Gyros", i: { proteins:["Chicken breasts ×2"], produce:["Red onion","Tomato","Cucumber","Garlic","Lemon"], fridge:["Low-fat Greek yoghurt"], pantry:["Oregano","Cumin","Smoked paprika","Flatbreads"] } },
+  ],
+  pork: [
+    { name: "Creamy bacon & spinach pasta", i: { proteins:["Smoked bacon medallions 150g"], produce:["Garlic","Spinach","Onion"], fridge:["Low-fat crème fraîche","Parmesan (small)"], pantry:["Pasta","Chicken stock"] } },
+    { name: "Crispy salt & pepper pork", i: { proteins:["Pork medallions ×4"], produce:["Bell peppers","Onion","Garlic","Spring onions","Red chilli"], pantry:["Salt & pepper seasoning","Cornflour","Soy sauce","Jasmine rice"] } },
+    { name: "Pulled pork", i: { proteins:["Pork shoulder 1kg"], produce:["Onion","Garlic"], pantry:["Smoked paprika","Cumin","Brown sugar","BBQ sauce","Bread rolls","Coleslaw mix"] } },
+  ],
+  vegetarian: [
+    { name: "Butternut squash soup", i: { produce:["Butternut squash","Onion","Garlic","Carrot"], pantry:["Vegetable stock","Coconut milk (small tin)","Cumin","Crusty bread"] } },
+    { name: "Cauliflower rice bowl", i: { produce:["Cauliflower","Broccoli","Spinach","Garlic"], fridge:["Eggs ×2"], pantry:["Soy sauce","Sesame oil","Turmeric","Lime"] } },
+    { name: "Gyoza ramen", i: { produce:["Spring onions","Pak choi","Garlic","Ginger"], fridge:["Soft-boiled eggs ×2","Veggie gyoza (frozen)"], pantry:["Miso paste","Ramen noodles","Soy sauce","Sesame oil"] } },
+    { name: "Tomato & mushroom omelette", i: { produce:["Mushrooms","Cherry tomatoes","Spinach","Onion"], fridge:["Eggs ×4","Low-fat feta (optional)"], pantry:["Olive oil","Mixed herbs"] } },
+    { name: "Spinach basil risotto", i: { produce:["Onion","Garlic","Spinach","Fresh basil"], fridge:["Parmesan (small)"], pantry:["Arborio rice","Vegetable stock","White wine (small)","Olive oil"] } },
+    { name: "Tomato couscous", i: { produce:["Cherry tomatoes","Red onion","Cucumber","Fresh herbs","Lemon"], pantry:["Couscous","Vegetable stock","Olive oil","Cumin","Feta (optional)"] } },
+    { name: "Pasta with tomato sauce", i: { produce:["Onion","Garlic","Cherry tomatoes","Fresh basil"], fridge:["Parmesan (small)"], pantry:["Pasta","Tinned tomatoes","Tomato purée","Dried herbs"] } },
+  ],
+  weekend: [
+    { name: "Homemade pizza", protein:"chicken", i: { produce:["Onion","Garlic","Bell peppers","Mushrooms"], fridge:["Mozzarella","Cheddar (small)"], pantry:["Pizza bases or flour","Tinned tomatoes","Tomato purée","Italian herbs","Olive oil"] } },
+    { name: "Burgers", protein:"beef", i: { proteins:["Lean beef mince 500g"], produce:["Lettuce","Tomatoes","Red onion","Gherkins"], fridge:["Cheddar slices","Burger sauce / mayo"], pantry:["Burger buns","Burger seasoning","Ketchup"] } },
+    { name: "Lighter fish & chips", protein:"fish", i: { proteins:["White fish fillets ×2"], produce:["Large potatoes","Lemon"], fridge:["Eggs ×1","Low-fat mayo for tartare"], pantry:["Plain flour","Cornflour","Seasoning","Mushy peas (tin)"] } },
+    { name: "Chicken pie", protein:"chicken", i: { proteins:["Chicken thighs ×4"], produce:["Onion","Garlic","Leek","Carrot"], fridge:["Low-fat crème fraîche","Shortcrust pastry sheet"], pantry:["Chicken stock","Cornflour","Dried herbs"] } },
+    { name: "Sunday beef roast", protein:"beef", i: { proteins:["Beef roasting joint 800g"], produce:["Roasting potatoes","Carrots","Parsnips","Green beans","Onion","Garlic"], pantry:["Beef gravy granules","Oil","Dried herbs","Horseradish sauce"] } },
+    { name: "Loaded beef nachos", protein:"beef", i: { proteins:["Lean beef mince 400g"], produce:["Red onion","Garlic","Jalapeños","Tomato","Fresh coriander","Avocado","Lime"], fridge:["Low-fat sour cream","Cheddar (small)"], pantry:["Tortilla chips","Smoked paprika","Cumin","Tinned black beans"] } },
+    { name: "Chicken pasta bake", protein:"chicken", i: { proteins:["Chicken breasts ×2"], produce:["Onion","Garlic","Bell pepper","Spinach"], fridge:["Mozzarella","Cheddar (small)"], pantry:["Pasta","Tinned tomatoes","Pasta sauce jar","Italian herbs"] } },
+  ]
+};
+
+const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const WEEKEND_IDX = [5,6];
+const PCOLS = {
+  salmon:"p-salmon", beef:"p-beef", chicken:"p-chicken",
+  pork:"p-pork", vegetarian:"p-vegetarian", weekend:"p-weekend", fish:"p-salmon"
+};
+const PLABELS = { salmon:"🐟 Salmon", beef:"🥩 Beef", chicken:"🍗 Chicken", pork:"🥓 Pork", vegetarian:"🌿 Veggie", weekend:"🎉 Weekend treat", fish:"🐟 Fish" };
+const CAT_ICONS = { proteins:"🥩", produce:"🥦", fridge:"🧊", pantry:"🫙" };
+const CAT_LABELS = { proteins:"Meat & fish", produce:"Fresh produce", fridge:"Fridge & dairy", pantry:"Cupboard & pantry" };
+
+let plan = [];
+let checked = new Set();
+
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateWeek() {
+  checked.clear();
+  plan = [];
+  let prev = null;
+  DAYS.forEach((day, i) => {
+    const isWeekend = WEEKEND_IDX.includes(i);
+    let meal, protein, tries = 0;
+    if (isWeekend) {
+      do { meal = rand(MEALS.weekend); protein = meal.protein || "weekend"; tries++; }
+      while (protein === prev && tries < 20);
+    } else {
+      const keys = ["salmon","beef","chicken","pork","vegetarian"];
+      do { protein = rand(keys); tries++; } while (protein === prev && tries < 20);
+      meal = rand(MEALS[protein]);
+    }
+    prev = protein;
+    plan.push({ day, protein, meal, isWeekend });
+  });
+  renderWeek();
+  document.getElementById("listSection").style.display = "none";
+}
+
+function reroll(idx) {
+  const { isWeekend } = plan[idx];
+  const prevP = idx > 0 ? plan[idx-1].protein : null;
+  const nextP = idx < plan.length-1 ? plan[idx+1].protein : null;
+  const oldP = plan[idx].protein;
+  let meal, protein, tries = 0;
+  if (isWeekend) {
+    do { meal = rand(MEALS.weekend); protein = meal.protein||"weekend"; tries++; }
+    while ((protein===prevP||protein===nextP) && tries < 30);
+  } else {
+    const keys = ["salmon","beef","chicken","pork","vegetarian"];
+    do { protein = rand(keys); tries++; }
+    while ((protein===prevP||protein===nextP||protein===oldP) && tries < 30);
+    meal = rand(MEALS[protein]);
+  }
+  plan[idx] = {...plan[idx], protein, meal};
+  renderWeek();
+  if (document.getElementById("listSection").style.display !== "none") showList();
+  toast("Meal swapped!");
+}
+
+function renderWeek() {
+  const g = document.getElementById("weekGrid");
+  g.innerHTML = "";
+  plan.forEach((p, i) => {
+    const card = document.createElement("div");
+    card.className = "day-card" + (p.isWeekend ? " weekend" : "");
+    card.innerHTML = `
+      <div class="day-label">${p.day}</div>
+      <span class="protein-pill ${PCOLS[p.protein]}">${PLABELS[p.protein]||p.protein}</span>
+      <div class="meal-name">${p.meal.name}</div>
+      <button class="reroll" onclick="event.stopPropagation();reroll(${i})" title="Swap this meal">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
+      </button>`;
+    g.appendChild(card);
+  });
+}
+
+function buildIngredients() {
+  const cats = { proteins: new Set(), produce: new Set(), fridge: new Set(), pantry: new Set() };
+  plan.forEach(p => {
+    const ing = p.meal.i;
+    ["proteins","produce","fridge","pantry"].forEach(c => {
+      if (ing[c]) ing[c].forEach(x => cats[c].add(x));
+    });
+  });
+  return cats;
+}
+
+function showList() {
+  const cats = buildIngredients();
+  const grid = document.getElementById("shopGrid");
+  grid.innerHTML = "";
+  let total = 0;
+  Object.keys(cats).forEach(cat => {
+    const items = [...cats[cat]].sort();
+    if (!items.length) return;
+    total += items.length;
+    const div = document.createElement("div");
+    div.className = "shop-cat";
+    div.innerHTML = `<div class="cat-title"><span class="cat-icon">${CAT_ICONS[cat]}</span>${CAT_LABELS[cat]}</div>` +
+      items.map(item => {
+        const done = checked.has(item);
+        return `<div class="shop-item${done?" done":""}" onclick="toggleItem(this,'${item.replace(/'/g,"&#39;")}')">
+          <div class="checkbox"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span class="item-text">${item}</span>
+        </div>`;
+      }).join("");
+    grid.appendChild(div);
+  });
+  updateProgress();
+  document.getElementById("listSection").style.display = "block";
+}
+
+function toggleItem(el, item) {
+  if (checked.has(item)) { checked.delete(item); el.classList.remove("done"); }
+  else { checked.add(item); el.classList.add("done"); }
+  updateProgress();
+}
+
+function updateProgress() {
+  const cats = buildIngredients();
+  let total = 0;
+  Object.keys(cats).forEach(c => total += cats[c].size);
+  const done = checked.size;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressText").textContent = `${done} of ${total} items ticked off`;
+}
+
+function copyAll() {
+  if (!plan.length) { toast("Generate a week first!"); return; }
+  const cats = buildIngredients();
+  const catLabels = { proteins:"MEAT & FISH", produce:"FRESH PRODUCE", fridge:"FRIDGE & DAIRY", pantry:"CUPBOARD & PANTRY" };
+  let txt = "📅 WEEKLY MEAL PLAN\n";
+  txt += "─".repeat(30) + "\n";
+  plan.forEach(p => { txt += `${p.day.padEnd(10)} ${p.meal.name}\n`; });
+  txt += "\n🛒 SHOPPING LIST\n";
+  txt += "─".repeat(30) + "\n";
+  Object.keys(cats).forEach(cat => {
+    const items = [...cats[cat]].sort();
+    if (!items.length) return;
+    txt += `\n${catLabels[cat]}\n` + items.map(i => `  • ${i}`).join("\n") + "\n";
+  });
+  navigator.clipboard.writeText(txt).then(() => {
+    toast("Copied to clipboard! ✓");
+  }).catch(() => {
+    const ta = document.createElement("textarea");
+    ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); document.body.removeChild(ta);
+    toast("Copied to clipboard! ✓");
+  });
+}
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+generateWeek();
+</script>
+</body>
+</html>
