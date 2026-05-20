@@ -6,87 +6,73 @@
 <title>Weekly Meal Planner</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #FDFAF6;
-    --surface: #FFFFFF;
-    --surface2: #F5F0E8;
-    --border: rgba(0,0,0,0.08);
-    --border-strong: rgba(0,0,0,0.14);
-    --text: #1C1A17;
-    --text-muted: #7A7468;
-    --text-faint: #B0A99E;
-    --accent: #C4602A;
-    --accent-light: #FAF0E9;
-    --weekend: #8B3A3A;
-    --weekend-light: #FDF0F0;
-    --green: #3A6B42;
-    --green-light: #EEF5EE;
-    --blue: #2A5A8B;
-    --blue-light: #EEF3FA;
-    --amber: #7A5A1A;
-    --amber-light: #FAF5E4;
-    --teal: #1A6B5A;
-    --teal-light: #EAF5F2;
+    --bg: #FDFAF6; --surface: #FFFFFF; --surface2: #F5F0E8;
+    --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.14);
+    --text: #1C1A17; --text-muted: #7A7468; --text-faint: #B0A99E;
+    --accent: #C4602A; --accent-light: #FAF0E9;
+    --weekend: #8B3A3A; --weekend-light: #FDF0F0;
+    --green: #3A6B42; --green-light: #EEF5EE;
+    --blue: #2A5A8B; --blue-light: #EEF3FA;
+    --amber: #7A5A1A; --amber-light: #FAF5E4;
+    --teal: #1A6B5A; --teal-light: #EAF5F2;
     --font-display: 'Playfair Display', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
-    --radius: 12px;
-    --radius-sm: 8px;
+    --radius: 12px; --radius-sm: 8px;
   }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+  .container { max-width: 900px; margin: 0 auto; }
 
-  body {
-    font-family: var(--font-body);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1rem;
-  }
-
-  .container { max-width: 860px; margin: 0 auto; }
-
-  /* Header */
-  .header { text-align: center; margin-bottom: 2.5rem; }
+  .header { text-align: center; margin-bottom: 2rem; }
   .header-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-  .header h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+  .header h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; margin-bottom: 0.4rem; }
   .header p { font-size: 0.95rem; color: var(--text-muted); font-weight: 300; }
   .header-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 500; background: var(--accent-light); color: var(--accent); padding: 4px 12px; border-radius: 20px; margin-top: 0.75rem; border: 1px solid rgba(196,96,42,0.2); }
 
-  /* Actions */
+  /* Sync status pill */
+  .sync-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; margin-bottom: 1.25rem; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-muted); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-faint); flex-shrink: 0; transition: background 0.3s; }
+  .dot.green { background: #3A6B42; }
+  .dot.amber { background: #C4602A; }
+  .dot.red { background: #8B3A3A; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 0; border-bottom: 1.5px solid var(--border-strong); margin-bottom: 1.75rem; }
+  .tab { cursor: pointer; font-size: 0.875rem; font-weight: 500; padding: 9px 18px; color: var(--text-muted); border-bottom: 2.5px solid transparent; margin-bottom: -1.5px; transition: color 0.15s, border-color 0.15s; display: flex; align-items: center; gap: 6px; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
   .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
   .btn { cursor: pointer; font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; padding: 10px 20px; border-radius: var(--radius-sm); border: 1.5px solid var(--border-strong); background: var(--surface); color: var(--text); transition: all 0.15s; display: inline-flex; align-items: center; gap: 7px; }
   .btn:hover { background: var(--surface2); border-color: rgba(0,0,0,0.2); transform: translateY(-1px); }
   .btn:active { transform: translateY(0); }
   .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
   .btn-primary:hover { background: #b05520; border-color: #b05520; }
+  .btn-danger { background: #fff; color: var(--weekend); border-color: rgba(139,58,58,0.3); }
+  .btn-danger:hover { background: var(--weekend-light); }
+  .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
   .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-  /* Weekend notice */
   .notice { display: flex; align-items: flex-start; gap: 10px; background: var(--weekend-light); border: 1px solid rgba(139,58,58,0.2); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 1.5rem; font-size: 0.83rem; color: var(--weekend); line-height: 1.5; }
   .notice svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
 
-  /* Week grid */
   .week-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; }
-
   .day-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; position: relative; transition: box-shadow 0.15s, transform 0.15s; }
   .day-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); transform: translateY(-2px); }
   .day-card.weekend { border-left: 3px solid var(--weekend); }
-
   .day-label { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
   .day-card.weekend .day-label { color: var(--weekend); }
-
   .protein-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 500; padding: 3px 9px; border-radius: 20px; margin-bottom: 8px; }
-  .meal-name { font-size: 0.9rem; font-weight: 400; color: var(--text); line-height: 1.45; }
-  .meal-name em { font-style: normal; font-family: var(--font-display); font-weight: 500; }
-
+  .meal-name { font-size: 0.9rem; font-weight: 400; line-height: 1.45; }
   .reroll { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; }
   .reroll svg { width: 13px; height: 13px; color: var(--text-muted); }
   .day-card:hover .reroll { opacity: 1; }
   .reroll:hover { background: var(--surface); border-color: var(--accent); }
   .reroll:hover svg { color: var(--accent); }
 
-  /* Protein colours */
   .p-salmon { background: var(--blue-light); color: var(--blue); }
   .p-beef { background: #FFF0EE; color: #8B3A2A; }
   .p-chicken { background: var(--green-light); color: var(--green); }
@@ -95,41 +81,63 @@
   .p-weekend { background: var(--weekend-light); color: var(--weekend); }
   .p-fish { background: var(--blue-light); color: var(--blue); }
 
-  /* Divider */
   .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
-
-  /* Shopping list */
   .list-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
   .list-header h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; }
-  .list-actions { display: flex; gap: 8px; margin-left: auto; }
-
   .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
   .shop-cat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; }
   .cat-title { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-  .cat-icon { font-size: 14px; }
-
   .shop-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; cursor: pointer; user-select: none; }
   .shop-item.done .item-text { text-decoration: line-through; color: var(--text-faint); }
   .checkbox { width: 16px; height: 16px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
   .shop-item.done .checkbox { background: var(--accent); border-color: var(--accent); }
   .checkbox svg { width: 10px; height: 10px; color: white; display: none; }
   .shop-item.done .checkbox svg { display: block; }
-  .item-text { font-size: 0.875rem; color: var(--text); line-height: 1.4; }
-
+  .item-text { font-size: 0.875rem; line-height: 1.4; }
   .progress-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 12px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
 
-  /* Toast */
+  /* Manage tab */
+  .manage-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 10px; }
+  .manage-header h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; }
+  .manage-sub { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .protein-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .ptab { cursor: pointer; font-size: 0.78rem; font-weight: 500; padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--border-strong); background: var(--surface); color: var(--text-muted); transition: all 0.15s; }
+  .ptab.active, .ptab:hover { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+  .meal-library { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .meal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1rem; display: flex; flex-direction: column; gap: 8px; }
+  .meal-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .meal-card-name { font-size: 0.9rem; font-weight: 500; line-height: 1.35; flex: 1; }
+  .meal-card-del { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-strong); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-faint); transition: all 0.12s; }
+  .meal-card-del:hover { background: var(--weekend-light); border-color: rgba(139,58,58,0.3); color: var(--weekend); }
+  .meal-card-del svg { width: 11px; height: 11px; }
+  .meal-card-ing { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+  .meal-card-ing span { display: inline-block; background: var(--surface2); border-radius: 4px; padding: 1px 6px; margin: 2px 2px 0 0; }
+
+  /* Modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); transform: translateY(12px); transition: transform 0.2s; max-height: 90vh; overflow-y: auto; }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 500; margin-bottom: 1.1rem; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-group input, .form-group select { font-family: var(--font-body); font-size: 0.875rem; padding: 8px 10px; border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+  .form-hint { font-size: 0.72rem; color: var(--text-faint); margin-top: 2px; }
+
   .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: #fff; font-size: 0.875rem; padding: 10px 20px; border-radius: var(--radius-sm); transition: transform 0.25s; z-index: 999; white-space: nowrap; }
   .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* Footer */
   .footer { text-align: center; margin-top: 3rem; font-size: 0.78rem; color: var(--text-faint); }
 
-  @media (max-width: 480px) {
+  @media (max-width: 520px) {
     .header h1 { font-size: 1.7rem; }
     .week-grid { grid-template-columns: 1fr 1fr; }
     .shop-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -142,49 +150,158 @@
     <p>Evening meals for two — low calorie, high protein</p>
     <div class="header-tag">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
-      No repeat proteins on consecutive days · Weekend treats on Sat & Sun
+      No repeat proteins on consecutive days · Weekend treats on Sat &amp; Sun
     </div>
   </div>
 
-  <div class="actions">
-    <button class="btn btn-primary" onclick="generateWeek()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
-      Generate new week
-    </button>
-    <button class="btn" onclick="showList()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M3 7h10M3 11h6"/></svg>
-      Build shopping list
-    </button>
-    <button class="btn" id="copyBtn" onclick="copyAll()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="8" height="9" rx="1"/><path d="M3 11V3a1 1 0 0 1 1-1h8"/></svg>
-      Copy plan &amp; list
-    </button>
+  <!-- Sync status pill -->
+  <div style="text-align:center;margin-bottom:1.25rem">
+    <span class="sync-pill" id="syncPill">
+      <div class="dot" id="syncDot"></div>
+      <span id="syncMsg">Connecting…</span>
+    </span>
   </div>
 
-  <div class="notice">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5h.01"/></svg>
-    <span><strong>Weekend meals</strong> (Sat &amp; Sun) include higher-calorie treats — pizza, burgers, roast, pie, nachos &amp; more. All weekday meals are lean and filling. Tap the ↻ on any card to swap just that meal.</span>
-  </div>
-
-  <div class="week-grid" id="weekGrid"></div>
-
-  <div id="listSection" style="display:none">
-    <hr class="divider">
-    <div class="list-header">
-      <h2>🛒 Shopping list</h2>
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('planner')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5h6M5 11h3"/></svg>
+      Weekly Planner
     </div>
-    <div class="shop-grid" id="shopGrid"></div>
-    <div class="progress-bar" style="margin-top:1.5rem"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-    <p id="progressText" style="font-size:0.8rem;color:var(--text-muted);text-align:right;margin-top:6px">0 items ticked off</p>
+    <div class="tab" onclick="switchTab('manage')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><circle cx="8" cy="8" r="2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2"/></svg>
+      Manage Meals
+    </div>
   </div>
 
-  <div class="footer">Made with ❤️ — open in any browser, no internet needed after first load</div>
+  <!-- Planner tab -->
+  <div class="tab-panel active" id="panel-planner">
+    <div class="actions">
+      <button class="btn btn-primary" onclick="generateWeek()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
+        Generate new week
+      </button>
+      <button class="btn" onclick="showList()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M3 7h10M3 11h6"/></svg>
+        Build shopping list
+      </button>
+      <button class="btn" onclick="copyAll()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="8" height="9" rx="1"/><path d="M3 11V3a1 1 0 0 1 1-1h8"/></svg>
+        Copy plan &amp; list
+      </button>
+    </div>
+    <div class="notice">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5h.01"/></svg>
+      <span><strong>Weekend meals</strong> (Sat &amp; Sun) include higher-calorie treats. Weekday meals are lean and filling. Tap ↻ on any card to swap that meal.</span>
+    </div>
+    <div class="week-grid" id="weekGrid"></div>
+    <div id="listSection" style="display:none">
+      <hr class="divider">
+      <div class="list-header"><h2>🛒 Shopping list</h2></div>
+      <div class="shop-grid" id="shopGrid"></div>
+      <div class="progress-bar" style="margin-top:1.5rem"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <p id="progressText" style="font-size:0.8rem;color:var(--text-muted);text-align:right;margin-top:6px"></p>
+    </div>
+  </div>
+
+  <!-- Manage Meals tab -->
+  <div class="tab-panel" id="panel-manage">
+    <div class="manage-header">
+      <h2>Meal Library</h2>
+      <div class="manage-sub">
+        <button class="btn btn-sm" onclick="refreshFromCloud()" id="refreshBtn" title="Pull latest from JSONBin">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
+          Refresh
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="openAddModal()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+          Add new meal
+        </button>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem">All meals in your shared library. Click × to remove. Changes sync to both devices automatically.</p>
+    <div class="protein-tabs" id="proteinTabs"></div>
+    <div class="meal-library" id="mealLibrary"></div>
+  </div>
+
+  <div class="footer">Open in any browser — meal library syncs across devices via JSONBin.io</div>
 </div>
+
+<!-- Add Meal Modal -->
+<div class="modal-overlay" id="addModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>➕ Add a new meal</h3>
+    <div class="form-row full"><div class="form-group">
+      <label>Meal name</label>
+      <input type="text" id="f-name" placeholder="e.g. Teriyaki salmon with rice">
+    </div></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Category</label>
+        <select id="f-cat" onchange="toggleWkEnd()">
+          <option value="chicken">🍗 Chicken</option>
+          <option value="beef">🥩 Beef</option>
+          <option value="salmon">🐟 Salmon</option>
+          <option value="pork">🥓 Pork</option>
+          <option value="vegetarian">🌿 Vegetarian</option>
+          <option value="weekend">🎉 Weekend treat</option>
+        </select>
+      </div>
+      <div class="form-group" id="f-wkend-group" style="display:none">
+        <label>Weekend protein type</label>
+        <select id="f-wkprot">
+          <option value="chicken">Chicken</option>
+          <option value="beef">Beef</option>
+          <option value="fish">Fish</option>
+          <option value="pork">Pork</option>
+          <option value="weekend">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row full"><div class="form-group">
+      <label>Meat &amp; fish</label>
+      <input type="text" id="f-proteins" placeholder="e.g. Salmon fillets ×2, Prawns 200g">
+      <p class="form-hint">Separate items with commas. Leave blank if none.</p>
+    </div></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Fresh produce</label>
+        <input type="text" id="f-produce" placeholder="e.g. Garlic, Spinach, Lemon">
+      </div>
+      <div class="form-group">
+        <label>Fridge &amp; dairy</label>
+        <input type="text" id="f-fridge" placeholder="e.g. Eggs ×2, Cheddar">
+      </div>
+    </div>
+    <div class="form-row full"><div class="form-group">
+      <label>Cupboard &amp; pantry</label>
+      <input type="text" id="f-pantry" placeholder="e.g. Soy sauce, Jasmine rice, Honey">
+    </div></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMeal()">Save meal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm modal -->
+<div class="modal-overlay" id="delModal" onclick="if(event.target===this)closeDelModal()">
+  <div class="modal">
+    <h3>Remove meal?</h3>
+    <p style="font-size:0.9rem;color:var(--text-muted);margin-top:0.5rem" id="delModalName"></p>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeDelModal()">Keep it</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">Yes, remove</button>
+    </div>
+  </div>
+</div>
+
 
 <div class="toast" id="toast"></div>
 
 <script>
-const MEALS = {
+// ─── Defaults ────────────────────────────────────────────────────────
+const DEFAULT_MEALS = {
   salmon: [
     { name: "Salmon egg fried rice", i: { proteins:["Salmon fillets ×2"], produce:["Spring onions","Frozen peas","Garlic"], fridge:["Eggs ×3"], pantry:["Soy sauce","Sesame oil","Jasmine rice"] } },
     { name: "Pesto salmon with roasted greens & sweet potato", i: { proteins:["Salmon fillets ×2"], produce:["Sweet potato","Tenderstem broccoli","Courgette"], pantry:["Green pesto","Olive oil"] } },
@@ -237,75 +354,132 @@ const MEALS = {
   ]
 };
 
+// ─── ⚙️  CONFIG — fill these in once, then upload to GitHub ──────────
+// 1. Go to jsonbin.io → sign up free
+// 2. Bins → Create a Bin → paste {} → Save → copy the Bin ID from the URL
+// 3. API Keys → create a key → copy it
+// Paste both values between the quotes below, save the file, upload to GitHub.
+const JSONBIN_ID  = "";   // e.g. "64a3f1c2e3b4f500123abcde"
+const JSONBIN_KEY = "";   // e.g. "$2a$10$examplekeyhere..."
+// ─────────────────────────────────────────────────────────────────────
+
+// ─── State ───────────────────────────────────────────────────────────
+let MEALS = JSON.parse(JSON.stringify(DEFAULT_MEALS));
+let plan = [], checked = new Set(), activeProteinTab = "chicken", pendingDelete = null;
+const syncConfig = (JSONBIN_ID && JSONBIN_KEY) ? { binId: JSONBIN_ID, apiKey: JSONBIN_KEY } : null;
+
 const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 const WEEKEND_IDX = [5,6];
-const PCOLS = {
-  salmon:"p-salmon", beef:"p-beef", chicken:"p-chicken",
-  pork:"p-pork", vegetarian:"p-vegetarian", weekend:"p-weekend", fish:"p-salmon"
-};
-const PLABELS = { salmon:"🐟 Salmon", beef:"🥩 Beef", chicken:"🍗 Chicken", pork:"🥓 Pork", vegetarian:"🌿 Veggie", weekend:"🎉 Weekend treat", fish:"🐟 Fish" };
-const CAT_ICONS = { proteins:"🥩", produce:"🥦", fridge:"🧊", pantry:"🫙" };
-const CAT_LABELS = { proteins:"Meat & fish", produce:"Fresh produce", fridge:"Fridge & dairy", pantry:"Cupboard & pantry" };
+const PCOLS = { salmon:"p-salmon",beef:"p-beef",chicken:"p-chicken",pork:"p-pork",vegetarian:"p-vegetarian",weekend:"p-weekend",fish:"p-salmon" };
+const PLABELS = { salmon:"🐟 Salmon",beef:"🥩 Beef",chicken:"🍗 Chicken",pork:"🥓 Pork",vegetarian:"🌿 Veggie",weekend:"🎉 Weekend treat",fish:"🐟 Fish" };
+const CAT_ICONS = { proteins:"🥩",produce:"🥦",fridge:"🧊",pantry:"🫙" };
+const CAT_LABELS = { proteins:"Meat & fish",produce:"Fresh produce",fridge:"Fridge & dairy",pantry:"Cupboard & pantry" };
+const PROTEIN_KEYS = ["chicken","beef","salmon","pork","vegetarian","weekend"];
+const PROTEIN_EMOJIS = { chicken:"🍗",beef:"🥩",salmon:"🐟",pork:"🥓",vegetarian:"🌿",weekend:"🎉" };
 
-let plan = [];
-let checked = new Set();
+// ─── JSONBin API ─────────────────────────────────────────────────────
+async function fetchFromBin() {
+  if (!syncConfig) return null;
+  const r = await fetch(`https://api.jsonbin.io/v3/b/${syncConfig.binId}/latest`, {
+    headers: { 'X-Master-Key': syncConfig.apiKey }
+  });
+  if (!r.ok) throw new Error(`JSONBin error ${r.status}`);
+  const j = await r.json();
+  return j.record;
+}
 
-function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+async function saveToBin(data) {
+  if (!syncConfig) return;
+  const r = await fetch(`https://api.jsonbin.io/v3/b/${syncConfig.binId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type':'application/json', 'X-Master-Key': syncConfig.apiKey },
+    body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error(`JSONBin save error ${r.status}`);
+}
+
+
+async function refreshFromCloud() {
+  if (!syncConfig) { toast('Not connected to JSONBin — set up sync first'); return; }
+  const btn = document.getElementById("refreshBtn");
+  btn.textContent = "Syncing…";
+  try {
+    const data = await fetchFromBin();
+    if (data && Object.keys(data).length > 0) {
+      MEALS = data;
+      toast("Meal library refreshed ✓");
+      renderManage();
+    }
+  } catch(e) {
+    toast("Sync failed — check your connection");
+  }
+  btn.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg> Refresh`;
+}
+
+function setSyncStatus(state, msg) {
+  document.getElementById("syncDot").className = "dot " + state;
+  document.getElementById("syncMsg").textContent = msg;
+}
+
+// ─── Tab switching ───────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['planner','manage'][i]===name));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id==='panel-'+name));
+  if (name==='manage') renderManage();
+}
+
+// ─── Planner ─────────────────────────────────────────────────────────
+function rand(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
 
 function generateWeek() {
-  checked.clear();
-  plan = [];
-  let prev = null;
-  DAYS.forEach((day, i) => {
+  checked.clear(); plan = []; let prev = null;
+  DAYS.forEach((day,i) => {
     const isWeekend = WEEKEND_IDX.includes(i);
-    let meal, protein, tries = 0;
+    let meal, protein, tries=0;
     if (isWeekend) {
-      do { meal = rand(MEALS.weekend); protein = meal.protein || "weekend"; tries++; }
-      while (protein === prev && tries < 20);
+      const pool = MEALS.weekend||[];
+      if (!pool.length) { plan.push({day,protein:"weekend",meal:{name:"(no weekend meals)",i:{}},isWeekend}); return; }
+      do { meal=rand(pool); protein=meal.protein||"weekend"; tries++; } while (protein===prev && tries<20);
     } else {
-      const keys = ["salmon","beef","chicken","pork","vegetarian"];
-      do { protein = rand(keys); tries++; } while (protein === prev && tries < 20);
-      meal = rand(MEALS[protein]);
+      const keys=["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
+      if (!keys.length) { plan.push({day,protein:"vegetarian",meal:{name:"(no meals)",i:{}},isWeekend}); return; }
+      do { protein=rand(keys); tries++; } while (protein===prev && tries<20);
+      meal=rand(MEALS[protein]);
     }
-    prev = protein;
-    plan.push({ day, protein, meal, isWeekend });
+    prev=protein;
+    plan.push({day,protein,meal,isWeekend});
   });
   renderWeek();
-  document.getElementById("listSection").style.display = "none";
+  document.getElementById("listSection").style.display="none";
 }
 
 function reroll(idx) {
-  const { isWeekend } = plan[idx];
-  const prevP = idx > 0 ? plan[idx-1].protein : null;
-  const nextP = idx < plan.length-1 ? plan[idx+1].protein : null;
-  const oldP = plan[idx].protein;
-  let meal, protein, tries = 0;
+  const {isWeekend}=plan[idx];
+  const prevP=idx>0?plan[idx-1].protein:null, nextP=idx<plan.length-1?plan[idx+1].protein:null, oldP=plan[idx].protein;
+  let meal,protein,tries=0;
   if (isWeekend) {
-    do { meal = rand(MEALS.weekend); protein = meal.protein||"weekend"; tries++; }
-    while ((protein===prevP||protein===nextP) && tries < 30);
+    const pool=MEALS.weekend||[];
+    do { meal=rand(pool); protein=meal.protein||"weekend"; tries++; } while ((protein===prevP||protein===nextP)&&tries<30);
   } else {
-    const keys = ["salmon","beef","chicken","pork","vegetarian"];
-    do { protein = rand(keys); tries++; }
-    while ((protein===prevP||protein===nextP||protein===oldP) && tries < 30);
-    meal = rand(MEALS[protein]);
+    const keys=["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
+    do { protein=rand(keys); tries++; } while ((protein===prevP||protein===nextP||protein===oldP)&&tries<30);
+    meal=rand(MEALS[protein]);
   }
-  plan[idx] = {...plan[idx], protein, meal};
+  plan[idx]={...plan[idx],protein,meal};
   renderWeek();
-  if (document.getElementById("listSection").style.display !== "none") showList();
+  if (document.getElementById("listSection").style.display!=="none") showList();
   toast("Meal swapped!");
 }
 
 function renderWeek() {
-  const g = document.getElementById("weekGrid");
-  g.innerHTML = "";
-  plan.forEach((p, i) => {
-    const card = document.createElement("div");
-    card.className = "day-card" + (p.isWeekend ? " weekend" : "");
-    card.innerHTML = `
-      <div class="day-label">${p.day}</div>
-      <span class="protein-pill ${PCOLS[p.protein]}">${PLABELS[p.protein]||p.protein}</span>
+  const g=document.getElementById("weekGrid"); g.innerHTML="";
+  plan.forEach((p,i) => {
+    const card=document.createElement("div");
+    card.className="day-card"+(p.isWeekend?" weekend":"");
+    card.innerHTML=`<div class="day-label">${p.day}</div>
+      <span class="protein-pill ${PCOLS[p.protein]||'p-weekend'}">${PLABELS[p.protein]||p.protein}</span>
       <div class="meal-name">${p.meal.name}</div>
-      <button class="reroll" onclick="event.stopPropagation();reroll(${i})" title="Swap this meal">
+      <button class="reroll" onclick="event.stopPropagation();reroll(${i})" title="Swap">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
       </button>`;
     g.appendChild(card);
@@ -313,90 +487,181 @@ function renderWeek() {
 }
 
 function buildIngredients() {
-  const cats = { proteins: new Set(), produce: new Set(), fridge: new Set(), pantry: new Set() };
+  const cats={proteins:new Set(),produce:new Set(),fridge:new Set(),pantry:new Set()};
   plan.forEach(p => {
-    const ing = p.meal.i;
-    ["proteins","produce","fridge","pantry"].forEach(c => {
-      if (ing[c]) ing[c].forEach(x => cats[c].add(x));
-    });
+    const ing=p.meal.i||{};
+    ["proteins","produce","fridge","pantry"].forEach(c => { if(ing[c]) ing[c].forEach(x=>cats[c].add(x)); });
   });
   return cats;
 }
 
 function showList() {
-  const cats = buildIngredients();
-  const grid = document.getElementById("shopGrid");
-  grid.innerHTML = "";
-  let total = 0;
+  const cats=buildIngredients();
+  const grid=document.getElementById("shopGrid"); grid.innerHTML="";
   Object.keys(cats).forEach(cat => {
-    const items = [...cats[cat]].sort();
-    if (!items.length) return;
-    total += items.length;
-    const div = document.createElement("div");
-    div.className = "shop-cat";
-    div.innerHTML = `<div class="cat-title"><span class="cat-icon">${CAT_ICONS[cat]}</span>${CAT_LABELS[cat]}</div>` +
+    const items=[...cats[cat]].sort(); if (!items.length) return;
+    const div=document.createElement("div"); div.className="shop-cat";
+    div.innerHTML=`<div class="cat-title"><span>${CAT_ICONS[cat]}</span>${CAT_LABELS[cat]}</div>`+
       items.map(item => {
-        const done = checked.has(item);
+        const done=checked.has(item);
         return `<div class="shop-item${done?" done":""}" onclick="toggleItem(this,'${item.replace(/'/g,"&#39;")}')">
           <div class="checkbox"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
-          <span class="item-text">${item}</span>
-        </div>`;
+          <span class="item-text">${item}</span></div>`;
       }).join("");
     grid.appendChild(div);
   });
   updateProgress();
-  document.getElementById("listSection").style.display = "block";
+  document.getElementById("listSection").style.display="block";
 }
 
-function toggleItem(el, item) {
-  if (checked.has(item)) { checked.delete(item); el.classList.remove("done"); }
-  else { checked.add(item); el.classList.add("done"); }
+function toggleItem(el,item) {
+  if(checked.has(item)){checked.delete(item);el.classList.remove("done");}
+  else{checked.add(item);el.classList.add("done");}
   updateProgress();
 }
-
 function updateProgress() {
-  const cats = buildIngredients();
-  let total = 0;
-  Object.keys(cats).forEach(c => total += cats[c].size);
-  const done = checked.size;
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById("progressFill").style.width = pct + "%";
-  document.getElementById("progressText").textContent = `${done} of ${total} items ticked off`;
+  const cats=buildIngredients(); let total=0;
+  Object.keys(cats).forEach(c=>total+=cats[c].size);
+  const done=checked.size, pct=total?Math.round(done/total*100):0;
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("progressText").textContent=`${done} of ${total} items ticked off`;
 }
-
 function copyAll() {
-  if (!plan.length) { toast("Generate a week first!"); return; }
-  const cats = buildIngredients();
-  const catLabels = { proteins:"MEAT & FISH", produce:"FRESH PRODUCE", fridge:"FRIDGE & DAIRY", pantry:"CUPBOARD & PANTRY" };
-  let txt = "📅 WEEKLY MEAL PLAN\n";
-  txt += "─".repeat(30) + "\n";
-  plan.forEach(p => { txt += `${p.day.padEnd(10)} ${p.meal.name}\n`; });
-  txt += "\n🛒 SHOPPING LIST\n";
-  txt += "─".repeat(30) + "\n";
-  Object.keys(cats).forEach(cat => {
-    const items = [...cats[cat]].sort();
-    if (!items.length) return;
-    txt += `\n${catLabels[cat]}\n` + items.map(i => `  • ${i}`).join("\n") + "\n";
+  if(!plan.length){toast("Generate a week first!");return;}
+  const cats=buildIngredients();
+  const cL={proteins:"MEAT & FISH",produce:"FRESH PRODUCE",fridge:"FRIDGE & DAIRY",pantry:"CUPBOARD & PANTRY"};
+  let txt="📅 WEEKLY MEAL PLAN\n"+"─".repeat(30)+"\n";
+  plan.forEach(p=>{txt+=`${p.day.padEnd(10)} ${p.meal.name}\n`;});
+  txt+="\n🛒 SHOPPING LIST\n"+"─".repeat(30)+"\n";
+  Object.keys(cats).forEach(cat=>{
+    const items=[...cats[cat]].sort(); if(!items.length)return;
+    txt+=`\n${cL[cat]}\n`+items.map(i=>`  • ${i}`).join("\n")+"\n";
   });
-  navigator.clipboard.writeText(txt).then(() => {
-    toast("Copied to clipboard! ✓");
+  navigator.clipboard.writeText(txt).then(()=>toast("Copied! ✓")).catch(()=>{
+    const ta=document.createElement("textarea"); ta.value=txt; ta.style.cssText="position:fixed;opacity:0";
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+    toast("Copied! ✓");
+  });
+}
+
+// ─── Manage Meals ────────────────────────────────────────────────────
+function renderManage() {
+  const tabsEl=document.getElementById("proteinTabs");
+  tabsEl.innerHTML=PROTEIN_KEYS.map(k=>`
+    <div class="ptab${k===activeProteinTab?' active':''}" onclick="setProteinTab('${k}')">
+      ${PROTEIN_EMOJIS[k]} ${k.charAt(0).toUpperCase()+k.slice(1)}
+      <span style="font-size:0.7rem;opacity:0.6;margin-left:3px">(${(MEALS[k]||[]).length})</span>
+    </div>`).join("");
+  const lib=document.getElementById("mealLibrary");
+  const pool=MEALS[activeProteinTab]||[];
+  if(!pool.length){
+    lib.innerHTML=`<p style="color:var(--text-muted);font-size:0.875rem;grid-column:1/-1">No meals yet. Add one above!</p>`;
+    return;
+  }
+  lib.innerHTML=pool.map((m,idx)=>{
+    const allIng=[...(m.i.proteins||[]),...(m.i.produce||[]),...(m.i.fridge||[]),...(m.i.pantry||[])];
+    return `<div class="meal-card">
+      <div class="meal-card-top">
+        <div class="meal-card-name">${m.name}</div>
+        <button class="meal-card-del" onclick="askDelete('${activeProteinTab}',${idx})" title="Remove">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg>
+        </button>
+      </div>
+      <div class="meal-card-ing">${allIng.slice(0,6).map(i=>`<span>${i}</span>`).join("")}${allIng.length>6?`<span>+${allIng.length-6} more</span>`:""}</div>
+    </div>`;
+  }).join("");
+}
+function setProteinTab(k){activeProteinTab=k;renderManage();}
+
+// ─── Add Meal ────────────────────────────────────────────────────────
+function openAddModal(){
+  document.getElementById("f-name").value="";
+  document.getElementById("f-cat").value=activeProteinTab==="weekend"?"weekend":activeProteinTab;
+  ["f-proteins","f-produce","f-fridge","f-pantry"].forEach(id=>document.getElementById(id).value="");
+  toggleWkEnd();
+  document.getElementById("addModal").classList.add("open");
+  setTimeout(()=>document.getElementById("f-name").focus(),100);
+}
+function toggleWkEnd(){
+  document.getElementById("f-wkend-group").style.display=document.getElementById("f-cat").value==="weekend"?"flex":"none";
+}
+function closeModal(){document.getElementById("addModal").classList.remove("open");}
+function splitCSV(s){return s.split(",").map(x=>x.trim()).filter(Boolean);}
+
+async function saveMeal(){
+  const name=document.getElementById("f-name").value.trim();
+  const cat=document.getElementById("f-cat").value;
+  if(!name){toast("Please enter a meal name");return;}
+  const meal={name,i:{
+    proteins:splitCSV(document.getElementById("f-proteins").value),
+    produce: splitCSV(document.getElementById("f-produce").value),
+    fridge:  splitCSV(document.getElementById("f-fridge").value),
+    pantry:  splitCSV(document.getElementById("f-pantry").value),
+  }};
+  Object.keys(meal.i).forEach(k=>{if(!meal.i[k].length)delete meal.i[k];});
+  if(cat==="weekend") meal.protein=document.getElementById("f-wkprot").value;
+  if(!MEALS[cat]) MEALS[cat]=[];
+  MEALS[cat].push(meal);
+  closeModal();
+  renderManage();
+  toast(`"${name}" saved — syncing…`);
+  if(syncConfig){
+    try { await saveToBin(MEALS); toast(`"${name}" saved & synced ✓`); }
+    catch(e){ toast("Saved locally — sync failed, check connection"); }
+  } else {
+    toast(`"${name}" added ✓`);
+  }
+}
+
+// ─── Delete ──────────────────────────────────────────────────────────
+function askDelete(cat,idx){
+  pendingDelete={cat,idx};
+  document.getElementById("delModalName").textContent=`"${MEALS[cat][idx].name}" will be removed from the library.`;
+  document.getElementById("delModal").classList.add("open");
+}
+function closeDelModal(){document.getElementById("delModal").classList.remove("open");pendingDelete=null;}
+async function confirmDelete(){
+  if(!pendingDelete)return;
+  const {cat,idx}=pendingDelete;
+  const name=MEALS[cat][idx].name;
+  MEALS[cat].splice(idx,1);
+  closeDelModal();
+  renderManage();
+  if(syncConfig){
+    try { await saveToBin(MEALS); toast(`"${name}" removed & synced ✓`); }
+    catch(e){ toast(`"${name}" removed — sync failed`); }
+  } else {
+    toast(`"${name}" removed`);
+  }
+}
+
+// ─── Toast ───────────────────────────────────────────────────────────
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2400);
+}
+
+// ─── Init ────────────────────────────────────────────────────────────
+if (syncConfig) {
+  setSyncStatus('amber', 'Connecting to shared library…');
+  fetchFromBin().then(data => {
+    if (data && Object.keys(data).length > 0 && data.chicken) {
+      MEALS = data;
+      setSyncStatus('green', '☁️ Synced — changes save across both devices');
+    } else {
+      // Bin is empty, seed it with defaults
+      saveToBin(MEALS).then(() => setSyncStatus('green', '☁️ Synced — changes save across both devices'));
+    }
+    generateWeek();
   }).catch(() => {
-    const ta = document.createElement("textarea");
-    ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
-    document.body.appendChild(ta); ta.select();
-    document.execCommand("copy"); document.body.removeChild(ta);
-    toast("Copied to clipboard! ✓");
+    setSyncStatus('red', '⚠️ Sync failed — check Bin ID and API Key in the file');
+    generateWeek();
   });
+} else {
+  setSyncStatus('amber', '⚠️ Add your JSONBin credentials to the file to enable sync');
+  generateWeek();
 }
-
-function toast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2200);
-}
-
-generateWeek();
 </script>
 </body>
 </html>
