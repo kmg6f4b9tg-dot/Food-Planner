@@ -1088,7 +1088,8 @@ async function generateAiMeal(){
         })
       });
       if(resp.ok)break;
-      lastErr=model+' -> '+resp.status;
+      const errText=await resp.text();
+      lastErr=model+' -> '+resp.status+': '+errText;
       if(resp.status!==404)break;
     }
     clearInterval(iv);document.getElementById('aiLoadingIcon').classList.remove('ai-pulsing');
