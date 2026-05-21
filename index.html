@@ -1089,7 +1089,8 @@ async function generateAiMeal(){
       });
       if(resp.ok)break;
       const errText=await resp.text();
-      lastErr=model+' -> '+resp.status+': '+errText;
+      console.error('Gemini error for model '+model+':', errText);
+      lastErr=model+' -> '+resp.status;
       if(resp.status!==404)break;
     }
     clearInterval(iv);document.getElementById('aiLoadingIcon').classList.remove('ai-pulsing');
