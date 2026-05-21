@@ -1071,10 +1071,10 @@ async function generateAiMeal(){
   if(!prompt){document.getElementById('ai-prompt').focus();return}
   document.getElementById('aiResult').style.display='none';document.getElementById('aiError').style.display='none';document.getElementById('aiInitActions').style.display='none';document.getElementById('aiLoading').style.display='block';document.getElementById('aiLoadingIcon').classList.add('ai-pulsing');document.getElementById('aiGenerateBtn').disabled=true;
   let mi=0;const iv=setInterval(()=>{mi=(mi+1)%AI_MSGS.length;document.getElementById('aiLoadingMsg').textContent=AI_MSGS[mi]},1800);
-  const existing=Object.values(MEALS).flat().map(m=>m.name).slice(0,20).join(', ');
-  const catLabel={chicken:'chicken',beef:'beef',salmon:'salmon/fish',pork:'pork',vegetarian:'vegetarian',weekend:'weekend treat'}[cat];
+  const existing=Object.values(MEALS).flat().map(m=>m.name).slice(0,10).join(', ');
+  const catLabel={chicken:'chicken',beef:'beef',salmon:'salmon',pork:'pork',vegetarian:'vegetarian',weekend:'weekend treat'}[cat];
   try{
-    const geminiPrompt='You are a meal planning assistant. Suggest a '+catLabel+' meal for two people based on: '+prompt+'. Already in library: '+existing+'. Suggest something different. Return ONLY a JSON object with these fields: name (string), calories (number), prepTime (number, minutes), cookTime (number, minutes), tags (array of strings like quick/spicy/creamy), notes (string, optional tip), ingredients (object with proteins/produce/fridge/pantry arrays, each item has name/qty/unit fields), steps (array of strings). Use units: g kg ml l tsp tbsp cup bunch x. Include 2-4 ingredients per category and 4-6 steps. No markdown, no explanation, just the JSON object.';
+    const geminiPrompt='Suggest a '+catLabel+' dinner meal for two. Request: '+prompt.replace(/[^\w\s,.!?-]/g,'')+'. Already have: '+existing.replace(/[^\w\s,.&-]/g,'')+'. Return ONLY a JSON object. Fields: name(string), calories(number), prepTime(number), cookTime(number), tags(string array), notes(string), ingredients(object with proteins/produce/fridge/pantry arrays where each item has name/qty/unit), steps(string array). Keep steps under 100 chars each.';
     const geminiModels=['gemini-2.0-flash','gemini-1.5-flash','gemini-2.5-flash'];
     let resp=null,lastErr='';
     for(const model of geminiModels){
@@ -1095,8 +1095,14 @@ async function generateAiMeal(){
     clearInterval(iv);document.getElementById('aiLoadingIcon').classList.remove('ai-pulsing');
     if(!resp||!resp.ok)throw new Error(`No working model found. Tried: ${lastErr}`);
     const data=await resp.json();
-    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    let raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    console.log('Raw response:',raw.substring(0,200));
+    // Clean up response
+    raw=raw.replace(/```json|```/g,'').trim();
+    // Extract just the JSON object if there's surrounding text
+    const jsonMatch=raw.match(/\{[\s\S]*\}/);
+    if(!jsonMatch)throw new Error('No JSON found in response');
+    const parsed=JSON.parse(jsonMatch[0]);
     aiGeneratedMeal={name:parsed.name,notes:parsed.notes||'',steps:parsed.steps||[],i:{},calories:parsed.calories||0,prepTime:parsed.prepTime||0,cookTime:parsed.cookTime||0,tags:parsed.tags||[]};
     ['proteins','produce','fridge','pantry'].forEach(c=>{if(parsed.ingredients?.[c]?.length)aiGeneratedMeal.i[c]=parsed.ingredients[c]});
     if(cat==='weekend')aiGeneratedMeal.protein=cat;
