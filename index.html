@@ -1075,7 +1075,7 @@ async function generateAiMeal(){
   const catLabel={chicken:'chicken',beef:'beef',salmon:'salmon/fish',pork:'pork',vegetarian:'vegetarian',weekend:'weekend treat (can be indulgent)'}[cat];
   try{
     const geminiPrompt=`You are a meal planning assistant for a couple eating low-calorie high-protein evening meals. Respond ONLY with valid JSON, no markdown, no explanation.\n\nSuggest a ${catLabel} meal based on: "${prompt}"\nAlready in library: ${existing}\nSuggest something different.\n\nRespond ONLY with this exact JSON structure:\n{"name":"Meal name here","calories":450,"prepTime":10,"cookTime":25,"tags":["quick","healthy"],"notes":"Optional cooking tip","ingredients":{"proteins":[{"name":"Chicken breasts","qty":"2","unit":"x"}],"produce":[{"name":"Garlic","qty":"3","unit":"cloves"}],"fridge":[{"name":"Greek yoghurt","qty":"150","unit":"g"}],"pantry":[{"name":"Soy sauce","qty":"2","unit":"tbsp"}]},"steps":["Step 1 instruction here","Step 2 instruction here","Step 3 instruction here"]}\nUse these units only: g kg ml l tsp tbsp cup bunch x\nInclude 2-4 ingredients per category, 4-6 clear steps.`;
-    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{
+    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
