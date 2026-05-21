@@ -30,20 +30,15 @@
   .header p { font-size: 0.95rem; color: var(--text-muted); font-weight: 300; }
   .header-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 500; background: var(--accent-light); color: var(--accent); padding: 4px 12px; border-radius: 20px; margin-top: 0.75rem; border: 1px solid rgba(196,96,42,0.2); }
 
-  /* Sync status pill */
   .sync-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; margin-bottom: 1.25rem; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-muted); }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-faint); flex-shrink: 0; transition: background 0.3s; }
-  .dot.green { background: #3A6B42; }
-  .dot.amber { background: #C4602A; }
-  .dot.red { background: #8B3A3A; }
+  .dot.green { background: #3A6B42; } .dot.amber { background: #C4602A; } .dot.red { background: #8B3A3A; }
 
-  /* Tabs */
-  .tabs { display: flex; gap: 0; border-bottom: 1.5px solid var(--border-strong); margin-bottom: 1.75rem; }
+  .tabs { display: flex; border-bottom: 1.5px solid var(--border-strong); margin-bottom: 1.75rem; }
   .tab { cursor: pointer; font-size: 0.875rem; font-weight: 500; padding: 9px 18px; color: var(--text-muted); border-bottom: 2.5px solid transparent; margin-bottom: -1.5px; transition: color 0.15s, border-color 0.15s; display: flex; align-items: center; gap: 6px; }
   .tab:hover { color: var(--text); }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+  .tab-panel { display: none; } .tab-panel.active { display: block; }
 
   .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
   .btn { cursor: pointer; font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; padding: 10px 20px; border-radius: var(--radius-sm); border: 1.5px solid var(--border-strong); background: var(--surface); color: var(--text); transition: all 0.15s; display: inline-flex; align-items: center; gap: 7px; }
@@ -73,27 +68,25 @@
   .reroll:hover { background: var(--surface); border-color: var(--accent); }
   .reroll:hover svg { color: var(--accent); }
 
-  .p-salmon { background: var(--blue-light); color: var(--blue); }
-  .p-beef { background: #FFF0EE; color: #8B3A2A; }
-  .p-chicken { background: var(--green-light); color: var(--green); }
-  .p-pork { background: var(--amber-light); color: var(--amber); }
-  .p-vegetarian { background: var(--teal-light); color: var(--teal); }
-  .p-weekend { background: var(--weekend-light); color: var(--weekend); }
-  .p-fish { background: var(--blue-light); color: var(--blue); }
+  .p-salmon{background:var(--blue-light);color:var(--blue);} .p-beef{background:#FFF0EE;color:#8B3A2A;} .p-chicken{background:var(--green-light);color:var(--green);} .p-pork{background:var(--amber-light);color:var(--amber);} .p-vegetarian{background:var(--teal-light);color:var(--teal);} .p-weekend{background:var(--weekend-light);color:var(--weekend);} .p-fish{background:var(--blue-light);color:var(--blue);}
 
   .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   .list-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
   .list-header h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; }
-  .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
   .shop-cat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; }
   .cat-title { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-  .shop-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; cursor: pointer; user-select: none; }
-  .shop-item.done .item-text { text-decoration: line-through; color: var(--text-faint); }
-  .checkbox { width: 16px; height: 16px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+  .shop-item { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; cursor: pointer; user-select: none; border-bottom: 0.5px solid var(--border); }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-item.done .item-name { text-decoration: line-through; color: var(--text-faint); }
+  .shop-item.done .item-qty { color: var(--text-faint); }
+  .checkbox { width: 16px; height: 16px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
   .shop-item.done .checkbox { background: var(--accent); border-color: var(--accent); }
   .checkbox svg { width: 10px; height: 10px; color: white; display: none; }
   .shop-item.done .checkbox svg { display: block; }
-  .item-text { font-size: 0.875rem; line-height: 1.4; }
+  .item-info { flex: 1; display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+  .item-name { font-size: 0.875rem; line-height: 1.4; }
+  .item-qty { font-size: 0.75rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 1px 6px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
   .progress-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 12px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
 
@@ -108,16 +101,19 @@
   .meal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1rem; display: flex; flex-direction: column; gap: 8px; }
   .meal-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
   .meal-card-name { font-size: 0.9rem; font-weight: 500; line-height: 1.35; flex: 1; }
+  .meal-card-edit { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-strong); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-faint); transition: all 0.12s; }
+  .meal-card-edit:hover { background: var(--accent-light); border-color: rgba(196,96,42,0.3); color: var(--accent); }
+  .meal-card-edit svg { width: 11px; height: 11px; }
   .meal-card-del { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-strong); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-faint); transition: all 0.12s; }
   .meal-card-del:hover { background: var(--weekend-light); border-color: rgba(139,58,58,0.3); color: var(--weekend); }
   .meal-card-del svg { width: 11px; height: 11px; }
-  .meal-card-ing { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+  .meal-card-ing { font-size: 0.75rem; color: var(--text-muted); }
   .meal-card-ing span { display: inline-block; background: var(--surface2); border-radius: 4px; padding: 1px 6px; margin: 2px 2px 0 0; }
 
   /* Modal */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); transform: translateY(12px); transition: transform 0.2s; max-height: 90vh; overflow-y: auto; }
+  .modal { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); transform: translateY(12px); transition: transform 0.2s; max-height: 92vh; overflow-y: auto; }
   .modal-overlay.open .modal { transform: translateY(0); }
   .modal h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 500; margin-bottom: 1.1rem; }
   .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
@@ -129,15 +125,51 @@
   .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
   .form-hint { font-size: 0.72rem; color: var(--text-faint); margin-top: 2px; }
 
-  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: #fff; font-size: 0.875rem; padding: 10px 20px; border-radius: var(--radius-sm); transition: transform 0.25s; z-index: 999; white-space: nowrap; }
+  /* Ingredient builder */
+  .ing-section { margin-bottom: 12px; }
+  .ing-section-label { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .ing-rows { display: flex; flex-direction: column; gap: 6px; }
+  .ing-row { display: grid; grid-template-columns: 1fr 70px 80px 28px; gap: 6px; align-items: center; }
+  .ing-row input, .ing-row select { font-family: var(--font-body); font-size: 0.82rem; padding: 6px 8px; border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); outline: none; width: 100%; }
+  .ing-row input:focus, .ing-row select:focus { border-color: var(--accent); }
+  .ing-row input::placeholder { color: var(--text-faint); }
+  .ing-del { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border-strong); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-faint); flex-shrink: 0; transition: all 0.12s; }
+  .ing-del:hover { background: var(--weekend-light); color: var(--weekend); border-color: rgba(139,58,58,0.3); }
+  .ing-del svg { width: 10px; height: 10px; }
+  .add-ing-btn { font-size: 0.75rem; color: var(--accent); background: none; border: none; cursor: pointer; padding: 2px 0; display: flex; align-items: center; gap: 4px; margin-top: 4px; }
+  .add-ing-btn:hover { text-decoration: underline; }
+
+  /* Recipe viewer */
+  .recipe-modal { max-width: 600px; }
+  .recipe-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .recipe-steps { counter-reset: steps; display: flex; flex-direction: column; gap: 10px; margin-top: 1rem; }
+  .recipe-step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-text { font-size: 0.9rem; line-height: 1.6; color: var(--text); padding-top: 3px; }
+  .recipe-empty { font-size: 0.875rem; color: var(--text-muted); font-style: italic; margin-top: 0.5rem; }
+  .recipe-notes { margin-top: 1.25rem; background: var(--surface2); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .recipe-notes strong { color: var(--text); }
+
+  /* Step builder in modal */
+  .step-rows { display: flex; flex-direction: column; gap: 6px; }
+  .step-row { display: grid; grid-template-columns: 26px 1fr 28px; gap: 6px; align-items: flex-start; }
+  .step-num-sm { width: 26px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; color: var(--accent); flex-shrink: 0; }
+  .step-row textarea { font-family: var(--font-body); font-size: 0.82rem; padding: 6px 8px; border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); outline: none; resize: vertical; min-height: 52px; line-height: 1.5; width: 100%; transition: border-color 0.15s; }
+  .step-row textarea:focus { border-color: var(--accent); }
+
+  /* View recipe btn on day card */
+  .view-recipe-btn { font-size: 0.72rem; color: var(--accent); background: var(--accent-light); border: 1px solid rgba(196,96,42,0.2); border-radius: 10px; padding: 2px 8px; cursor: pointer; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; transition: background 0.12s; }
+  .view-recipe-btn:hover { background: #f5e0d3; }
+  .view-recipe-btn svg { width: 11px; height: 11px; }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .footer { text-align: center; margin-top: 3rem; font-size: 0.78rem; color: var(--text-faint); }
 
   @media (max-width: 520px) {
     .header h1 { font-size: 1.7rem; }
     .week-grid { grid-template-columns: 1fr 1fr; }
-    .shop-grid { grid-template-columns: 1fr 1fr; }
+    .shop-grid { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
+    .ing-row { grid-template-columns: 1fr 60px 70px 26px; }
   }
 </style>
 </head>
@@ -154,7 +186,6 @@
     </div>
   </div>
 
-  <!-- Sync status pill -->
   <div style="text-align:center;margin-bottom:1.25rem">
     <span class="sync-pill" id="syncPill">
       <div class="dot" id="syncDot"></div>
@@ -162,7 +193,6 @@
     </span>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <div class="tab active" onclick="switchTab('planner')">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5h6M5 11h3"/></svg>
@@ -174,7 +204,6 @@
     </div>
   </div>
 
-  <!-- Planner tab -->
   <div class="tab-panel active" id="panel-planner">
     <div class="actions">
       <button class="btn btn-primary" onclick="generateWeek()">
@@ -204,12 +233,11 @@
     </div>
   </div>
 
-  <!-- Manage Meals tab -->
   <div class="tab-panel" id="panel-manage">
     <div class="manage-header">
       <h2>Meal Library</h2>
       <div class="manage-sub">
-        <button class="btn btn-sm" onclick="refreshFromCloud()" id="refreshBtn" title="Pull latest from JSONBin">
+        <button class="btn btn-sm" onclick="refreshFromCloud()" id="refreshBtn">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
           Refresh
         </button>
@@ -230,7 +258,7 @@
 <!-- Add Meal Modal -->
 <div class="modal-overlay" id="addModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <h3>➕ Add a new meal</h3>
+    <h3 id="modal-title">➕ Add a new meal</h3>
     <div class="form-row full"><div class="form-group">
       <label>Meal name</label>
       <input type="text" id="f-name" placeholder="e.g. Teriyaki salmon with rice">
@@ -258,25 +286,30 @@
         </select>
       </div>
     </div>
-    <div class="form-row full"><div class="form-group">
-      <label>Meat &amp; fish</label>
-      <input type="text" id="f-proteins" placeholder="e.g. Salmon fillets ×2, Prawns 200g">
-      <p class="form-hint">Separate items with commas. Leave blank if none.</p>
-    </div></div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Fresh produce</label>
-        <input type="text" id="f-produce" placeholder="e.g. Garlic, Spinach, Lemon">
+
+    <!-- Ingredient sections -->
+    <div id="ing-builder"></div>
+
+    <!-- Recipe steps -->
+    <div class="ing-section" style="margin-top:14px">
+      <div class="ing-section-label">
+        Recipe steps
+        <button type="button" class="add-ing-btn" onclick="addStepRow()" style="font-size:0.72rem">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px"><path d="M6 2v8M2 6h8"/></svg>
+          Add step
+        </button>
       </div>
+      <div class="step-rows" id="step-rows"></div>
+    </div>
+
+    <!-- Notes -->
+    <div class="ing-section" style="margin-top:10px">
       <div class="form-group">
-        <label>Fridge &amp; dairy</label>
-        <input type="text" id="f-fridge" placeholder="e.g. Eggs ×2, Cheddar">
+        <label>Tips / notes (optional)</label>
+        <textarea id="f-notes" placeholder="e.g. Marinate overnight for best results, serve with extra chilli..." style="font-family:var(--font-body);font-size:0.82rem;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);outline:none;resize:vertical;min-height:56px;width:100%;transition:border-color 0.15s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-strong)'"></textarea>
       </div>
     </div>
-    <div class="form-row full"><div class="form-group">
-      <label>Cupboard &amp; pantry</label>
-      <input type="text" id="f-pantry" placeholder="e.g. Soy sauce, Jasmine rice, Honey">
-    </div></div>
+
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Cancel</button>
       <button class="btn btn-primary" onclick="saveMeal()">Save meal</button>
@@ -296,72 +329,101 @@
   </div>
 </div>
 
+<!-- Recipe viewer modal -->
+<div class="modal-overlay" id="recipeModal" onclick="if(event.target===this)closeRecipeModal()">
+  <div class="modal recipe-modal">
+    <h3 id="recipe-title" style="margin-bottom:0.5rem"></h3>
+    <div class="recipe-meta" id="recipe-meta"></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin-bottom:1rem">
+    <div id="recipe-ing-summary"></div>
+    <div id="recipe-steps-section"></div>
+    <div id="recipe-notes-section"></div>
+    <div class="modal-actions" style="margin-top:1.5rem">
+      <button class="btn" onclick="closeRecipeModal()">Close</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── Defaults ────────────────────────────────────────────────────────
+// ─── ⚙️  CONFIG ──────────────────────────────────────────────────────
+const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";
+const JSONBIN_KEY = "$2a$10$YxU.bwB07j19z9fHyyKm/OYml1oa7h2k.dnzcz31CFojZKR0rHaw2";
+// ─────────────────────────────────────────────────────────────────────
+
+// ─── Ingredient units ────────────────────────────────────────────────
+const UNITS = ["","g","kg","ml","l","tsp","tbsp","cup","bunch","clove(s)","can(s)","pack(s)","bag(s)","slice(s)","sheet(s)","×"];
+
+// ─── Default meal data (ingredients now as {name,qty,unit} objects) ──
 const DEFAULT_MEALS = {
   salmon: [
-    { name: "Salmon egg fried rice", i: { proteins:["Salmon fillets ×2"], produce:["Spring onions","Frozen peas","Garlic"], fridge:["Eggs ×3"], pantry:["Soy sauce","Sesame oil","Jasmine rice"] } },
-    { name: "Pesto salmon with roasted greens & sweet potato", i: { proteins:["Salmon fillets ×2"], produce:["Sweet potato","Tenderstem broccoli","Courgette"], pantry:["Green pesto","Olive oil"] } },
-    { name: "Honey garlic butter baked salmon with sesame noodles", i: { proteins:["Salmon fillets ×2"], produce:["Garlic","Spring onions","Lemon"], fridge:["Butter"], pantry:["Honey","Soy sauce","Sesame oil","Rice noodles","Sesame seeds"] } },
+    { name:"Salmon egg fried rice", i:{ proteins:[{name:"Salmon fillets",qty:2,unit:"×"}], produce:[{name:"Spring onions",qty:1,unit:"bunch"},{name:"Frozen peas",qty:150,unit:"g"},{name:"Garlic",qty:3,unit:"clove(s)"}], fridge:[{name:"Eggs",qty:3,unit:"×"}], pantry:[{name:"Soy sauce",qty:3,unit:"tbsp"},{name:"Sesame oil",qty:1,unit:"tbsp"},{name:"Jasmine rice",qty:300,unit:"g"}] }},
+    { name:"Pesto salmon with roasted greens & sweet potato", i:{ proteins:[{name:"Salmon fillets",qty:2,unit:"×"}], produce:[{name:"Sweet potato",qty:2,unit:"×"},{name:"Tenderstem broccoli",qty:200,unit:"g"},{name:"Courgette",qty:1,unit:"×"}], pantry:[{name:"Green pesto",qty:3,unit:"tbsp"},{name:"Olive oil",qty:2,unit:"tbsp"}] }},
+    { name:"Honey garlic butter baked salmon with sesame noodles", i:{ proteins:[{name:"Salmon fillets",qty:2,unit:"×"}], produce:[{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Spring onions",qty:1,unit:"bunch"},{name:"Lemon",qty:1,unit:"×"}], fridge:[{name:"Butter",qty:30,unit:"g"}], pantry:[{name:"Honey",qty:2,unit:"tbsp"},{name:"Soy sauce",qty:2,unit:"tbsp"},{name:"Sesame oil",qty:1,unit:"tbsp"},{name:"Rice noodles",qty:200,unit:"g"},{name:"Sesame seeds",qty:1,unit:"tbsp"}] }},
   ],
   beef: [
-    { name: "Beef & bell pepper black bean stir fry", i: { proteins:["Lean beef mince 400g"], produce:["Bell peppers ×3","Garlic","Ginger","Spring onions"], pantry:["Black bean sauce","Soy sauce","Sesame oil","Jasmine rice"] } },
-    { name: "Burger bowl", i: { proteins:["Lean beef mince 300g"], produce:["Lettuce","Tomatoes","Red onion","Avocado"], fridge:["Low-fat mayo"], pantry:["Burger seasoning","Rice"] } },
-    { name: "Burrito bowl", i: { proteins:["Lean beef mince 400g"], produce:["Bell peppers","Red onion","Garlic","Lime","Fresh coriander"], fridge:["Low-fat sour cream"], pantry:["Cumin","Smoked paprika","Chilli flakes","Tinned black beans","Jasmine rice"] } },
-    { name: "Lean beef chilli", i: { proteins:["Lean beef mince 500g"], produce:["Red onion","Garlic","Red pepper"], pantry:["Tinned tomatoes","Kidney beans","Cumin","Smoked paprika","Chilli powder","Beef stock cube"] } },
-    { name: "Spag Bol", i: { proteins:["Lean beef mince 500g"], produce:["Onion","Garlic","Carrot","Celery"], pantry:["Tinned tomatoes","Tomato purée","Spaghetti","Beef stock cube","Dried mixed herbs"] } },
-    { name: "Spag & meatballs", i: { proteins:["Lean beef mince 400g"], produce:["Onion","Garlic","Fresh basil"], fridge:["Parmesan (small)","Egg ×1"], pantry:["Tinned tomatoes","Spaghetti","Dried herbs","Breadcrumbs"] } },
+    { name:"Beef & bell pepper black bean stir fry", i:{ proteins:[{name:"Lean beef mince",qty:400,unit:"g"}], produce:[{name:"Bell peppers",qty:3,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Ginger",qty:1,unit:"tsp"},{name:"Spring onions",qty:1,unit:"bunch"}], pantry:[{name:"Black bean sauce",qty:3,unit:"tbsp"},{name:"Soy sauce",qty:2,unit:"tbsp"},{name:"Sesame oil",qty:1,unit:"tbsp"},{name:"Jasmine rice",qty:300,unit:"g"}] }},
+    { name:"Burrito bowl", i:{ proteins:[{name:"Lean beef mince",qty:400,unit:"g"}], produce:[{name:"Bell peppers",qty:2,unit:"×"},{name:"Red onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Lime",qty:1,unit:"×"},{name:"Fresh coriander",qty:1,unit:"bunch"}], fridge:[{name:"Low-fat sour cream",qty:100,unit:"g"}], pantry:[{name:"Cumin",qty:1,unit:"tsp"},{name:"Smoked paprika",qty:1,unit:"tsp"},{name:"Chilli flakes",qty:"½",unit:"tsp"},{name:"Tinned black beans",qty:1,unit:"can(s)"},{name:"Jasmine rice",qty:300,unit:"g"}] }},
+    { name:"Lean beef chilli", i:{ proteins:[{name:"Lean beef mince",qty:500,unit:"g"}], produce:[{name:"Red onion",qty:1,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Red pepper",qty:1,unit:"×"}], pantry:[{name:"Tinned tomatoes",qty:1,unit:"can(s)"},{name:"Kidney beans",qty:1,unit:"can(s)"},{name:"Cumin",qty:1,unit:"tsp"},{name:"Smoked paprika",qty:1,unit:"tsp"},{name:"Chilli powder",qty:1,unit:"tsp"},{name:"Beef stock cube",qty:1,unit:"×"}] }},
+    { name:"Spag Bol", i:{ proteins:[{name:"Lean beef mince",qty:500,unit:"g"}], produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Carrot",qty:1,unit:"×"},{name:"Celery",qty:2,unit:"×"}], pantry:[{name:"Tinned tomatoes",qty:1,unit:"can(s)"},{name:"Tomato purée",qty:2,unit:"tbsp"},{name:"Spaghetti",qty:200,unit:"g"},{name:"Beef stock cube",qty:1,unit:"×"},{name:"Dried mixed herbs",qty:1,unit:"tsp"}] }},
+    { name:"Spag & meatballs", i:{ proteins:[{name:"Lean beef mince",qty:400,unit:"g"}], produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Fresh basil",qty:1,unit:"bunch"}], fridge:[{name:"Parmesan",qty:30,unit:"g"},{name:"Egg",qty:1,unit:"×"}], pantry:[{name:"Tinned tomatoes",qty:1,unit:"can(s)"},{name:"Spaghetti",qty:200,unit:"g"},{name:"Dried herbs",qty:1,unit:"tsp"},{name:"Breadcrumbs",qty:50,unit:"g"}] }},
+    { name:"Burger bowl", i:{ proteins:[{name:"Lean beef mince",qty:300,unit:"g"}], produce:[{name:"Lettuce",qty:"½",unit:"×"},{name:"Tomatoes",qty:2,unit:"×"},{name:"Red onion",qty:1,unit:"×"},{name:"Avocado",qty:1,unit:"×"}], fridge:[{name:"Low-fat mayo",qty:2,unit:"tbsp"}], pantry:[{name:"Burger seasoning",qty:1,unit:"tsp"},{name:"Rice",qty:200,unit:"g"}] }},
   ],
   chicken: [
-    { name: "Cajun chicken orzo", i: { proteins:["Chicken breasts ×2"], produce:["Red onion","Garlic","Bell pepper","Spinach"], pantry:["Cajun seasoning","Orzo","Chicken stock","Tinned tomatoes"] } },
-    { name: "Chicken veg stir fry", i: { proteins:["Chicken breasts ×2"], produce:["Broccoli","Snap peas","Carrot","Garlic","Ginger"], pantry:["Soy sauce","Oyster sauce","Sesame oil","Jasmine rice"] } },
-    { name: "Coconut chicken", i: { proteins:["Chicken thighs ×4"], produce:["Onion","Garlic","Ginger","Lime","Fresh coriander"], pantry:["Tinned coconut milk","Thai curry paste","Jasmine rice","Fish sauce"] } },
-    { name: "Creamy garlic chicken with spinach", i: { proteins:["Chicken breasts ×2"], produce:["Garlic","Spinach","Onion"], fridge:["Low-fat crème fraîche","Parmesan (small)"], pantry:["Chicken stock","Pasta"] } },
-    { name: "Crispy lemon sesame chicken", i: { proteins:["Chicken breasts ×2"], produce:["Garlic","Spring onions","Lemon"], pantry:["Sesame seeds","Soy sauce","Honey","Cornflour","Jasmine rice"] } },
-    { name: "Honey BBQ chicken", i: { proteins:["Chicken thighs ×4"], produce:["Garlic","Sweet potato or rice"], pantry:["Honey","BBQ sauce","Smoked paprika"] } },
-    { name: "Mexican lime chicken", i: { proteins:["Chicken breasts ×2"], produce:["Lime","Garlic","Fresh coriander","Red onion","Avocado"], pantry:["Cumin","Smoked paprika","Chilli flakes","Jasmine rice"] } },
-    { name: "One pot chicken tikka with rice", i: { proteins:["Chicken thighs ×4"], produce:["Onion","Garlic","Ginger","Fresh coriander"], pantry:["Tikka masala paste","Tinned tomatoes","Jasmine rice","Coconut milk (small tin)"] } },
-    { name: "Creamy Tuscan chicken pasta", i: { proteins:["Chicken breasts ×2"], produce:["Garlic","Cherry tomatoes","Spinach","Onion"], fridge:["Low-fat crème fraîche","Parmesan (small)"], pantry:["Pasta","Chicken stock","Sun-dried tomatoes"] } },
-    { name: "Jerk chicken pasta", i: { proteins:["Chicken breasts ×2"], produce:["Bell peppers","Onion","Garlic","Spring onions"], fridge:["Low-fat cream cheese"], pantry:["Jerk seasoning","Pasta","Chicken stock"] } },
-    { name: "Stuffed chicken", i: { proteins:["Large chicken breasts ×2"], produce:["Garlic","Spinach"], fridge:["Low-fat cream cheese","Mozzarella (small)"], pantry:["Sun-dried tomatoes","Olive oil"] } },
-    { name: "Gyros", i: { proteins:["Chicken breasts ×2"], produce:["Red onion","Tomato","Cucumber","Garlic","Lemon"], fridge:["Low-fat Greek yoghurt"], pantry:["Oregano","Cumin","Smoked paprika","Flatbreads"] } },
+    { name:"Cajun chicken orzo", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Red onion",qty:1,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Bell pepper",qty:1,unit:"×"},{name:"Spinach",qty:100,unit:"g"}], pantry:[{name:"Cajun seasoning",qty:2,unit:"tsp"},{name:"Orzo",qty:200,unit:"g"},{name:"Chicken stock",qty:500,unit:"ml"},{name:"Tinned tomatoes",qty:1,unit:"can(s)"}] }},
+    { name:"Chicken veg stir fry", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Broccoli",qty:200,unit:"g"},{name:"Snap peas",qty:100,unit:"g"},{name:"Carrot",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Ginger",qty:1,unit:"tsp"}], pantry:[{name:"Soy sauce",qty:3,unit:"tbsp"},{name:"Oyster sauce",qty:2,unit:"tbsp"},{name:"Sesame oil",qty:1,unit:"tbsp"},{name:"Jasmine rice",qty:300,unit:"g"}] }},
+    { name:"Coconut chicken", i:{ proteins:[{name:"Chicken thighs",qty:4,unit:"×"}], produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Ginger",qty:1,unit:"tsp"},{name:"Lime",qty:1,unit:"×"},{name:"Fresh coriander",qty:1,unit:"bunch"}], pantry:[{name:"Tinned coconut milk",qty:1,unit:"can(s)"},{name:"Thai curry paste",qty:2,unit:"tbsp"},{name:"Jasmine rice",qty:300,unit:"g"},{name:"Fish sauce",qty:1,unit:"tbsp"}] }},
+    { name:"Creamy garlic chicken with spinach", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Garlic",qty:4,unit:"clove(s)"},{name:"Spinach",qty:150,unit:"g"},{name:"Onion",qty:1,unit:"×"}], fridge:[{name:"Low-fat crème fraîche",qty:150,unit:"g"},{name:"Parmesan",qty:30,unit:"g"}], pantry:[{name:"Chicken stock",qty:200,unit:"ml"},{name:"Pasta",qty:200,unit:"g"}] }},
+    { name:"Crispy lemon sesame chicken", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Spring onions",qty:1,unit:"bunch"},{name:"Lemon",qty:1,unit:"×"}], pantry:[{name:"Sesame seeds",qty:2,unit:"tbsp"},{name:"Soy sauce",qty:2,unit:"tbsp"},{name:"Honey",qty:2,unit:"tbsp"},{name:"Cornflour",qty:1,unit:"tbsp"},{name:"Jasmine rice",qty:300,unit:"g"}] }},
+    { name:"Honey BBQ chicken", i:{ proteins:[{name:"Chicken thighs",qty:4,unit:"×"}], produce:[{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Sweet potato",qty:2,unit:"×"}], pantry:[{name:"Honey",qty:2,unit:"tbsp"},{name:"BBQ sauce",qty:3,unit:"tbsp"},{name:"Smoked paprika",qty:1,unit:"tsp"}] }},
+    { name:"Mexican lime chicken", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Lime",qty:2,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Fresh coriander",qty:1,unit:"bunch"},{name:"Red onion",qty:1,unit:"×"},{name:"Avocado",qty:1,unit:"×"}], pantry:[{name:"Cumin",qty:1,unit:"tsp"},{name:"Smoked paprika",qty:1,unit:"tsp"},{name:"Chilli flakes",qty:"½",unit:"tsp"},{name:"Jasmine rice",qty:300,unit:"g"}] }},
+    { name:"One pot chicken tikka with rice", i:{ proteins:[{name:"Chicken thighs",qty:4,unit:"×"}], produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Ginger",qty:1,unit:"tsp"},{name:"Fresh coriander",qty:1,unit:"bunch"}], pantry:[{name:"Tikka masala paste",qty:3,unit:"tbsp"},{name:"Tinned tomatoes",qty:1,unit:"can(s)"},{name:"Jasmine rice",qty:300,unit:"g"},{name:"Coconut milk",qty:1,unit:"can(s)"}] }},
+    { name:"Creamy Tuscan chicken pasta", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Cherry tomatoes",qty:200,unit:"g"},{name:"Spinach",qty:100,unit:"g"},{name:"Onion",qty:1,unit:"×"}], fridge:[{name:"Low-fat crème fraîche",qty:150,unit:"g"},{name:"Parmesan",qty:30,unit:"g"}], pantry:[{name:"Pasta",qty:200,unit:"g"},{name:"Chicken stock",qty:200,unit:"ml"},{name:"Sun-dried tomatoes",qty:50,unit:"g"}] }},
+    { name:"Jerk chicken pasta", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Bell peppers",qty:2,unit:"×"},{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Spring onions",qty:1,unit:"bunch"}], fridge:[{name:"Low-fat cream cheese",qty:100,unit:"g"}], pantry:[{name:"Jerk seasoning",qty:2,unit:"tsp"},{name:"Pasta",qty:200,unit:"g"},{name:"Chicken stock",qty:200,unit:"ml"}] }},
+    { name:"Stuffed chicken", i:{ proteins:[{name:"Large chicken breasts",qty:2,unit:"×"}], produce:[{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Spinach",qty:80,unit:"g"}], fridge:[{name:"Low-fat cream cheese",qty:80,unit:"g"},{name:"Mozzarella",qty:50,unit:"g"}], pantry:[{name:"Sun-dried tomatoes",qty:40,unit:"g"},{name:"Olive oil",qty:1,unit:"tbsp"}] }},
+    { name:"Gyros", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Red onion",qty:1,unit:"×"},{name:"Tomato",qty:2,unit:"×"},{name:"Cucumber",qty:"½",unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Lemon",qty:1,unit:"×"}], fridge:[{name:"Low-fat Greek yoghurt",qty:150,unit:"g"}], pantry:[{name:"Oregano",qty:1,unit:"tsp"},{name:"Cumin",qty:1,unit:"tsp"},{name:"Smoked paprika",qty:1,unit:"tsp"},{name:"Flatbreads",qty:4,unit:"×"}] }},
   ],
   pork: [
-    { name: "Creamy bacon & spinach pasta", i: { proteins:["Smoked bacon medallions 150g"], produce:["Garlic","Spinach","Onion"], fridge:["Low-fat crème fraîche","Parmesan (small)"], pantry:["Pasta","Chicken stock"] } },
-    { name: "Crispy salt & pepper pork", i: { proteins:["Pork medallions ×4"], produce:["Bell peppers","Onion","Garlic","Spring onions","Red chilli"], pantry:["Salt & pepper seasoning","Cornflour","Soy sauce","Jasmine rice"] } },
-    { name: "Pulled pork", i: { proteins:["Pork shoulder 1kg"], produce:["Onion","Garlic"], pantry:["Smoked paprika","Cumin","Brown sugar","BBQ sauce","Bread rolls","Coleslaw mix"] } },
+    { name:"Creamy bacon & spinach pasta", i:{ proteins:[{name:"Smoked bacon medallions",qty:150,unit:"g"}], produce:[{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Spinach",qty:100,unit:"g"},{name:"Onion",qty:1,unit:"×"}], fridge:[{name:"Low-fat crème fraîche",qty:150,unit:"g"},{name:"Parmesan",qty:30,unit:"g"}], pantry:[{name:"Pasta",qty:200,unit:"g"},{name:"Chicken stock",qty:150,unit:"ml"}] }},
+    { name:"Crispy salt & pepper pork", i:{ proteins:[{name:"Pork medallions",qty:4,unit:"×"}], produce:[{name:"Bell peppers",qty:2,unit:"×"},{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Spring onions",qty:1,unit:"bunch"},{name:"Red chilli",qty:1,unit:"×"}], pantry:[{name:"Salt & pepper seasoning",qty:2,unit:"tsp"},{name:"Cornflour",qty:2,unit:"tbsp"},{name:"Soy sauce",qty:2,unit:"tbsp"},{name:"Jasmine rice",qty:300,unit:"g"}] }},
+    { name:"Pulled pork", i:{ proteins:[{name:"Pork shoulder",qty:1,unit:"kg"}], produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:4,unit:"clove(s)"}], pantry:[{name:"Smoked paprika",qty:2,unit:"tsp"},{name:"Cumin",qty:1,unit:"tsp"},{name:"Brown sugar",qty:1,unit:"tbsp"},{name:"BBQ sauce",qty:4,unit:"tbsp"},{name:"Bread rolls",qty:4,unit:"×"},{name:"Coleslaw mix",qty:1,unit:"bag(s)"}] }},
   ],
   vegetarian: [
-    { name: "Butternut squash soup", i: { produce:["Butternut squash","Onion","Garlic","Carrot"], pantry:["Vegetable stock","Coconut milk (small tin)","Cumin","Crusty bread"] } },
-    { name: "Cauliflower rice bowl", i: { produce:["Cauliflower","Broccoli","Spinach","Garlic"], fridge:["Eggs ×2"], pantry:["Soy sauce","Sesame oil","Turmeric","Lime"] } },
-    { name: "Gyoza ramen", i: { produce:["Spring onions","Pak choi","Garlic","Ginger"], fridge:["Soft-boiled eggs ×2","Veggie gyoza (frozen)"], pantry:["Miso paste","Ramen noodles","Soy sauce","Sesame oil"] } },
-    { name: "Tomato & mushroom omelette", i: { produce:["Mushrooms","Cherry tomatoes","Spinach","Onion"], fridge:["Eggs ×4","Low-fat feta (optional)"], pantry:["Olive oil","Mixed herbs"] } },
-    { name: "Spinach basil risotto", i: { produce:["Onion","Garlic","Spinach","Fresh basil"], fridge:["Parmesan (small)"], pantry:["Arborio rice","Vegetable stock","White wine (small)","Olive oil"] } },
-    { name: "Tomato couscous", i: { produce:["Cherry tomatoes","Red onion","Cucumber","Fresh herbs","Lemon"], pantry:["Couscous","Vegetable stock","Olive oil","Cumin","Feta (optional)"] } },
-    { name: "Pasta with tomato sauce", i: { produce:["Onion","Garlic","Cherry tomatoes","Fresh basil"], fridge:["Parmesan (small)"], pantry:["Pasta","Tinned tomatoes","Tomato purée","Dried herbs"] } },
+    { name:"Butternut squash soup", i:{ produce:[{name:"Butternut squash",qty:1,unit:"×"},{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Carrot",qty:2,unit:"×"}], pantry:[{name:"Vegetable stock",qty:700,unit:"ml"},{name:"Coconut milk",qty:1,unit:"can(s)"},{name:"Cumin",qty:1,unit:"tsp"},{name:"Crusty bread",qty:1,unit:"×"}] }},
+    { name:"Cauliflower rice bowl", i:{ produce:[{name:"Cauliflower",qty:1,unit:"×"},{name:"Broccoli",qty:200,unit:"g"},{name:"Spinach",qty:80,unit:"g"},{name:"Garlic",qty:2,unit:"clove(s)"}], fridge:[{name:"Eggs",qty:2,unit:"×"}], pantry:[{name:"Soy sauce",qty:2,unit:"tbsp"},{name:"Sesame oil",qty:1,unit:"tbsp"},{name:"Turmeric",qty:"½",unit:"tsp"},{name:"Lime",qty:1,unit:"×"}] }},
+    { name:"Gyoza ramen", i:{ produce:[{name:"Spring onions",qty:1,unit:"bunch"},{name:"Pak choi",qty:2,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Ginger",qty:1,unit:"tsp"}], fridge:[{name:"Soft-boiled eggs",qty:2,unit:"×"},{name:"Veggie gyoza (frozen)",qty:12,unit:"×"}], pantry:[{name:"Miso paste",qty:2,unit:"tbsp"},{name:"Ramen noodles",qty:2,unit:"pack(s)"},{name:"Soy sauce",qty:2,unit:"tbsp"},{name:"Sesame oil",qty:1,unit:"tbsp"}] }},
+    { name:"Tomato & mushroom omelette", i:{ produce:[{name:"Mushrooms",qty:150,unit:"g"},{name:"Cherry tomatoes",qty:150,unit:"g"},{name:"Spinach",qty:80,unit:"g"},{name:"Onion",qty:1,unit:"×"}], fridge:[{name:"Eggs",qty:4,unit:"×"},{name:"Low-fat feta",qty:50,unit:"g"}], pantry:[{name:"Olive oil",qty:1,unit:"tbsp"},{name:"Mixed herbs",qty:1,unit:"tsp"}] }},
+    { name:"Spinach basil risotto", i:{ produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Spinach",qty:100,unit:"g"},{name:"Fresh basil",qty:1,unit:"bunch"}], fridge:[{name:"Parmesan",qty:40,unit:"g"}], pantry:[{name:"Arborio rice",qty:300,unit:"g"},{name:"Vegetable stock",qty:900,unit:"ml"},{name:"White wine",qty:100,unit:"ml"},{name:"Olive oil",qty:2,unit:"tbsp"}] }},
+    { name:"Tomato couscous", i:{ produce:[{name:"Cherry tomatoes",qty:200,unit:"g"},{name:"Red onion",qty:1,unit:"×"},{name:"Cucumber",qty:"½",unit:"×"},{name:"Fresh herbs",qty:1,unit:"bunch"},{name:"Lemon",qty:1,unit:"×"}], pantry:[{name:"Couscous",qty:250,unit:"g"},{name:"Vegetable stock",qty:300,unit:"ml"},{name:"Olive oil",qty:1,unit:"tbsp"},{name:"Cumin",qty:1,unit:"tsp"},{name:"Feta",qty:60,unit:"g"}] }},
+    { name:"Pasta with tomato sauce", i:{ produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"},{name:"Cherry tomatoes",qty:150,unit:"g"},{name:"Fresh basil",qty:1,unit:"bunch"}], fridge:[{name:"Parmesan",qty:30,unit:"g"}], pantry:[{name:"Pasta",qty:200,unit:"g"},{name:"Tinned tomatoes",qty:1,unit:"can(s)"},{name:"Tomato purée",qty:2,unit:"tbsp"},{name:"Dried herbs",qty:1,unit:"tsp"}] }},
   ],
   weekend: [
-    { name: "Homemade pizza", protein:"chicken", i: { produce:["Onion","Garlic","Bell peppers","Mushrooms"], fridge:["Mozzarella","Cheddar (small)"], pantry:["Pizza bases or flour","Tinned tomatoes","Tomato purée","Italian herbs","Olive oil"] } },
-    { name: "Burgers", protein:"beef", i: { proteins:["Lean beef mince 500g"], produce:["Lettuce","Tomatoes","Red onion","Gherkins"], fridge:["Cheddar slices","Burger sauce / mayo"], pantry:["Burger buns","Burger seasoning","Ketchup"] } },
-    { name: "Lighter fish & chips", protein:"fish", i: { proteins:["White fish fillets ×2"], produce:["Large potatoes","Lemon"], fridge:["Eggs ×1","Low-fat mayo for tartare"], pantry:["Plain flour","Cornflour","Seasoning","Mushy peas (tin)"] } },
-    { name: "Chicken pie", protein:"chicken", i: { proteins:["Chicken thighs ×4"], produce:["Onion","Garlic","Leek","Carrot"], fridge:["Low-fat crème fraîche","Shortcrust pastry sheet"], pantry:["Chicken stock","Cornflour","Dried herbs"] } },
-    { name: "Sunday beef roast", protein:"beef", i: { proteins:["Beef roasting joint 800g"], produce:["Roasting potatoes","Carrots","Parsnips","Green beans","Onion","Garlic"], pantry:["Beef gravy granules","Oil","Dried herbs","Horseradish sauce"] } },
-    { name: "Loaded beef nachos", protein:"beef", i: { proteins:["Lean beef mince 400g"], produce:["Red onion","Garlic","Jalapeños","Tomato","Fresh coriander","Avocado","Lime"], fridge:["Low-fat sour cream","Cheddar (small)"], pantry:["Tortilla chips","Smoked paprika","Cumin","Tinned black beans"] } },
-    { name: "Chicken pasta bake", protein:"chicken", i: { proteins:["Chicken breasts ×2"], produce:["Onion","Garlic","Bell pepper","Spinach"], fridge:["Mozzarella","Cheddar (small)"], pantry:["Pasta","Tinned tomatoes","Pasta sauce jar","Italian herbs"] } },
+    { name:"Homemade pizza", protein:"chicken", i:{ produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Bell peppers",qty:2,unit:"×"},{name:"Mushrooms",qty:150,unit:"g"}], fridge:[{name:"Mozzarella",qty:125,unit:"g"},{name:"Cheddar",qty:80,unit:"g"}], pantry:[{name:"Pizza bases",qty:2,unit:"×"},{name:"Tinned tomatoes",qty:1,unit:"can(s)"},{name:"Tomato purée",qty:2,unit:"tbsp"},{name:"Italian herbs",qty:1,unit:"tsp"},{name:"Olive oil",qty:1,unit:"tbsp"}] }},
+    { name:"Burgers", protein:"beef", i:{ proteins:[{name:"Lean beef mince",qty:500,unit:"g"}], produce:[{name:"Lettuce",qty:"½",unit:"×"},{name:"Tomatoes",qty:2,unit:"×"},{name:"Red onion",qty:1,unit:"×"},{name:"Gherkins",qty:4,unit:"×"}], fridge:[{name:"Cheddar slices",qty:4,unit:"×"},{name:"Burger sauce",qty:3,unit:"tbsp"}], pantry:[{name:"Burger buns",qty:4,unit:"×"},{name:"Burger seasoning",qty:1,unit:"tsp"},{name:"Ketchup",qty:2,unit:"tbsp"}] }},
+    { name:"Lighter fish & chips", protein:"fish", i:{ proteins:[{name:"White fish fillets",qty:2,unit:"×"}], produce:[{name:"Large potatoes",qty:3,unit:"×"},{name:"Lemon",qty:1,unit:"×"}], fridge:[{name:"Eggs",qty:1,unit:"×"},{name:"Low-fat mayo",qty:2,unit:"tbsp"}], pantry:[{name:"Plain flour",qty:100,unit:"g"},{name:"Cornflour",qty:2,unit:"tbsp"},{name:"Mushy peas",qty:1,unit:"can(s)"}] }},
+    { name:"Chicken pie", protein:"chicken", i:{ proteins:[{name:"Chicken thighs",qty:4,unit:"×"}], produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Leek",qty:1,unit:"×"},{name:"Carrot",qty:2,unit:"×"}], fridge:[{name:"Low-fat crème fraîche",qty:150,unit:"g"},{name:"Shortcrust pastry sheet",qty:1,unit:"×"}], pantry:[{name:"Chicken stock",qty:400,unit:"ml"},{name:"Cornflour",qty:1,unit:"tbsp"},{name:"Dried herbs",qty:1,unit:"tsp"}] }},
+    { name:"Sunday beef roast", protein:"beef", i:{ proteins:[{name:"Beef roasting joint",qty:800,unit:"g"}], produce:[{name:"Roasting potatoes",qty:600,unit:"g"},{name:"Carrots",qty:3,unit:"×"},{name:"Parsnips",qty:2,unit:"×"},{name:"Green beans",qty:150,unit:"g"},{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:3,unit:"clove(s)"}], pantry:[{name:"Beef gravy granules",qty:4,unit:"tbsp"},{name:"Oil",qty:2,unit:"tbsp"},{name:"Dried herbs",qty:1,unit:"tsp"},{name:"Horseradish sauce",qty:2,unit:"tbsp"}] }},
+    { name:"Loaded beef nachos", protein:"beef", i:{ proteins:[{name:"Lean beef mince",qty:400,unit:"g"}], produce:[{name:"Red onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Jalapeños",qty:30,unit:"g"},{name:"Tomato",qty:2,unit:"×"},{name:"Fresh coriander",qty:1,unit:"bunch"},{name:"Avocado",qty:1,unit:"×"},{name:"Lime",qty:1,unit:"×"}], fridge:[{name:"Low-fat sour cream",qty:100,unit:"g"},{name:"Cheddar",qty:80,unit:"g"}], pantry:[{name:"Tortilla chips",qty:1,unit:"bag(s)"},{name:"Smoked paprika",qty:1,unit:"tsp"},{name:"Cumin",qty:1,unit:"tsp"},{name:"Tinned black beans",qty:1,unit:"can(s)"}] }},
+    { name:"Chicken pasta bake", protein:"chicken", i:{ proteins:[{name:"Chicken breasts",qty:2,unit:"×"}], produce:[{name:"Onion",qty:1,unit:"×"},{name:"Garlic",qty:2,unit:"clove(s)"},{name:"Bell pepper",qty:1,unit:"×"},{name:"Spinach",qty:100,unit:"g"}], fridge:[{name:"Mozzarella",qty:125,unit:"g"},{name:"Cheddar",qty:80,unit:"g"}], pantry:[{name:"Pasta",qty:300,unit:"g"},{name:"Tinned tomatoes",qty:1,unit:"can(s)"},{name:"Pasta sauce",qty:1,unit:"×"},{name:"Italian herbs",qty:1,unit:"tsp"}] }},
   ]
 };
 
-// ─── ⚙️  CONFIG — fill these in once, then upload to GitHub ──────────
-// 1. Go to jsonbin.io → sign up free
-// 2. Bins → Create a Bin → paste {} → Save → copy the Bin ID from the URL
-// 3. API Keys → create a key → copy it
-// Paste both values between the quotes below, save the file, upload to GitHub.
-const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";   // e.g. "64a3f1c2e3b4f500123abcde"
-const JSONBIN_KEY = "$2a$10$YxU.bwB07j19z9fHyyKm/OYml1oa7h2k.dnzcz31CFojZKR0rHaw2";   // e.g. "$2a$10$examplekeyhere..."
-// ─────────────────────────────────────────────────────────────────────
+// ─── Helpers: normalise ingredient (handle legacy string format) ──────
+function normIng(x) {
+  if (typeof x === 'string') return { name: x, qty: '', unit: '' };
+  return x;
+}
+
+// ─── Format qty+unit for display ─────────────────────────────────────
+function fmtQty(ing) {
+  const q = String(ing.qty||'').trim();
+  const u = String(ing.unit||'').trim();
+  if (!q && !u) return '';
+  if (u === '×') return `×${q}`;
+  if (u) return `${q}${q?' ':''}${u}`;
+  return q;
+}
 
 // ─── State ───────────────────────────────────────────────────────────
 let MEALS = JSON.parse(JSON.stringify(DEFAULT_MEALS));
@@ -377,43 +439,32 @@ const CAT_LABELS = { proteins:"Meat & fish",produce:"Fresh produce",fridge:"Frid
 const PROTEIN_KEYS = ["chicken","beef","salmon","pork","vegetarian","weekend"];
 const PROTEIN_EMOJIS = { chicken:"🍗",beef:"🥩",salmon:"🐟",pork:"🥓",vegetarian:"🌿",weekend:"🎉" };
 
-// ─── JSONBin API ─────────────────────────────────────────────────────
+// ─── JSONBin ──────────────────────────────────────────────────────────
 async function fetchFromBin() {
-  if (!syncConfig) return null;
   const r = await fetch(`https://api.jsonbin.io/v3/b/${syncConfig.binId}/latest`, {
     headers: { 'X-Master-Key': syncConfig.apiKey }
   });
-  if (!r.ok) throw new Error(`JSONBin error ${r.status}`);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
   const j = await r.json();
   return j.record;
 }
-
 async function saveToBin(data) {
-  if (!syncConfig) return;
   const r = await fetch(`https://api.jsonbin.io/v3/b/${syncConfig.binId}`, {
     method: 'PUT',
-    headers: { 'Content-Type':'application/json', 'X-Master-Key': syncConfig.apiKey },
+    headers: { 'Content-Type': 'application/json', 'X-Master-Key': syncConfig.apiKey },
     body: JSON.stringify(data)
   });
-  if (!r.ok) throw new Error(`JSONBin save error ${r.status}`);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
 }
 
-
 async function refreshFromCloud() {
-  if (!syncConfig) { toast('Not connected to JSONBin — set up sync first'); return; }
-  const btn = document.getElementById("refreshBtn");
-  btn.textContent = "Syncing…";
+  if (!syncConfig) { toast('No sync configured'); return; }
+  document.getElementById("refreshBtn").textContent = "Syncing…";
   try {
     const data = await fetchFromBin();
-    if (data && Object.keys(data).length > 0) {
-      MEALS = data;
-      toast("Meal library refreshed ✓");
-      renderManage();
-    }
-  } catch(e) {
-    toast("Sync failed — check your connection");
-  }
-  btn.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg> Refresh`;
+    if (data && data.chicken) { MEALS = data; renderManage(); toast("Refreshed ✓"); }
+  } catch(e) { toast("Refresh failed"); }
+  document.getElementById("refreshBtn").innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg> Refresh`;
 }
 
 function setSyncStatus(state, msg) {
@@ -421,64 +472,68 @@ function setSyncStatus(state, msg) {
   document.getElementById("syncMsg").textContent = msg;
 }
 
-// ─── Tab switching ───────────────────────────────────────────────────
+// ─── Tab switching ────────────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['planner','manage'][i]===name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id==='panel-'+name));
   if (name==='manage') renderManage();
 }
 
-// ─── Planner ─────────────────────────────────────────────────────────
+// ─── Planner ──────────────────────────────────────────────────────────
 function rand(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
 
 function generateWeek() {
   checked.clear(); plan = []; let prev = null;
-  DAYS.forEach((day,i) => {
+  DAYS.forEach((day, i) => {
     const isWeekend = WEEKEND_IDX.includes(i);
-    let meal, protein, tries=0;
+    let meal, protein, tries = 0;
     if (isWeekend) {
-      const pool = MEALS.weekend||[];
+      const pool = MEALS.weekend || [];
       if (!pool.length) { plan.push({day,protein:"weekend",meal:{name:"(no weekend meals)",i:{}},isWeekend}); return; }
       do { meal=rand(pool); protein=meal.protein||"weekend"; tries++; } while (protein===prev && tries<20);
     } else {
-      const keys=["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
+      const keys = ["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
       if (!keys.length) { plan.push({day,protein:"vegetarian",meal:{name:"(no meals)",i:{}},isWeekend}); return; }
       do { protein=rand(keys); tries++; } while (protein===prev && tries<20);
-      meal=rand(MEALS[protein]);
+      meal = rand(MEALS[protein]);
     }
-    prev=protein;
-    plan.push({day,protein,meal,isWeekend});
+    prev = protein;
+    plan.push({day, protein, meal, isWeekend});
   });
   renderWeek();
-  document.getElementById("listSection").style.display="none";
+  document.getElementById("listSection").style.display = "none";
 }
 
 function reroll(idx) {
-  const {isWeekend}=plan[idx];
-  const prevP=idx>0?plan[idx-1].protein:null, nextP=idx<plan.length-1?plan[idx+1].protein:null, oldP=plan[idx].protein;
-  let meal,protein,tries=0;
+  const {isWeekend} = plan[idx];
+  const prevP = idx>0?plan[idx-1].protein:null, nextP = idx<plan.length-1?plan[idx+1].protein:null, oldP = plan[idx].protein;
+  let meal, protein, tries = 0;
   if (isWeekend) {
-    const pool=MEALS.weekend||[];
+    const pool = MEALS.weekend||[];
     do { meal=rand(pool); protein=meal.protein||"weekend"; tries++; } while ((protein===prevP||protein===nextP)&&tries<30);
   } else {
-    const keys=["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
+    const keys = ["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
     do { protein=rand(keys); tries++; } while ((protein===prevP||protein===nextP||protein===oldP)&&tries<30);
-    meal=rand(MEALS[protein]);
+    meal = rand(MEALS[protein]);
   }
-  plan[idx]={...plan[idx],protein,meal};
+  plan[idx] = {...plan[idx], protein, meal};
   renderWeek();
   if (document.getElementById("listSection").style.display!=="none") showList();
   toast("Meal swapped!");
 }
 
 function renderWeek() {
-  const g=document.getElementById("weekGrid"); g.innerHTML="";
+  const g = document.getElementById("weekGrid"); g.innerHTML = "";
   plan.forEach((p,i) => {
-    const card=document.createElement("div");
-    card.className="day-card"+(p.isWeekend?" weekend":"");
-    card.innerHTML=`<div class="day-label">${p.day}</div>
+    const card = document.createElement("div");
+    card.className = "day-card"+(p.isWeekend?" weekend":"");
+    card.innerHTML = `<div class="day-label">${p.day}</div>
       <span class="protein-pill ${PCOLS[p.protein]||'p-weekend'}">${PLABELS[p.protein]||p.protein}</span>
       <div class="meal-name">${p.meal.name}</div>
+      <button class="view-recipe-btn" onclick="event.stopPropagation();viewRecipe(plan[${i}].meal)">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+        View recipe
+      </button>
       <button class="reroll" onclick="event.stopPropagation();reroll(${i})" title="Swap">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
       </button>`;
@@ -486,166 +541,391 @@ function renderWeek() {
   });
 }
 
+// ─── Shopping list: aggregate quantities ─────────────────────────────
 function buildIngredients() {
-  const cats={proteins:new Set(),produce:new Set(),fridge:new Set(),pantry:new Set()};
+  // Returns { proteins: Map<name, {qty, unit}>, produce: Map, fridge: Map, pantry: Map }
+  const cats = { proteins: new Map(), produce: new Map(), fridge: new Map(), pantry: new Map() };
   plan.forEach(p => {
-    const ing=p.meal.i||{};
-    ["proteins","produce","fridge","pantry"].forEach(c => { if(ing[c]) ing[c].forEach(x=>cats[c].add(x)); });
+    const ing = p.meal.i || {};
+    ["proteins","produce","fridge","pantry"].forEach(cat => {
+      if (!ing[cat]) return;
+      ing[cat].forEach(raw => {
+        const item = normIng(raw);
+        const key = item.name.toLowerCase().trim();
+        if (cats[cat].has(key)) {
+          const existing = cats[cat].get(key);
+          // Try to add quantities numerically if same unit
+          const existQty = parseFloat(existing.qty);
+          const newQty = parseFloat(item.qty);
+          if (!isNaN(existQty) && !isNaN(newQty) && existing.unit === item.unit) {
+            cats[cat].set(key, { name: item.name, qty: existQty + newQty, unit: item.unit });
+          } else if (item.qty && existing.qty && existing.qty !== item.qty) {
+            // Different units or non-numeric — append
+            cats[cat].set(key, { name: item.name, qty: `${existing.qty} + ${item.qty}`, unit: item.unit || existing.unit });
+          }
+          // else same qty already, leave as is
+        } else {
+          cats[cat].set(key, { name: item.name, qty: item.qty, unit: item.unit });
+        }
+      });
+    });
   });
   return cats;
 }
 
 function showList() {
-  const cats=buildIngredients();
-  const grid=document.getElementById("shopGrid"); grid.innerHTML="";
+  const cats = buildIngredients();
+  const grid = document.getElementById("shopGrid"); grid.innerHTML = "";
   Object.keys(cats).forEach(cat => {
-    const items=[...cats[cat]].sort(); if (!items.length) return;
-    const div=document.createElement("div"); div.className="shop-cat";
-    div.innerHTML=`<div class="cat-title"><span>${CAT_ICONS[cat]}</span>${CAT_LABELS[cat]}</div>`+
-      items.map(item => {
-        const done=checked.has(item);
-        return `<div class="shop-item${done?" done":""}" onclick="toggleItem(this,'${item.replace(/'/g,"&#39;")}')">
+    const items = [...cats[cat].entries()].sort((a,b)=>a[0].localeCompare(b[0]));
+    if (!items.length) return;
+    const div = document.createElement("div"); div.className = "shop-cat";
+    div.innerHTML = `<div class="cat-title"><span>${CAT_ICONS[cat]}</span>${CAT_LABELS[cat]}</div>` +
+      items.map(([key, item]) => {
+        const done = checked.has(key);
+        const qty = fmtQty(item);
+        return `<div class="shop-item${done?" done":""}" onclick="toggleItem(this,'${key.replace(/'/g,"&#39;")}')">
           <div class="checkbox"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
-          <span class="item-text">${item}</span></div>`;
+          <div class="item-info">
+            <span class="item-name">${item.name}</span>
+            ${qty ? `<span class="item-qty">${qty}</span>` : ''}
+          </div>
+        </div>`;
       }).join("");
     grid.appendChild(div);
   });
   updateProgress();
-  document.getElementById("listSection").style.display="block";
+  document.getElementById("listSection").style.display = "block";
 }
 
-function toggleItem(el,item) {
-  if(checked.has(item)){checked.delete(item);el.classList.remove("done");}
-  else{checked.add(item);el.classList.add("done");}
+function toggleItem(el, key) {
+  if (checked.has(key)) { checked.delete(key); el.classList.remove("done"); }
+  else { checked.add(key); el.classList.add("done"); }
   updateProgress();
 }
 function updateProgress() {
-  const cats=buildIngredients(); let total=0;
-  Object.keys(cats).forEach(c=>total+=cats[c].size);
-  const done=checked.size, pct=total?Math.round(done/total*100):0;
-  document.getElementById("progressFill").style.width=pct+"%";
-  document.getElementById("progressText").textContent=`${done} of ${total} items ticked off`;
+  const cats = buildIngredients(); let total = 0;
+  Object.keys(cats).forEach(c => total += cats[c].size);
+  const done = checked.size, pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressText").textContent = `${done} of ${total} items ticked off`;
 }
 function copyAll() {
-  if(!plan.length){toast("Generate a week first!");return;}
-  const cats=buildIngredients();
-  const cL={proteins:"MEAT & FISH",produce:"FRESH PRODUCE",fridge:"FRIDGE & DAIRY",pantry:"CUPBOARD & PANTRY"};
-  let txt="📅 WEEKLY MEAL PLAN\n"+"─".repeat(30)+"\n";
-  plan.forEach(p=>{txt+=`${p.day.padEnd(10)} ${p.meal.name}\n`;});
-  txt+="\n🛒 SHOPPING LIST\n"+"─".repeat(30)+"\n";
-  Object.keys(cats).forEach(cat=>{
-    const items=[...cats[cat]].sort(); if(!items.length)return;
-    txt+=`\n${cL[cat]}\n`+items.map(i=>`  • ${i}`).join("\n")+"\n";
+  if (!plan.length) { toast("Generate a week first!"); return; }
+  const cats = buildIngredients();
+  const cL = { proteins:"MEAT & FISH", produce:"FRESH PRODUCE", fridge:"FRIDGE & DAIRY", pantry:"CUPBOARD & PANTRY" };
+  let txt = "📅 WEEKLY MEAL PLAN\n" + "─".repeat(30) + "\n";
+  plan.forEach(p => { txt += `${p.day.padEnd(10)} ${p.meal.name}\n`; });
+  txt += "\n🛒 SHOPPING LIST\n" + "─".repeat(30) + "\n";
+  Object.keys(cats).forEach(cat => {
+    const items = [...cats[cat].entries()].sort((a,b)=>a[0].localeCompare(b[0]));
+    if (!items.length) return;
+    txt += `\n${cL[cat]}\n` + items.map(([,item]) => {
+      const q = fmtQty(item);
+      return `  • ${item.name}${q ? '  '+q : ''}`;
+    }).join("\n") + "\n";
   });
-  navigator.clipboard.writeText(txt).then(()=>toast("Copied! ✓")).catch(()=>{
-    const ta=document.createElement("textarea"); ta.value=txt; ta.style.cssText="position:fixed;opacity:0";
+  navigator.clipboard.writeText(txt).then(() => toast("Copied! ✓")).catch(() => {
+    const ta = document.createElement("textarea"); ta.value = txt; ta.style.cssText = "position:fixed;opacity:0";
     document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
     toast("Copied! ✓");
   });
 }
 
-// ─── Manage Meals ────────────────────────────────────────────────────
+// ─── Manage Meals ─────────────────────────────────────────────────────
 function renderManage() {
-  const tabsEl=document.getElementById("proteinTabs");
-  tabsEl.innerHTML=PROTEIN_KEYS.map(k=>`
+  const tabsEl = document.getElementById("proteinTabs");
+  tabsEl.innerHTML = PROTEIN_KEYS.map(k => `
     <div class="ptab${k===activeProteinTab?' active':''}" onclick="setProteinTab('${k}')">
       ${PROTEIN_EMOJIS[k]} ${k.charAt(0).toUpperCase()+k.slice(1)}
       <span style="font-size:0.7rem;opacity:0.6;margin-left:3px">(${(MEALS[k]||[]).length})</span>
     </div>`).join("");
-  const lib=document.getElementById("mealLibrary");
-  const pool=MEALS[activeProteinTab]||[];
-  if(!pool.length){
-    lib.innerHTML=`<p style="color:var(--text-muted);font-size:0.875rem;grid-column:1/-1">No meals yet. Add one above!</p>`;
-    return;
-  }
-  lib.innerHTML=pool.map((m,idx)=>{
-    const allIng=[...(m.i.proteins||[]),...(m.i.produce||[]),...(m.i.fridge||[]),...(m.i.pantry||[])];
+  const lib = document.getElementById("mealLibrary");
+  const pool = MEALS[activeProteinTab] || [];
+  if (!pool.length) { lib.innerHTML = `<p style="color:var(--text-muted);font-size:0.875rem;grid-column:1/-1">No meals yet. Add one!</p>`; return; }
+  lib.innerHTML = pool.map((m, idx) => {
+    const allIng = [...(m.i.proteins||[]),...(m.i.produce||[]),...(m.i.fridge||[]),...(m.i.pantry||[])].map(normIng);
     return `<div class="meal-card">
       <div class="meal-card-top">
         <div class="meal-card-name">${m.name}</div>
-        <button class="meal-card-del" onclick="askDelete('${activeProteinTab}',${idx})" title="Remove">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg>
-        </button>
+        <div style="display:flex;gap:5px;flex-shrink:0">
+          <button class="meal-card-edit" onclick="viewRecipe(MEALS['${activeProteinTab}'][${idx}])" title="View recipe" style="color:var(--accent)">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+          </button>
+          <button class="meal-card-edit" onclick="openEditModal('${activeProteinTab}',${idx})" title="Edit">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2l2 2-6 6H2V8l6-6z"/></svg>
+          </button>
+          <button class="meal-card-del" onclick="askDelete('${activeProteinTab}',${idx})" title="Remove">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="meal-card-ing">${allIng.slice(0,6).map(i=>`<span>${i}</span>`).join("")}${allIng.length>6?`<span>+${allIng.length-6} more</span>`:""}</div>
+      <div class="meal-card-ing">${allIng.slice(0,5).map(i=>`<span>${i.name}${fmtQty(i)?' ('+fmtQty(i)+')':''}</span>`).join("")}${allIng.length>5?`<span>+${allIng.length-5} more</span>`:""}</div>
     </div>`;
   }).join("");
 }
-function setProteinTab(k){activeProteinTab=k;renderManage();}
+function setProteinTab(k) { activeProteinTab = k; renderManage(); }
 
-// ─── Add Meal ────────────────────────────────────────────────────────
-function openAddModal(){
-  document.getElementById("f-name").value="";
-  document.getElementById("f-cat").value=activeProteinTab==="weekend"?"weekend":activeProteinTab;
-  ["f-proteins","f-produce","f-fridge","f-pantry"].forEach(id=>document.getElementById(id).value="");
+// ─── Add Meal Modal ───────────────────────────────────────────────────
+const ING_CATS = [
+  { id:"proteins", label:"Meat & Fish" },
+  { id:"produce",  label:"Fresh Produce" },
+  { id:"fridge",   label:"Fridge & Dairy" },
+  { id:"pantry",   label:"Cupboard & Pantry" },
+];
+
+let editState = null; // { cat, idx } when editing, null when adding
+
+function openAddModal() {
+  editState = null;
+  document.getElementById("modal-title").textContent = "➕ Add a new meal";
+  document.getElementById("f-name").value = "";
+  document.getElementById("f-cat").value = activeProteinTab === "weekend" ? "weekend" : activeProteinTab;
+  document.getElementById("f-cat").disabled = false;
   toggleWkEnd();
+  buildIngBuilder();
+  buildStepRows([]);
+  document.getElementById("f-notes").value = "";
   document.getElementById("addModal").classList.add("open");
-  setTimeout(()=>document.getElementById("f-name").focus(),100);
+  setTimeout(() => document.getElementById("f-name").focus(), 100);
 }
-function toggleWkEnd(){
-  document.getElementById("f-wkend-group").style.display=document.getElementById("f-cat").value==="weekend"?"flex":"none";
-}
-function closeModal(){document.getElementById("addModal").classList.remove("open");}
-function splitCSV(s){return s.split(",").map(x=>x.trim()).filter(Boolean);}
 
-async function saveMeal(){
-  const name=document.getElementById("f-name").value.trim();
-  const cat=document.getElementById("f-cat").value;
-  if(!name){toast("Please enter a meal name");return;}
-  const meal={name,i:{
-    proteins:splitCSV(document.getElementById("f-proteins").value),
-    produce: splitCSV(document.getElementById("f-produce").value),
-    fridge:  splitCSV(document.getElementById("f-fridge").value),
-    pantry:  splitCSV(document.getElementById("f-pantry").value),
-  }};
-  Object.keys(meal.i).forEach(k=>{if(!meal.i[k].length)delete meal.i[k];});
-  if(cat==="weekend") meal.protein=document.getElementById("f-wkprot").value;
-  if(!MEALS[cat]) MEALS[cat]=[];
-  MEALS[cat].push(meal);
+function openEditModal(cat, idx) {
+  const meal = MEALS[cat][idx];
+  editState = { cat, idx };
+  document.getElementById("modal-title").textContent = "✏️ Edit meal";
+  document.getElementById("f-name").value = meal.name;
+  document.getElementById("f-cat").value = cat;
+  document.getElementById("f-cat").disabled = true; // can't change category when editing
+  if (cat === "weekend") {
+    document.getElementById("f-wkend-group").style.display = "flex";
+    document.getElementById("f-wkprot").value = meal.protein || "chicken";
+  } else {
+    document.getElementById("f-wkend-group").style.display = "none";
+  }
+  // Build ingredient rows pre-filled
+  buildIngBuilder(meal.i);
+  // Populate steps
+  buildStepRows(meal.steps || []);
+  // Populate notes
+  document.getElementById("f-notes").value = meal.notes || "";
+  document.getElementById("addModal").classList.add("open");
+  setTimeout(() => document.getElementById("f-name").focus(), 100);
+}
+function toggleWkEnd() {
+  document.getElementById("f-wkend-group").style.display = document.getElementById("f-cat").value === "weekend" ? "flex" : "none";
+}
+function closeModal() { document.getElementById("addModal").classList.remove("open"); editState = null; document.getElementById("f-cat").disabled = false; }
+
+function buildIngBuilder(existing = {}) {
+  const el = document.getElementById("ing-builder");
+  el.innerHTML = ING_CATS.map(cat => `
+    <div class="ing-section">
+      <div class="ing-section-label">${cat.label}</div>
+      <div class="ing-rows" id="rows-${cat.id}"></div>
+      <button type="button" class="add-ing-btn" onclick="addIngRow('${cat.id}')">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><path d="M6 2v8M2 6h8"/></svg>
+        Add ingredient
+      </button>
+    </div>`).join("");
+  ING_CATS.forEach(cat => {
+    const items = existing[cat.id] || [];
+    if (items.length) {
+      items.forEach(item => { const n = normIng(item); addIngRow(cat.id, n.name, n.qty, n.unit); });
+    } else {
+      addIngRow(cat.id); // one blank row
+    }
+  });
+}
+
+function addIngRow(catId, name='', qty='', unit='') {
+  const container = document.getElementById(`rows-${catId}`);
+  const row = document.createElement("div");
+  row.className = "ing-row";
+  row.innerHTML = `
+    <input type="text" placeholder="Ingredient name" value="${name}" />
+    <input type="text" placeholder="Qty" value="${qty}" style="text-align:center" />
+    <select>${UNITS.map(u=>`<option value="${u}"${u===unit?' selected':''}>${u||'unit'}</option>`).join("")}</select>
+    <button type="button" class="ing-del" onclick="this.closest('.ing-row').remove()">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg>
+    </button>`;
+  container.appendChild(row);
+}
+
+function getIngRows(catId) {
+  const rows = document.querySelectorAll(`#rows-${catId} .ing-row`);
+  const result = [];
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll("input");
+    const select = row.querySelector("select");
+    const name = inputs[0].value.trim();
+    const qty = inputs[1].value.trim();
+    const unit = select.value;
+    if (name) result.push({ name, qty, unit });
+  });
+  return result;
+}
+
+async function saveMeal() {
+  const name = document.getElementById("f-name").value.trim();
+  const cat = editState ? editState.cat : document.getElementById("f-cat").value;
+  if (!name) { toast("Please enter a meal name"); return; }
+  const meal = { name, i: {} };
+  ING_CATS.forEach(c => {
+    const rows = getIngRows(c.id);
+    if (rows.length) meal.i[c.id] = rows;
+  });
+  // Save recipe steps
+  const steps = getStepRows();
+  if (steps.length) meal.steps = steps;
+  // Save notes
+  const notes = document.getElementById("f-notes").value.trim();
+  if (notes) meal.notes = notes;
+  if (cat === "weekend") meal.protein = document.getElementById("f-wkprot").value;
+
+  if (editState) {
+    // Update existing meal in place
+    MEALS[editState.cat][editState.idx] = meal;
+  } else {
+    // Add new meal
+    if (!MEALS[cat]) MEALS[cat] = [];
+    MEALS[cat].push(meal);
+  }
+
   closeModal();
   renderManage();
-  toast(`"${name}" saved — syncing…`);
-  if(syncConfig){
-    try { await saveToBin(MEALS); toast(`"${name}" saved & synced ✓`); }
-    catch(e){ toast("Saved locally — sync failed, check connection"); }
+  if (syncConfig) {
+    try { await saveToBin(MEALS); toast(`"${name}" ${editState ? 'updated' : 'saved'} & synced ✓`); }
+    catch(e) { toast("Saved — sync failed, check connection"); }
   } else {
-    toast(`"${name}" added ✓`);
+    toast(`"${name}" ${editState ? 'updated' : 'added'} ✓`);
   }
+  editState = null;
 }
 
-// ─── Delete ──────────────────────────────────────────────────────────
-function askDelete(cat,idx){
-  pendingDelete={cat,idx};
-  document.getElementById("delModalName").textContent=`"${MEALS[cat][idx].name}" will be removed from the library.`;
+// ─── Step builder ─────────────────────────────────────────────────────
+function buildStepRows(existing = []) {
+  const container = document.getElementById("step-rows");
+  container.innerHTML = "";
+  if (existing.length) {
+    existing.forEach(text => addStepRow(text));
+  } else {
+    addStepRow(); // one blank row
+  }
+  updateStepNumbers();
+}
+
+function addStepRow(text = "") {
+  const container = document.getElementById("step-rows");
+  const idx = container.children.length + 1;
+  const row = document.createElement("div");
+  row.className = "step-row";
+  row.innerHTML = `
+    <div class="step-num-sm">${idx}</div>
+    <textarea placeholder="e.g. Heat oil in a pan over medium heat…">${text}</textarea>
+    <button type="button" class="ing-del" onclick="this.closest('.step-row').remove();updateStepNumbers()">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg>
+    </button>`;
+  container.appendChild(row);
+  updateStepNumbers();
+}
+
+function updateStepNumbers() {
+  document.querySelectorAll("#step-rows .step-row").forEach((row, i) => {
+    row.querySelector(".step-num-sm").textContent = i + 1;
+  });
+}
+
+function getStepRows() {
+  const rows = document.querySelectorAll("#step-rows .step-row textarea");
+  return [...rows].map(t => t.value.trim()).filter(Boolean);
+}
+
+// ─── Recipe viewer ─────────────────────────────────────────────────────
+function viewRecipe(meal) {
+  document.getElementById("recipe-title").textContent = meal.name;
+
+  // Meta pill
+  const meta = document.getElementById("recipe-meta");
+  const allIng = [...(meal.i?.proteins||[]),...(meal.i?.produce||[]),...(meal.i?.fridge||[]),...(meal.i?.pantry||[])].map(normIng);
+  meta.innerHTML = `<span style="font-size:0.78rem;color:var(--text-muted)">${allIng.length} ingredients</span>
+    ${meal.steps?.length ? `<span style="font-size:0.78rem;color:var(--text-muted)">· ${meal.steps.length} steps</span>` : ''}`;
+
+  // Ingredients summary
+  const ingSec = document.getElementById("recipe-ing-summary");
+  if (allIng.length) {
+    const catOrder = [
+      { key:"proteins", label:"🥩 Meat & Fish" },
+      { key:"produce",  label:"🥦 Fresh Produce" },
+      { key:"fridge",   label:"🧊 Fridge & Dairy" },
+      { key:"pantry",   label:"🫙 Cupboard & Pantry" },
+    ];
+    ingSec.innerHTML = `<p style="font-size:0.75rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px">Ingredients</p>` +
+      catOrder.map(c => {
+        const items = (meal.i?.[c.key]||[]).map(normIng);
+        if (!items.length) return '';
+        return `<div style="margin-bottom:8px"><span style="font-size:0.72rem;font-weight:500;color:var(--text-muted)">${c.label}</span><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">${items.map(it=>`<span style="font-size:0.8rem;background:var(--surface2);padding:2px 8px;border-radius:20px">${it.name}${fmtQty(it)?' <strong>'+fmtQty(it)+'</strong>':''}</span>`).join("")}</div></div>`;
+      }).join("");
+    ingSec.style.marginBottom = "1rem";
+  } else {
+    ingSec.innerHTML = "";
+  }
+
+  // Steps
+  const stepsSec = document.getElementById("recipe-steps-section");
+  if (meal.steps && meal.steps.length) {
+    stepsSec.innerHTML = `<p style="font-size:0.75rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px">Method</p>
+      <div class="recipe-steps">${meal.steps.map((s,i)=>`<div class="recipe-step"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join("")}</div>`;
+  } else {
+    stepsSec.innerHTML = `<p class="recipe-empty">No recipe steps added yet — edit this meal to add them.</p>`;
+  }
+
+  // Notes
+  const notesSec = document.getElementById("recipe-notes-section");
+  if (meal.notes) {
+    notesSec.innerHTML = `<div class="recipe-notes"><strong>💡 Tips:</strong> ${meal.notes}</div>`;
+  } else {
+    notesSec.innerHTML = "";
+  }
+
+  document.getElementById("recipeModal").classList.add("open");
+}
+
+function closeRecipeModal() { document.getElementById("recipeModal").classList.remove("open"); }
+
+// ─── Delete ───────────────────────────────────────────────────────────
+function askDelete(cat, idx) {
+  pendingDelete = {cat, idx};
+  document.getElementById("delModalName").textContent = `"${MEALS[cat][idx].name}" will be removed from the library.`;
   document.getElementById("delModal").classList.add("open");
 }
-function closeDelModal(){document.getElementById("delModal").classList.remove("open");pendingDelete=null;}
-async function confirmDelete(){
-  if(!pendingDelete)return;
-  const {cat,idx}=pendingDelete;
-  const name=MEALS[cat][idx].name;
-  MEALS[cat].splice(idx,1);
+function closeDelModal() { document.getElementById("delModal").classList.remove("open"); pendingDelete = null; }
+async function confirmDelete() {
+  if (!pendingDelete) return;
+  const {cat, idx} = pendingDelete;
+  const name = MEALS[cat][idx].name;
+  MEALS[cat].splice(idx, 1);
   closeDelModal();
   renderManage();
-  if(syncConfig){
+  if (syncConfig) {
     try { await saveToBin(MEALS); toast(`"${name}" removed & synced ✓`); }
-    catch(e){ toast(`"${name}" removed — sync failed`); }
+    catch(e) { toast(`"${name}" removed — sync failed`); }
   } else {
     toast(`"${name}" removed`);
   }
 }
 
-// ─── Toast ───────────────────────────────────────────────────────────
-function toast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg; t.classList.add("show");
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2400);
+// ─── Toast ────────────────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-// ─── Init ────────────────────────────────────────────────────────────
+// ─── Init ─────────────────────────────────────────────────────────────
 async function init() {
   if (!syncConfig) {
-    setSyncStatus('amber', '⚠️ Add your JSONBin credentials to the file to enable sync');
+    setSyncStatus('amber', '⚠️ Add JSONBin credentials to enable sync');
     generateWeek();
     return;
   }
@@ -653,15 +933,13 @@ async function init() {
   try {
     const data = await fetchFromBin();
     if (data && data.chicken) {
-      // Bin has real meal data — load it
       MEALS = data;
     } else {
-      // Bin is empty/placeholder — seed it with the default meals
       await saveToBin(MEALS);
     }
     setSyncStatus('green', '☁️ Synced — changes save across both devices');
   } catch(e) {
-    setSyncStatus('red', '⚠️ Sync failed — check Bin ID & API Key in the file');
+    setSyncStatus('red', '⚠️ Sync failed — check credentials in the file');
   }
   generateWeek();
 }
