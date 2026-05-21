@@ -495,7 +495,9 @@ async function refreshFromCloud() {
   document.getElementById("refreshBtn").textContent = "Syncing…";
   try {
     const data = await fetchFromBin();
+    console.log('Fetched from bin:', JSON.stringify(data).substring(0, 200));
     const meals = data?.meals || data;
+    console.log('Meals keys:', meals ? Object.keys(meals) : 'null');
     if (meals && meals.chicken) {
       MEALS = meals;
       if (data?.plan && data.plan.length) {
@@ -509,8 +511,10 @@ async function refreshFromCloud() {
       }
       renderManage();
       toast("Refreshed ✓");
+    } else {
+      toast("Refresh got data but no meals found — check console");
     }
-  } catch(e) { toast("Refresh failed"); }
+  } catch(e) { console.error('Refresh error:', e); toast("Refresh failed: " + e.message); }
   document.getElementById("refreshBtn").innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg> Refresh`;
 }
 
@@ -869,13 +873,18 @@ async function saveMeal() {
 
   closeModal();
   renderManage();
-  if (syncConfig) {
-    try { await saveToBin(MEALS, plan, previousPlan); toast(`"${name}" ${editState ? 'updated' : 'saved'} & synced ✓`); }
-    catch(e) { toast("Saved — sync failed, check connection"); }
-  } else {
-    toast(`"${name}" ${editState ? 'updated' : 'added'} ✓`);
-  }
+  const savedEditState = editState;
   editState = null;
+  if (syncConfig) {
+    try {
+      console.log('Saving MEALS to bin, keys:', Object.keys(MEALS), 'counts:', Object.fromEntries(Object.keys(MEALS).map(k=>[k, MEALS[k].length])));
+      await saveToBin(MEALS, plan, previousPlan);
+      toast(`"${name}" ${savedEditState ? 'updated' : 'saved'} & synced ✓`);
+    }
+    catch(e) { console.error('saveToBin failed:', e); toast("Saved — sync failed: " + e.message); }
+  } else {
+    toast(`"${name}" ${savedEditState ? 'updated' : 'added'} ✓`);
+  }
 }
 
 // ─── Step builder ─────────────────────────────────────────────────────
