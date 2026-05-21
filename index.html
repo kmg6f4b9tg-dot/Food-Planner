@@ -643,25 +643,29 @@ function toast(msg){
 }
 
 // ─── Init ────────────────────────────────────────────────────────────
-if (syncConfig) {
+async function init() {
+  if (!syncConfig) {
+    setSyncStatus('amber', '⚠️ Add your JSONBin credentials to the file to enable sync');
+    generateWeek();
+    return;
+  }
   setSyncStatus('amber', 'Connecting to shared library…');
-  fetchFromBin().then(data => {
-    if (data && Object.keys(data).length > 0 && data.chicken) {
+  try {
+    const data = await fetchFromBin();
+    if (data && data.chicken) {
+      // Bin has real meal data — load it
       MEALS = data;
-      setSyncStatus('green', '☁️ Synced — changes save across both devices');
     } else {
-      // Bin is empty, seed it with defaults
-      saveToBin(MEALS).then(() => setSyncStatus('green', '☁️ Synced — changes save across both devices'));
+      // Bin is empty/placeholder — seed it with the default meals
+      await saveToBin(MEALS);
     }
-    generateWeek();
-  }).catch(() => {
-    setSyncStatus('red', '⚠️ Sync failed — check Bin ID and API Key in the file');
-    generateWeek();
-  });
-} else {
-  setSyncStatus('amber', '⚠️ Add your JSONBin credentials to the file to enable sync');
+    setSyncStatus('green', '☁️ Synced — changes save across both devices');
+  } catch(e) {
+    setSyncStatus('red', '⚠️ Sync failed — check Bin ID & API Key in the file');
+  }
   generateWeek();
 }
+init();
 </script>
 </body>
 </html>
