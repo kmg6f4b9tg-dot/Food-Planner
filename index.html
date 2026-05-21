@@ -223,10 +223,13 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
         Generate new week
       </button>
-      <button class="btn" id="rollbackBtn" onclick="rollbackWeek()" style="display:none">
+      <button class="btn" id="rollbackBtn" onclick="rollbackWeek()" style="display:none;background:#FFF8EE;color:#7A5A1A;border-color:rgba(122,90,26,0.35)">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M2.5 2.5V6H6"/></svg>
-        Undo — restore last week
+        Undo new week
       </button>
+      <p id="rollbackHint" style="width:100%;text-align:center;font-size:0.75rem;color:var(--text-faint);margin-top:-6px">
+        💡 Generate a second time and an <strong>Undo</strong> button will appear here to restore the previous week
+      </p>
       <button class="btn" onclick="showList()">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M3 7h10M3 11h6"/></svg>
         Build shopping list
@@ -364,11 +367,11 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── ⚙️  CONFIG ──────────────────────────────────────────────────────
-const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";
-const JSONBIN_KEY = "$2a$10$YxU.bwB07j19z9fHyyKm/OYml1oa7h2k.dnzcz31CFojZKR0rHaw2";
 // ─────────────────────────────────────────────────────────────────────
-
+// ⚙️  YOUR JSONBIN CREDENTIALS — edit these, then save & upload
+const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";   // Paste your Bin ID here
+const JSONBIN_KEY = "$2a$10$D/t1fnKNQ9HupXUjG2WU0exKC7B0R0hVzv1cbjqGKZmIkofMQdDDy";   // Paste your API Key here
+// ─────────────────────────────────────────────────────────────────────
 // ─── Ingredient units ────────────────────────────────────────────────
 const UNITS = ["","g","kg","ml","l","tsp","tbsp","cup","bunch","clove(s)","can(s)","pack(s)","bag(s)","slice(s)","sheet(s)","×"];
 
@@ -527,8 +530,8 @@ function switchTab(name) {
 function rand(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
 
 function generateWeek() {
-  // Back up current plan before overwriting
-  const oldPlan = plan.length ? JSON.parse(JSON.stringify(plan)) : null;
+  // Back up current plan before overwriting (only if it has actual meals)
+  const oldPlan = plan.length === 7 ? JSON.parse(JSON.stringify(plan)) : previousPlan;
   checked.clear(); plan = []; let prev = null;
   DAYS.forEach((day, i) => {
     const isWeekend = WEEKEND_IDX.includes(i);
@@ -574,7 +577,10 @@ function reroll(idx) {
 
 function updateRollbackBtn() {
   const btn = document.getElementById("rollbackBtn");
-  if (btn) btn.style.display = previousPlan && previousPlan.length ? "inline-flex" : "none";
+  const hint = document.getElementById("rollbackHint");
+  const hasPrevious = previousPlan && previousPlan.length;
+  if (btn) btn.style.display = hasPrevious ? "inline-flex" : "none";
+  if (hint) hint.style.display = hasPrevious ? "none" : "block";
 }
 
 function rollbackWeek() {
