@@ -1083,8 +1083,7 @@ async function generateAiMeal(){
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
           contents:[{role:'user',parts:[{text:geminiPrompt}]}],
-          generationConfig:{temperature:0.9,maxOutputTokens:1024},
-          thinkingConfig:{thinkingBudget:0}
+          generationConfig:{temperature:0.9,maxOutputTokens:1024,thinkingConfig:{thinkingBudget:0}}
         })
       });
       if(resp.ok)break;
