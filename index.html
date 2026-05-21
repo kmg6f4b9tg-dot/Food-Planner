@@ -447,7 +447,7 @@ function fmtQty(ing) {
 
 // ─── State ───────────────────────────────────────────────────────────
 let MEALS = JSON.parse(JSON.stringify(DEFAULT_MEALS));
-let plan = [], previousPlan = null, checked = new Set(), activeProteinTab = "chicken", pendingDelete = null;
+let plan = [], previousPlan = null, mealHistory = [], checked = new Set(), activeProteinTab = "chicken", pendingDelete = null;
 const syncConfig = (JSONBIN_ID && JSONBIN_KEY) ? { binId: JSONBIN_ID, apiKey: JSONBIN_KEY } : null;
 
 const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
@@ -469,12 +469,13 @@ async function fetchFromBin() {
   return j.record;
 }
 
-// Always save meals, current plan, and previous plan together
+// Always save meals, current plan, previous plan and history together
 async function saveToBin(mealsData, planData, prevPlanData) {
   const payload = {
     meals: mealsData,
     plan: planData || null,
-    previousPlan: prevPlanData || null
+    previousPlan: prevPlanData || null,
+    mealHistory: mealHistory || []
   };
   const r = await fetch(`https://api.jsonbin.io/v3/b/${syncConfig.binId}`, {
     method: 'PUT',
@@ -513,10 +514,8 @@ async function refreshFromCloud() {
         renderWeek();
         document.getElementById("listSection").style.display = "none";
       }
-      if (data?.previousPlan) {
-        previousPlan = data.previousPlan;
-        updateRollbackBtn();
-      }
+      if (data?.previousPlan) { previousPlan = data.previousPlan; updateRollbackBtn(); }
+      if (data?.mealHistory) mealHistory = data.mealHistory;
       renderManage();
       toast("Refreshed ✓");
     } else {
@@ -541,26 +540,79 @@ function switchTab(name) {
 // ─── Planner ──────────────────────────────────────────────────────────
 function rand(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
 
+// Pick a meal from pool avoiding recently used ones
+// - meals used in last 2 weeks are excluded entirely (if enough alternatives exist)
+// - meals used in last 4 weeks are deprioritised (picked last)
+function pickWithVariety(pool, usedThisWeek = []) {
+  if (!pool || !pool.length) return null;
+
+  // Build sets of recently used meal names
+  const recentNames = new Set(); // last 2 weeks — avoid entirely
+  const olderNames  = new Set(); // weeks 3-4 — deprioritise
+
+  mealHistory.forEach((weekMeals, weekIdx) => {
+    weekMeals.forEach(name => {
+      if (weekIdx < 2) recentNames.add(name);
+      else olderNames.add(name);
+    });
+  });
+
+  // Also exclude meals already chosen this week
+  usedThisWeek.forEach(n => recentNames.add(n));
+
+  // Tier 1: not used recently at all
+  const fresh = pool.filter(m => !recentNames.has(m.name) && !olderNames.has(m.name));
+  // Tier 2: used 3-4 weeks ago (ok but less preferred)
+  const older = pool.filter(m => !recentNames.has(m.name) && olderNames.has(m.name));
+  // Tier 3: fallback — everything not used this week
+  const fallback = pool.filter(m => !usedThisWeek.includes(m.name));
+
+  if (fresh.length) return rand(fresh);
+  if (older.length) return rand(older);
+  if (fallback.length) return rand(fallback);
+  return rand(pool); // absolute last resort
+}
+
 function generateWeek() {
   // Back up current plan before overwriting (only if it has actual meals)
   const oldPlan = plan.length === 7 ? JSON.parse(JSON.stringify(plan)) : previousPlan;
   checked.clear(); plan = []; let prev = null;
+  const usedThisWeek = []; // track names chosen so far this week
+
   DAYS.forEach((day, i) => {
     const isWeekend = WEEKEND_IDX.includes(i);
     let meal, protein, tries = 0;
+
     if (isWeekend) {
       const pool = MEALS.weekend || [];
       if (!pool.length) { plan.push({day,protein:"weekend",meal:{name:"(no weekend meals)",i:{}},isWeekend}); return; }
-      do { meal=rand(pool); protein=meal.protein||"weekend"; tries++; } while (protein===prev && tries<20);
+      // Pick weekend meal with variety, also avoiding same protein back-to-back
+      let candidates = pool.filter(m => (m.protein||"weekend") !== prev);
+      if (!candidates.length) candidates = pool;
+      meal = pickWithVariety(candidates, usedThisWeek) || rand(pool);
+      protein = meal.protein || "weekend";
     } else {
-      const keys = ["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
+      const keys = ["salmon","beef","chicken","pork","vegetarian"].filter(k => MEALS[k] && MEALS[k].length);
       if (!keys.length) { plan.push({day,protein:"vegetarian",meal:{name:"(no meals)",i:{}},isWeekend}); return; }
-      do { protein=rand(keys); tries++; } while (protein===prev && tries<20);
-      meal = rand(MEALS[protein]);
+      // Pick protein — avoid same as previous day, prefer ones not used this week
+      const usedProteins = plan.map(p => p.protein);
+      let proteinCandidates = keys.filter(k => k !== prev);
+      if (!proteinCandidates.length) proteinCandidates = keys;
+      // Prefer proteins not yet used this week
+      const freshProteins = proteinCandidates.filter(k => !usedProteins.includes(k));
+      protein = freshProteins.length ? rand(freshProteins) : rand(proteinCandidates);
+      meal = pickWithVariety(MEALS[protein], usedThisWeek) || rand(MEALS[protein]);
     }
+
     prev = protein;
+    usedThisWeek.push(meal.name);
     plan.push({day, protein, meal, isWeekend});
   });
+
+  // Save this week's meals to history (keep last 4 weeks)
+  const thisWeekNames = plan.map(p => p.meal.name);
+  mealHistory = [thisWeekNames, ...mealHistory].slice(0, 4);
+
   previousPlan = oldPlan;
   updateRollbackBtn();
   renderWeek();
@@ -1078,9 +1130,8 @@ async function init() {
       await saveToBin(MEALS, null, null);
     }
 
-    if (data?.previousPlan) {
-      previousPlan = data.previousPlan;
-    }
+    if (data?.previousPlan) { previousPlan = data.previousPlan; }
+    if (data?.mealHistory)  { mealHistory = data.mealHistory; }
 
     if (savedPlan && savedPlan.length) {
       plan = savedPlan;
