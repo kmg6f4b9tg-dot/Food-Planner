@@ -1075,7 +1075,7 @@ async function generateAiMeal(){
   const catLabel={chicken:'chicken',beef:'beef',salmon:'salmon/fish',pork:'pork',vegetarian:'vegetarian',weekend:'weekend treat'}[cat];
   try{
     const geminiPrompt='You are a meal planning assistant. Suggest a '+catLabel+' meal for two people based on: '+prompt+'. Already in library: '+existing+'. Suggest something different. Return ONLY a JSON object with these fields: name (string), calories (number), prepTime (number, minutes), cookTime (number, minutes), tags (array of strings like quick/spicy/creamy), notes (string, optional tip), ingredients (object with proteins/produce/fridge/pantry arrays, each item has name/qty/unit fields), steps (array of strings). Use units: g kg ml l tsp tbsp cup bunch x. Include 2-4 ingredients per category and 4-6 steps. No markdown, no explanation, just the JSON object.';
-    const geminiModels=['gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-pro','gemini-2.5-flash'];
+    const geminiModels=['gemini-2.0-flash','gemini-1.5-flash','gemini-2.5-flash'];
     let resp=null,lastErr='';
     for(const model of geminiModels){
       console.log('Trying model:',model);
@@ -1083,8 +1083,7 @@ async function generateAiMeal(){
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
-          contents:[{role:'user',parts:[{text:geminiPrompt}]}],
-          generationConfig:{temperature:0.9,maxOutputTokens:1024}
+          contents:[{parts:[{text:geminiPrompt}]}]
         })
       });
       console.log('Model',model,'response:',resp.status);
