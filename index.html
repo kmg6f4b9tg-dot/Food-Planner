@@ -506,6 +506,7 @@
 // ⚙️  YOUR JSONBIN CREDENTIALS — edit these, then save & upload
 const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";
 const JSONBIN_KEY = "$2a$10$YxU.bwB07j19z9fHyyKm/OYml1oa7h2k.dnzcz31CFojZKR0rHaw2";
+const GEMINI_KEY  = "AIzaSyAvwXhpz4_baukMbtsClpHb4MgpDJestCA";   // Paste your free Google Gemini API key here
 // ─────────────────────────────────────────────────────────────────────
 
 const UNITS = ["","g","kg","ml","l","tsp","tbsp","cup","bunch","clove(s)","can(s)","pack(s)","bag(s)","slice(s)","sheet(s)","×"];
@@ -1073,10 +1074,12 @@ async function generateAiMeal(){
   const existing=Object.values(MEALS).flat().map(m=>m.name).join(', ');
   const catLabel={chicken:'chicken',beef:'beef',salmon:'salmon/fish',pork:'pork',vegetarian:'vegetarian',weekend:'weekend treat (can be indulgent)'}[cat];
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:'You are a meal planning assistant for a couple eating low-calorie high-protein evening meals. Respond ONLY with valid JSON, no markdown.',messages:[{role:'user',content:`Suggest a ${catLabel} meal: "${prompt}"\nAlready have: ${existing}\nSuggest something different.\n\nRespond ONLY with this JSON:\n{"name":"Meal name","calories":450,"prepTime":10,"cookTime":25,"tags":["quick"],"notes":"Optional tip","ingredients":{"proteins":[{"name":"item","qty":"2","unit":"×"}],"produce":[],"fridge":[],"pantry":[]},"steps":["Step 1","Step 2"]}\nUnits: g kg ml l tsp tbsp cup bunch clove(s) can(s) pack(s) bag(s) slice(s) sheet(s) ×\n3-5 ingredients per category, 4-7 steps.`}]})});
+    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:`You are a meal planning assistant for a couple eating low-calorie high-protein evening meals. Respond ONLY with valid JSON, no markdown, no explanation.\n\nSuggest a ${catLabel} meal: "${prompt}"\nAlready have: ${existing}\nSuggest something different.\n\nRespond ONLY with this JSON:\n{"name":"Meal name","calories":450,"prepTime":10,"cookTime":25,"tags":["quick"],"notes":"Optional tip","ingredients":{"proteins":[{"name":"item","qty":"2","unit":"x"}],"produce":[],"fridge":[],"pantry":[]},"steps":["Step 1","Step 2"]}\nUnits: g kg ml l tsp tbsp cup bunch cloves cans packs bags slices sheets x\n3-5 ingredients per category, 4-7 steps.`}]}],generationConfig:{temperature:0.9}})});
     clearInterval(iv);document.getElementById('aiLoadingIcon').classList.remove('ai-pulsing');
     if(!resp.ok)throw new Error(`API error ${resp.status}`);
-    const data=await resp.json();const parsed=JSON.parse(data.content.map(b=>b.text||'').join('').trim().replace(/```json|```/g,'').trim());
+    const data=await resp.json();
+    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
     aiGeneratedMeal={name:parsed.name,notes:parsed.notes||'',steps:parsed.steps||[],i:{},calories:parsed.calories||0,prepTime:parsed.prepTime||0,cookTime:parsed.cookTime||0,tags:parsed.tags||[]};
     ['proteins','produce','fridge','pantry'].forEach(c=>{if(parsed.ingredients?.[c]?.length)aiGeneratedMeal.i[c]=parsed.ingredients[c]});
     if(cat==='weekend')aiGeneratedMeal.protein=cat;
