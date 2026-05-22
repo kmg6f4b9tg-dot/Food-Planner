@@ -1165,7 +1165,7 @@ async function generateAiMeal(){
     const styles=['rustic','fresh','bold','comforting','light','vibrant','classic','fusion','simple','indulgent'];
     const style=styles[Math.floor(Math.random()*styles.length)];
     const geminiPrompt='Suggest a '+style+' '+catLabel+' dinner meal for two. Request: '+prompt.replace(/[^\w\s,.!?-]/g,'')+'. Already have: '+existing.replace(/[^\w\s,.&-]/g,'')+'. Suggest something different and creative. Return ONLY a JSON object. Fields: name(string), calories(number), prepTime(number), cookTime(number), tags(string array), notes(string), ingredients(object with proteins/produce/fridge/pantry arrays where each item has name/qty/unit), steps(string array). Keep steps under 100 chars each.';
-    const geminiModels=['gemini-2.0-flash','gemini-1.5-flash','gemini-2.5-flash','gemini-2.5-flash-lite-preview-06-17'];
+    const geminiModels=['gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash'];
     let resp=null,lastErr='';
     for(const model of geminiModels){
       console.log('Trying model:',model);
