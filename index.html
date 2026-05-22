@@ -542,7 +542,7 @@
 // ⚙️  YOUR JSONBIN CREDENTIALS — edit these, then save & upload
 const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";
 const JSONBIN_KEY = "$2a$10$YxU.bwB07j19z9fHyyKm/OYml1oa7h2k.dnzcz31CFojZKR0rHaw2";
-const GEMINI_KEY  = "AIzaSyD2UuZI3-ws5YeHdR8WUb_PmOreWlDAS-4";   // Paste your free Google Gemini API key here
+const GEMINI_KEY  = "";   // Paste your free Google Gemini API key here
 // ─────────────────────────────────────────────────────────────────────
 
 const UNITS = ["","g","kg","ml","l","tsp","tbsp","cup","bunch","clove(s)","can(s)","pack(s)","bag(s)","slice(s)","sheet(s)","×"];
@@ -1162,7 +1162,9 @@ async function generateAiMeal(){
   const existing=Object.values(MEALS).flat().map(m=>m.name).slice(0,10).join(', ');
   const catLabel={chicken:'chicken',beef:'beef',salmon:'salmon',pork:'pork',vegetarian:'vegetarian',weekend:'weekend treat'}[cat];
   try{
-    const geminiPrompt='Suggest a '+catLabel+' dinner meal for two. Request: '+prompt.replace(/[^\w\s,.!?-]/g,'')+'. Already have: '+existing.replace(/[^\w\s,.&-]/g,'')+'. Return ONLY a JSON object. Fields: name(string), calories(number), prepTime(number), cookTime(number), tags(string array), notes(string), ingredients(object with proteins/produce/fridge/pantry arrays where each item has name/qty/unit), steps(string array). Keep steps under 100 chars each.';
+    const styles=['rustic','fresh','bold','comforting','light','vibrant','classic','fusion','simple','indulgent'];
+    const style=styles[Math.floor(Math.random()*styles.length)];
+    const geminiPrompt='Suggest a '+style+' '+catLabel+' dinner meal for two. Request: '+prompt.replace(/[^\w\s,.!?-]/g,'')+'. Already have: '+existing.replace(/[^\w\s,.&-]/g,'')+'. Suggest something different and creative. Return ONLY a JSON object. Fields: name(string), calories(number), prepTime(number), cookTime(number), tags(string array), notes(string), ingredients(object with proteins/produce/fridge/pantry arrays where each item has name/qty/unit), steps(string array). Keep steps under 100 chars each.';
     const geminiModels=['gemini-2.0-flash','gemini-1.5-flash','gemini-2.5-flash','gemini-2.5-flash-lite-preview-06-17'];
     let resp=null,lastErr='';
     for(const model of geminiModels){
