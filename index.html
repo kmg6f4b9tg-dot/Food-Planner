@@ -683,7 +683,7 @@
 // ⚙️  YOUR JSONBIN CREDENTIALS — edit these, then save & upload
 const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";
 const JSONBIN_KEY = "$2a$10$YxU.bwB07j19z9fHyyKm/OYml1oa7h2k.dnzcz31CFojZKR0rHaw2";
-const GEMINI_KEY  = "AIzaSyD2UuZI3-ws5YeHdR8WUb_PmOreWlDAS-4";   // Paste your free Google Gemini API key here
+const GEMINI_KEY  = "AQ.Ab8RN6LSZkH8WyU0uKmwGOlLw0ROX30_u8B541pzkzzWHfO16g";   // Paste your free Google Gemini API key here
 // ─────────────────────────────────────────────────────────────────────
 
 const UNITS = ["","g","kg","ml","l","tsp","tbsp","cup","bunch","clove(s)","can(s)","pack(s)","bag(s)","slice(s)","sheet(s)","×"];
@@ -1346,7 +1346,7 @@ async function generateAiMeal(){
     const month=MONTHS[new Date().getMonth()];
     const seasonal=SEASONAL_CONTEXT[new Date().getMonth()];
     const geminiPrompt='[Request '+seed+'] Suggest a '+style+' '+catLabel+' dinner meal for two. Request: '+prompt.replace(/[^\w\s,.!?-]/g,'')+'. It is '+month+' in the UK so consider seasonal produce: '+seasonal+'. Already have these meals so suggest something completely different: '+existing.replace(/[^\w\s,.&-]/g,'')+'. Be creative and unique. Return ONLY a JSON object. Fields: name(string), calories(number), prepTime(number), cookTime(number), tags(string array), notes(string), ingredients(object with proteins/produce/fridge/pantry arrays where each item has name/qty/unit), steps(string array). Keep steps under 100 chars each.';
-    const geminiModels=['gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash'];
+    const geminiModels=['gemini-2.5-flash','gemini-2.0-flash','gemini-2.0-flash-lite'];
     let resp=null,lastErr='';
     for(const model of geminiModels){
       console.log('Trying model:',model);
@@ -1597,7 +1597,7 @@ async function generateFridgeMeal(){
   const seed=Math.random().toString(36).substring(2,6);
   const prompt='['+seed+'] Suggest a '+style+' '+cat+' dinner meal for two using mainly these ingredients: '+fridgeTags.join(', ')+'. It is '+month+' in the UK so seasonal produce includes: '+seasonal+'. Return ONLY a JSON object with: name, calories, prepTime, cookTime, tags, notes, ingredients(proteins/produce/fridge/pantry arrays with name/qty/unit), steps. Keep steps under 100 chars.';
   try{
-    const models=['gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash'];
+    const models=['gemini-2.5-flash','gemini-2.0-flash','gemini-2.0-flash-lite'];
     let resp=null,lastErr='';
     for(const model of models){
       const needs25=model.includes('2.5');
