@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.jsonbin.io https://generativelanguage.googleapis.com; img-src 'self' data:">
 <title>Weekly Meal Planner</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
@@ -72,10 +73,10 @@
   .day-card-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
   .day-action-btn{font-size:.7rem;padding:2px 7px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface2);cursor:pointer;display:inline-flex;align-items:center;gap:3px;transition:background .12s;color:var(--text-muted)}
   .day-action-btn:hover{background:var(--surface);border-color:var(--accent);color:var(--accent)}
-  .day-action-btn svg{width:10px;height:10px}
+  .day-action-btn svg{width:10px;height:10px;stroke:currentColor;fill:none}
   .day-note{font-size:.75rem;color:var(--text-muted);font-style:italic;margin-top:4px;line-height:1.4}
   .reroll{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;border:1px solid var(--border-strong);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s}
-  .reroll svg{width:13px;height:13px;color:var(--text-muted)}
+  .reroll svg{width:13px;height:13px;color:var(--text-muted);stroke:currentColor;fill:none}
   .day-card:hover .reroll{opacity:1}.reroll:hover{background:var(--surface);border-color:var(--accent)}.reroll:hover svg{color:var(--accent)}
 
   /* Protein colours */
@@ -168,7 +169,7 @@
   .ing-section{margin-bottom:12px}
   .ing-section-label{font-size:.75rem;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
   .ing-rows{display:flex;flex-direction:column;gap:6px}
-  .ing-row{display:grid;grid-template-columns:1fr 70px 80px 28px;gap:6px;align-items:center}
+  .ing-row{display:grid;grid-template-columns:1fr 60px 75px 55px 28px;gap:6px;align-items:center}
   .ing-row input,.ing-row select{font-family:var(--font-body);font-size:.82rem;padding:6px 8px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);outline:none;width:100%}
   .ing-row input:focus,.ing-row select:focus{border-color:var(--accent)}
   .ing-del{width:26px;height:26px;border-radius:50%;border:1px solid var(--border-strong);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-faint);flex-shrink:0;transition:all .12s}
@@ -229,6 +230,43 @@
   /* Toast */
   .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;font-size:.875rem;padding:10px 20px;border-radius:var(--radius-sm);transition:transform .25s;z-index:999;white-space:nowrap}
   .toast.show{transform:translateX(-50%) translateY(0)}
+  /* Calendar */
+  .calendar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:1rem}
+  .cal-week{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;cursor:pointer;transition:all .15s}
+  .cal-week:hover{border-color:var(--accent);box-shadow:0 4px 12px rgba(0,0,0,.07);transform:translateY(-2px)}
+  .cal-week.current{border-color:var(--accent);background:var(--accent-light)}
+  .cal-week-label{font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px}
+  .cal-week.current .cal-week-label{color:var(--accent)}
+  .cal-meal{font-size:.72rem;color:var(--text-muted);padding:2px 0;border-bottom:.5px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cal-meal:last-child{border-bottom:none}
+  .cal-meal-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;flex-shrink:0}
+
+  /* Voting */
+  .vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:1rem}
+  .vote-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:.85rem;cursor:pointer;transition:all .15s;position:relative}
+  .vote-card:hover{border-color:var(--border-strong)}
+  .vote-card.voted-yes{border-color:var(--green);background:var(--green-light)}
+  .vote-card.voted-no{opacity:.4}
+  .vote-name{font-size:.875rem;font-weight:500;line-height:1.35;margin-bottom:4px}
+  .vote-meta{font-size:.72rem;color:var(--text-muted)}
+  .vote-badge{position:absolute;top:8px;right:8px;font-size:.75rem}
+
+  /* Price estimator */
+  .price-total{background:var(--green-light);border:1px solid rgba(58,107,66,.2);border-radius:var(--radius-sm);padding:10px 14px;font-size:.875rem;color:var(--green);font-weight:500;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+  .price-input{width:60px;text-align:right;padding:2px 4px;border:1px solid var(--border-strong);border-radius:4px;font-family:var(--font-body);font-size:.75rem;background:var(--bg);color:var(--text)}
+
+  /* Cook comments */
+  .cook-comments{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+  .cook-comment{background:var(--surface2);border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:6px;font-size:.82rem;line-height:1.5}
+  .cook-comment-meta{font-size:.7rem;color:var(--text-faint);margin-top:3px}
+  .cook-comment-del{float:right;cursor:pointer;color:var(--text-faint);font-size:.75rem;margin-left:8px}
+  .cook-comment-del:hover{color:var(--weekend)}
+
+  /* Fridge raid */
+  .fridge-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:32px}
+  .fridge-tag{display:inline-flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border-strong);border-radius:20px;padding:3px 10px;font-size:.8rem;cursor:pointer}
+  .fridge-tag:hover{background:var(--weekend-light);border-color:rgba(139,58,58,.3);color:var(--weekend)}
+
   .footer{text-align:center;margin-top:3rem;font-size:.78rem;color:var(--text-faint)}
 
   @media(max-width:520px){
@@ -257,12 +295,15 @@
     <span class="sync-pill"><div class="dot" id="syncDot"></div><span id="syncMsg">Connecting…</span></span>
   </div>
 
-  <div class="tabs">
+  <div class="tabs" style="flex-wrap:wrap">
     <div class="tab active" onclick="switchTab('planner')">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5h6M5 11h3"/></svg>Weekly Planner
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5h6M5 11h3"/></svg>Planner
+    </div>
+    <div class="tab" onclick="switchTab('calendar')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M2 6h12M6 2v2M10 2v2"/></svg>Calendar
     </div>
     <div class="tab" onclick="switchTab('manage')">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><circle cx="8" cy="8" r="2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2"/></svg>Manage Meals
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><circle cx="8" cy="8" r="2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2"/></svg>Meals
     </div>
     <div class="tab" onclick="switchTab('settings')">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg>Settings
@@ -278,7 +319,9 @@
       <button class="btn" id="rollbackBtn" onclick="rollbackWeek()" style="display:none;background:#FFF8EE;color:#7A5A1A;border-color:rgba(122,90,26,.35)">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M2.5 2.5V6H6"/></svg>Undo new week
       </button>
-      <button class="btn" onclick="showList()">
+      <button class="btn" onclick="openVoteModal()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg>Vote &amp; generate
+      </button>
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h10M3 7h10M3 11h6"/></svg>Build shopping list
       </button>
       <button class="btn" onclick="shareWhatsApp()">
@@ -295,7 +338,12 @@
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5h.01"/></svg>
       <span id="treatDayNotice"><strong>Weekend meals</strong> (Sat &amp; Sun) are higher-calorie treats. Tap ↻ on any card for swap options.</span>
     </div>
-    <div class="week-grid" id="weekGrid"></div>
+    <div id="weekGridContainer">
+      <p style="font-size:.78rem;font-weight:500;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;padding:4px 8px;background:var(--accent-light);border-radius:var(--radius-sm);display:inline-block">📅 Week 1</p>
+      <div class="week-grid" id="weekGrid1"></div>
+      <p style="font-size:.78rem;font-weight:500;color:var(--accent);margin:1.25rem 0 8px;text-transform:uppercase;letter-spacing:.06em;padding:4px 8px;background:var(--accent-light);border-radius:var(--radius-sm);display:inline-block">📅 Week 2</p>
+      <div class="week-grid" id="weekGrid2"></div>
+    </div>
     <div id="listSection" style="display:none">
       <hr class="divider">
       <div class="list-header">
@@ -307,10 +355,23 @@
         </div>
       </div>
       <p style="font-size:.75rem;color:var(--text-muted);margin-bottom:.75rem">Tap 📌 to mark an ingredient as a pantry staple — it will be greyed out in future lists.</p>
+      <div class="price-total" id="priceEstimate" style="display:none">
+        <span>💰 Estimated shop total</span>
+        <span id="priceTotal" style="font-size:1.1rem">£0.00</span>
+      </div>
       <div class="shop-grid" id="shopGrid"></div>
       <div class="progress-bar" style="margin-top:1.5rem"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
       <p id="progressText" style="font-size:.8rem;color:var(--text-muted);text-align:right;margin-top:6px"></p>
     </div>
+  </div>
+
+  <!-- Calendar Tab -->
+  <div class="tab-panel" id="panel-calendar">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem">
+      <h2 style="font-family:var(--font-display);font-size:1.4rem;font-weight:500">📅 Meal History</h2>
+      <p style="font-size:.82rem;color:var(--text-muted)">Tap any past week to restore it as your current plan</p>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
   </div>
 
   <!-- Manage Tab -->
@@ -320,6 +381,9 @@
       <div class="manage-sub">
         <button class="btn btn-sm" onclick="refreshFromCloud()" id="refreshBtn">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>Refresh
+        </button>
+        <button class="btn btn-sm" onclick="openFridgeModal()" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:#fff;border-color:transparent">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="1" width="10" height="14" rx="2"/><path d="M3 6h10M7 9v3"/></svg>Fridge raid
         </button>
         <button class="btn btn-sm btn-ai" onclick="openAiModal()">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg>AI suggest
@@ -529,8 +593,79 @@
       <div class="star-row" id="recipeStarRow"></div>
       <span id="recipeRatingLabel" style="font-size:.75rem;color:var(--text-muted);margin-left:4px"></span>
     </div>
+    <div class="cook-comments">
+      <p style="font-size:.82rem;font-weight:500;margin-bottom:.5rem">💬 Cook's notes</p>
+      <div id="cookCommentsList"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input type="text" id="cookCommentInput" placeholder="e.g. Add more chilli next time…" style="flex:1;font-family:var(--font-body);font-size:.82rem;padding:7px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);outline:none" onkeydown="if(event.key==='Enter')addCookComment()">
+        <button class="btn btn-sm btn-primary" onclick="addCookComment()">Add</button>
+      </div>
+    </div>
     <div class="modal-actions" style="margin-top:1.5rem">
       <button class="btn" onclick="closeRecipeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Vote Modal -->
+<div class="modal-overlay" id="voteModal" onclick="if(event.target===this)closeVoteModal()">
+  <div class="modal" style="max-width:680px">
+    <h3>⭐ Vote &amp; Generate</h3>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.1rem">Tap meals you fancy this week — the planner will try to include your picks. Tap again to remove.</p>
+    <div class="protein-tabs" id="voteProteinTabs"></div>
+    <div class="vote-grid" id="voteGrid"></div>
+    <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;font-size:.82rem;color:var(--text-muted);margin-bottom:1rem">
+      <strong>Your picks:</strong> <span id="votePicksSummary">None yet — tap meals above to vote</span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeVoteModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="generateFromVotes()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>Generate with picks
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Fridge Raid Modal -->
+<div class="modal-overlay" id="fridgeModal" onclick="if(event.target===this)closeFridgeModal()">
+  <div class="modal" style="max-width:520px">
+    <h3>🧊 Fridge Raid</h3>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem">Tell the AI what ingredients you have and it'll suggest a meal using them.</p>
+    <div class="form-row full" style="margin-bottom:8px"><div class="form-group">
+      <label>What's in your fridge / cupboard?</label>
+      <input type="text" id="fridge-input" placeholder="e.g. chicken breasts, spinach, cream cheese, garlic" onkeydown="if(event.key==='Enter')addFridgeTag()">
+      <p class="form-hint">Press Enter or comma to add each ingredient</p>
+    </div></div>
+    <div class="fridge-tags" id="fridgeTags"></div>
+    <div class="form-row" style="margin-top:12px">
+      <div class="form-group">
+        <label>Category</label>
+        <select id="fridge-cat">
+          <option value="chicken">🍗 Chicken</option><option value="beef">🥩 Beef</option>
+          <option value="salmon">🐟 Salmon</option><option value="pork">🥓 Pork</option>
+          <option value="vegetarian">🌿 Vegetarian</option><option value="weekend">🎉 Weekend</option>
+        </select>
+      </div>
+    </div>
+    <div id="fridgeLoading" style="display:none;text-align:center;padding:1rem 0">
+      <div style="font-size:1.5rem;margin-bottom:.5rem" class="ai-pulsing">🧊</div>
+      <p style="font-size:.875rem;color:var(--text-muted)">Raiding your fridge…</p>
+    </div>
+    <div id="fridgeResult" style="display:none">
+      <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0">
+      <div id="fridgeResultContent"></div>
+      <div style="display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="saveFridgeMeal()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l4 4 6-6"/></svg>Add to library</button>
+        <button class="btn" onclick="generateFridgeMeal()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>Try again</button>
+        <button class="btn" onclick="closeFridgeModal()">Cancel</button>
+      </div>
+    </div>
+    <div id="fridgeError" style="display:none;background:var(--weekend-light);border:1px solid rgba(139,58,58,.2);border-radius:var(--radius-sm);padding:10px 14px;font-size:.85rem;color:var(--weekend);margin-top:.5rem"></div>
+    <div class="modal-actions" id="fridgeInitActions">
+      <button class="btn" onclick="closeFridgeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="generateFridgeMeal()" id="fridgeGenerateBtn">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg>Suggest a meal
+      </button>
     </div>
   </div>
 </div>
@@ -542,7 +677,7 @@
 // ⚙️  YOUR JSONBIN CREDENTIALS — edit these, then save & upload
 const JSONBIN_ID  = "6a0ddbd8ee5a733b12ef56f5";
 const JSONBIN_KEY = "$2a$10$YxU.bwB07j19z9fHyyKm/OYml1oa7h2k.dnzcz31CFojZKR0rHaw2";
-const GEMINI_KEY  = "AIzaSyD2UuZI3-ws5YeHdR8WUb_PmOreWlDAS-4";   // Paste your free Google Gemini API key here
+const GEMINI_KEY  = "";   // Paste your free Google Gemini API key here
 // ─────────────────────────────────────────────────────────────────────
 
 const UNITS = ["","g","kg","ml","l","tsp","tbsp","cup","bunch","clove(s)","can(s)","pack(s)","bag(s)","slice(s)","sheet(s)","×"];
@@ -614,7 +749,14 @@ let activeTagFilter = null;
 const syncConfig = (JSONBIN_ID && JSONBIN_KEY) ? {binId:JSONBIN_ID,apiKey:JSONBIN_KEY} : null;
 
 const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-let treatDays=[5,6]; // indices into DAYS array, default Sat+Sun
+let cookComments = {};  // { mealName: [{text, date}] }
+let itemPrices = {};    // { ingredientKey: price }
+let weekHistory = [];   // array of {date, plan} — last 12 weeks
+let votes = {};         // { mealName: true } — current vote picks
+let voteProteinTab = 'chicken';
+let fridgeTags = [];
+let fridgeGeneratedMeal = null;
+let treatDays=[5,6]; // indices into DAYS — default Sat+Sun
 let defaultServings=2;
 const WEEKEND_IDX=new Proxy([],{get:(t,p)=>treatDays[p]??t[p],has:(_,p)=>treatDays.includes(Number(p))});
 // Helper since Proxy doesn't work with .includes directly
@@ -646,7 +788,7 @@ async function fetchFromBin(){
 }
 async function saveToBin(){
   if(!syncConfig)return;
-  const payload={meals:MEALS,plan,previousPlan,mealHistory,ratings,favourites,staples,dayNotes,treatDays,defaultServings};
+  const payload={meals:MEALS,plan,previousPlan,mealHistory,ratings,favourites,staples,dayNotes,treatDays,defaultServings,cookComments,itemPrices,weekHistory};
   const r=await fetch(`https://api.jsonbin.io/v3/b/${syncConfig.binId}`,{
     method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':syncConfig.apiKey,'X-Bin-Private':'false'},
     body:JSON.stringify(payload)
@@ -683,9 +825,10 @@ async function refreshFromCloud(){
 
 // ─── Tabs ─────────────────────────────────────────────────────────────
 function switchTab(n){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['planner','manage','settings'][i]===n));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['planner','calendar','manage','settings'][i]===n));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+n));
   if(n==='manage')renderManage();
+  if(n==='calendar')renderCalendar();
   if(n==='settings')renderSettings();
 }
 
@@ -759,36 +902,43 @@ function pickWithVariety(pool,usedThisWeek=[]){
 
 // ─── Generate week ────────────────────────────────────────────────────
 function generateWeek(){
-  const oldPlan=plan.length===7?JSON.parse(JSON.stringify(plan)):previousPlan;
+  const oldPlan=plan.length>=7?JSON.parse(JSON.stringify(plan)):previousPlan;
   checked.clear();plan=[];dayNotes={};let prev=null;
   const usedThisWeek=[];
-  DAYS.forEach((day,i)=>{
-    const isWeekend=isTreatDay(i);
-    let meal,protein;
-    if(isWeekend){
-      const pool=MEALS.weekend||[];
-      if(!pool.length){plan.push({day,protein:'weekend',meal:{name:'(no weekend meals)',i:{}},isWeekend});return}
-      const candidates=pool.filter(m=>(m.protein||'weekend')!==prev);
-      meal=pickWithVariety(candidates.length?candidates:pool,usedThisWeek)||rand(pool);
-      protein=meal.protein||'weekend';
-    }else{
-      const keys=["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
-      if(!keys.length){plan.push({day,protein:'vegetarian',meal:{name:'(no meals)',i:{}},isWeekend});return}
-      const usedProteins=plan.map(p=>p.protein);
-      const notPrev=keys.filter(k=>k!==prev);
-      const freshProteins=notPrev.filter(k=>!usedProteins.includes(k));
-      protein=(freshProteins.length?rand(freshProteins):rand(notPrev.length?notPrev:keys));
-      meal=pickWithVariety(MEALS[protein],usedThisWeek)||rand(MEALS[protein]);
-    }
-    prev=protein;usedThisWeek.push(meal.name);
-    plan.push({day,protein,meal,isWeekend});
-  });
+  for(let week=0;week<2;week++){
+    DAYS.forEach((day,di)=>{
+      const isWeekend=isTreatDay(di);
+      let meal,protein;
+      if(isWeekend){
+        const pool=MEALS.weekend||[];
+        if(!pool.length){plan.push({day,protein:'weekend',meal:{name:'(no weekend meals)',i:{}},isWeekend,week});return}
+        const candidates=pool.filter(m=>(m.protein||'weekend')!==prev);
+        meal=pickWithVariety(candidates.length?candidates:pool,usedThisWeek)||rand(pool);
+        protein=meal.protein||'weekend';
+      }else{
+        const keys=["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
+        if(!keys.length){plan.push({day,protein:'vegetarian',meal:{name:'(no meals)',i:{}},isWeekend,week});return}
+        const usedProteins=plan.slice(-6).map(p=>p.protein);
+        const notPrev=keys.filter(k=>k!==prev);
+        const freshProteins=notPrev.filter(k=>!usedProteins.includes(k));
+        protein=freshProteins.length?rand(freshProteins):rand(notPrev.length?notPrev:keys);
+        meal=pickWithVariety(MEALS[protein],usedThisWeek)||rand(MEALS[protein]);
+      }
+      prev=protein;usedThisWeek.push(meal.name);
+      plan.push({day,protein,meal,isWeekend,week});
+    });
+  }
   mealHistory=[plan.map(p=>p.meal.name),...mealHistory].slice(0,4);
+  if(plan.length>=14){
+    const weekLabel=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    weekHistory=[{label:weekLabel,date:Date.now(),plan:JSON.parse(JSON.stringify(plan))},...weekHistory].slice(0,16);
+  }
   previousPlan=oldPlan;
   updateRollbackBtn();renderWeek();
   document.getElementById('listSection').style.display='none';
   syncSave();
 }
+
 
 function rollbackWeek(){
   if(!previousPlan||!previousPlan.length)return;
@@ -810,7 +960,10 @@ function updateRollbackBtn(){
 
 // ─── Render week ──────────────────────────────────────────────────────
 function renderWeek(){
-  const g=document.getElementById('weekGrid');g.innerHTML='';
+  const g1=document.getElementById('weekGrid1');
+  const g2=document.getElementById('weekGrid2');
+  if(!g1||!g2)return;
+  g1.innerHTML='';g2.innerHTML='';
   const notice=document.getElementById('treatDayNotice');
   if(notice){
     const treatNames=treatDays.map(i=>DAYS[i]);
@@ -851,7 +1004,8 @@ function renderWeek(){
       <button class="reroll" onclick="event.stopPropagation();quickSwap(${i})" title="Quick random swap">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><path d="M13.5 2.5V6H10"/></svg>
       </button>`;
-    g.appendChild(card);
+    // Split into week 1 (indices 0-6) and week 2 (indices 7-13)
+    if(i<7)g1.appendChild(card);else g2.appendChild(card);
   });
 }
 
@@ -976,12 +1130,23 @@ function showList(){
         return`<div class="shop-item${done?' done':''}${isStaple?' staple':''}" onclick="toggleItem(this,'${key.replace(/'/g,"&#39;")}')">
           <div class="checkbox"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
           <div class="item-info"><span class="item-name">${item.name}</span>${qty?`<span class="item-qty">${qty}</span>`:''}</div>
+          <input type="number" class="price-input" placeholder="£" value="${itemPrices[key]||''}" min="0" step="0.01" onclick="event.stopPropagation()" onchange="setItemPrice('${key.replace(/'/g,"&#39;")}',this.value)" title="Set price">
           <button class="staple-btn" onclick="event.stopPropagation();toggleStaple('${key.replace(/'/g,"&#39;")}')" title="${isStaple?'Remove from staples':'Mark as pantry staple'}">${isStaple?'📌':'📍'}</button>
         </div>`;
       }).join('');
     grid.appendChild(div);
   });
-  updateProgress();document.getElementById('listSection').style.display='block';
+  updateProgress();
+  // Price estimate
+  let total=0;
+  Object.keys(cats).forEach(cat=>[...cats[cat].values()].forEach(item=>{
+    const key=item.name.toLowerCase().trim();
+    if(itemPrices[key])total+=itemPrices[key];
+  }));
+  const priceEl=document.getElementById('priceEstimate');
+  if(priceEl)priceEl.style.display=total>0?'flex':'none';
+  if(total>0&&priceEl)priceEl.querySelector('#priceTotal').textContent='£'+total.toFixed(2);
+  document.getElementById('listSection').style.display='block';
 }
 function toggleItem(el,key){if(checked.has(key)){checked.delete(key);el.classList.remove('done')}else{checked.add(key);el.classList.add('done')}updateProgress()}
 function toggleStaple(key){if(staples[key])delete staples[key];else staples[key]=true;showList();syncSave()}
@@ -1090,14 +1255,14 @@ function closeModal(){document.getElementById('addModal').classList.remove('open
 function buildIngBuilder(existing={}){
   const el=document.getElementById('ing-builder');
   el.innerHTML=ING_CATS.map(cat=>`<div class="ing-section"><div class="ing-section-label">${cat.label}</div><div class="ing-rows" id="rows-${cat.id}"></div><button type="button" class="add-ing-btn" onclick="addIngRow('${cat.id}')"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><path d="M6 2v8M2 6h8"/></svg>Add ingredient</button></div>`).join('');
-  ING_CATS.forEach(cat=>{const items=existing[cat.id]||[];if(items.length)items.forEach(item=>{const n=normIng(item);addIngRow(cat.id,n.name,n.qty,n.unit)});else addIngRow(cat.id)});
+  ING_CATS.forEach(cat=>{const items=existing[cat.id]||[];if(items.length)items.forEach(item=>{const n=normIng(item);addIngRow(cat.id,n.name,n.qty,n.unit,item.price||'')});else addIngRow(cat.id)});
 }
-function addIngRow(catId,name='',qty='',unit=''){
+function addIngRow(catId,name='',qty='',unit='',price=''){
   const c=document.getElementById(`rows-${catId}`);const row=document.createElement('div');row.className='ing-row';
-  row.innerHTML=`<input type="text" placeholder="Ingredient name" value="${name}"/><input type="text" placeholder="Qty" value="${qty}" style="text-align:center"/><select>${UNITS.map(u=>`<option value="${u}"${u===unit?' selected':''}>${u||'unit'}</option>`).join('')}</select><button type="button" class="ing-del" onclick="this.closest('.ing-row').remove()"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>`;
+  row.innerHTML=`<input type="text" placeholder="Ingredient name" value="${name}"/><input type="text" placeholder="Qty" value="${qty}" style="text-align:center"/><select>${UNITS.map(u=>`<option value="${u}"${u===unit?' selected':''}>${u||'unit'}</option>`).join('')}</select><input type="number" placeholder="£" value="${price}" min="0" step="0.01" style="text-align:right"/><button type="button" class="ing-del" onclick="this.closest('.ing-row').remove()"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>`;
   c.appendChild(row);
 }
-function getIngRows(catId){return[...document.querySelectorAll(`#rows-${catId} .ing-row`)].map(row=>{const inputs=row.querySelectorAll('input');const sel=row.querySelector('select');const name=inputs[0].value.trim();const qty=inputs[1].value.trim();const unit=sel.value;return name?{name,qty,unit}:null}).filter(Boolean)}
+function getIngRows(catId){return[...document.querySelectorAll(`#rows-${catId} .ing-row`)].map(row=>{const inputs=row.querySelectorAll('input');const sel=row.querySelector('select');const name=inputs[0].value.trim();const qty=inputs[1].value.trim();const unit=sel.value;const price=parseFloat(inputs[2].value)||0;return name?{name,qty,unit,...(price?{price}:{})}:null}).filter(Boolean)}
 function buildStepRows(existing=[]){const c=document.getElementById('step-rows');c.innerHTML='';if(existing.length)existing.forEach(t=>addStepRow(t));else addStepRow();updateStepNumbers()}
 function addStepRow(text=''){const c=document.getElementById('step-rows');const row=document.createElement('div');row.className='step-row';row.innerHTML=`<div class="step-num-sm">${c.children.length+1}</div><textarea placeholder="e.g. Heat oil in a pan over medium heat…">${text}</textarea><button type="button" class="ing-del" onclick="this.closest('.step-row').remove();updateStepNumbers()"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>`;c.appendChild(row);updateStepNumbers()}
 function updateStepNumbers(){document.querySelectorAll('#step-rows .step-row').forEach((r,i)=>r.querySelector('.step-num-sm').textContent=i+1)}
@@ -1126,7 +1291,8 @@ async function confirmDelete(){if(!pendingDelete)return;const{cat,idx}=pendingDe
 // ─── Recipe viewer ────────────────────────────────────────────────────
 let recipeStepsDone=new Set();
 function viewRecipe(meal){
-  recipeStepsDone=new Set();document.getElementById('recipe-title').textContent=meal.name;
+  recipeStepsDone=new Set();recipeViewMealName=meal.name;
+  document.getElementById('recipe-title').textContent=meal.name;
   const allIng=[...(meal.i?.proteins||[]),...(meal.i?.produce||[]),...(meal.i?.fridge||[]),...(meal.i?.pantry||[])].map(normIng);
   const prep=meal.prepTime?`⏱ ${meal.prepTime}m prep`:'';const cook=meal.cookTime?`${meal.cookTime}m cook`:'';const cals=meal.calories?`~${meal.calories} kcal`:'';
   document.getElementById('recipe-meta').innerHTML=[prep,cook,cals].filter(Boolean).map(s=>`<span style="font-size:.78rem;color:var(--text-muted)">${s}</span>`).join('<span style="color:var(--text-faint)"> · </span>')||'';
@@ -1144,6 +1310,7 @@ function viewRecipe(meal){
   }else ss.innerHTML=`<p class="recipe-empty">No recipe steps yet — edit this meal to add them.</p>`;
   document.getElementById('recipe-notes-section').innerHTML=meal.notes?`<div class="recipe-notes"><strong>💡 Tips:</strong> ${meal.notes}</div>`:'';
   const r=ratings[meal.name]||0;document.getElementById('recipeStarRow').innerHTML=starsHtml(r,true,meal.name);document.getElementById('recipeRatingLabel').textContent=RATING_LABELS[r]||'Tap to rate';
+  renderCookComments(meal.name);
   document.getElementById('recipeModal').classList.add('open');
 }
 function toggleRecipeStep(el,idx,total){if(recipeStepsDone.has(idx)){recipeStepsDone.delete(idx);el.classList.remove('done')}else{recipeStepsDone.add(idx);el.classList.add('done')}const done=recipeStepsDone.size,pct=Math.round(done/total*100);document.getElementById('recipeProgressFill').style.width=pct+'%';document.getElementById('recipeProgressText').textContent=done===total?`All ${total} steps complete!`:`${done} of ${total} steps done — tap to mark off`;const b=document.getElementById('recipeCompleteBanner');if(b)b.classList.toggle('show',done===total)}
@@ -1162,9 +1329,12 @@ async function generateAiMeal(){
   const existing=Object.values(MEALS).flat().map(m=>m.name).slice(0,10).join(', ');
   const catLabel={chicken:'chicken',beef:'beef',salmon:'salmon',pork:'pork',vegetarian:'vegetarian',weekend:'weekend treat'}[cat];
   try{
-    const styles=['rustic','fresh','bold','comforting','light','vibrant','classic','fusion','simple','indulgent'];
+    const styles=['rustic','fresh','bold','comforting','light','vibrant','classic','fusion','simple','indulgent','spicy','creamy','smoky','tangy','herby'];
     const style=styles[Math.floor(Math.random()*styles.length)];
-    const geminiPrompt='Suggest a '+style+' '+catLabel+' dinner meal for two. Request: '+prompt.replace(/[^\w\s,.!?-]/g,'')+'. Already have: '+existing.replace(/[^\w\s,.&-]/g,'')+'. Suggest something different and creative. Return ONLY a JSON object. Fields: name(string), calories(number), prepTime(number), cookTime(number), tags(string array), notes(string), ingredients(object with proteins/produce/fridge/pantry arrays where each item has name/qty/unit), steps(string array). Keep steps under 100 chars each.';
+    const seed=Math.random().toString(36).substring(2,8);
+    const month=MONTHS[new Date().getMonth()];
+    const seasonal=SEASONAL_CONTEXT[new Date().getMonth()];
+    const geminiPrompt='[Request '+seed+'] Suggest a '+style+' '+catLabel+' dinner meal for two. Request: '+prompt.replace(/[^\w\s,.!?-]/g,'')+'. It is '+month+' in the UK so consider seasonal produce: '+seasonal+'. Already have these meals so suggest something completely different: '+existing.replace(/[^\w\s,.&-]/g,'')+'. Be creative and unique. Return ONLY a JSON object. Fields: name(string), calories(number), prepTime(number), cookTime(number), tags(string array), notes(string), ingredients(object with proteins/produce/fridge/pantry arrays where each item has name/qty/unit), steps(string array). Keep steps under 100 chars each.';
     const geminiModels=['gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash'];
     let resp=null,lastErr='';
     for(const model of geminiModels){
@@ -1172,7 +1342,8 @@ async function generateAiMeal(){
       // gemini-2.5 models need thinkingBudget set
       const needs25Config=model.includes('2.5');
       const body={contents:[{parts:[{text:geminiPrompt}]}]};
-      if(needs25Config)body.generationConfig={thinkingConfig:{thinkingBudget:0}};
+      if(needs25Config)body.generationConfig={temperature:1.5,thinkingConfig:{thinkingBudget:0}};
+      else body.generationConfig={temperature:1.5};
       resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(GEMINI_KEY),{
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -1210,6 +1381,250 @@ async function generateAiMeal(){
 }
 async function saveAiMeal(){if(!aiGeneratedMeal)return;const cat=document.getElementById('ai-cat').value;if(!MEALS[cat])MEALS[cat]=[];MEALS[cat].push(aiGeneratedMeal);activeProteinTab=cat;closeAiModal();renderManage();await syncSave(`"${aiGeneratedMeal.name}" added & synced ✓`);aiGeneratedMeal=null}
 
+// ─── Price ────────────────────────────────────────────────────────────
+function setItemPrice(key,val){
+  const p=parseFloat(val);
+  if(p>0)itemPrices[key]=p;else delete itemPrices[key];
+  syncSave();showList();
+}
+
+// ─── Cook Comments ────────────────────────────────────────────────────
+let recipeViewMealName=null;
+function renderCookComments(mealName){
+  const comments=cookComments[mealName]||[];
+  const list=document.getElementById('cookCommentsList');
+  if(!list)return;
+  list.innerHTML=comments.length?comments.map((c,i)=>`
+    <div class="cook-comment">
+      <span class="cook-comment-del" onclick="deleteCookComment('${mealName.replace(/'/g,"\\'")}',${i})">✕</span>
+      ${c.text}
+      <div class="cook-comment-meta">${new Date(c.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</div>
+    </div>`).join(''):'<p style="font-size:.8rem;color:var(--text-faint);font-style:italic">No notes yet — add one after cooking!</p>';
+}
+function addCookComment(){
+  const input=document.getElementById('cookCommentInput');
+  const text=input.value.trim();if(!text||!recipeViewMealName)return;
+  if(!cookComments[recipeViewMealName])cookComments[recipeViewMealName]=[];
+  cookComments[recipeViewMealName].unshift({text,date:Date.now()});
+  input.value='';renderCookComments(recipeViewMealName);syncSave();
+}
+function deleteCookComment(name,idx){
+  cookComments[name].splice(idx,1);
+  renderCookComments(name);syncSave();
+}
+
+// ─── Calendar ─────────────────────────────────────────────────────────
+function renderCalendar(){
+  const grid=document.getElementById('calendarGrid');
+  if(!weekHistory.length){
+    grid.innerHTML='<p style="color:var(--text-muted);font-size:.875rem;grid-column:1/-1">No history yet — generate a few weeks to see them here.</p>';
+    return;
+  }
+  grid.innerHTML=weekHistory.map((wk,wi)=>{
+    const isCurrent=wi===0;
+    const meals=wk.plan.slice(0,5).map(p=>`<div class="cal-meal"><span class="cal-meal-dot" style="background:${dotColor(p.protein)}"></span>${p.meal.name}</div>`).join('');
+    return`<div class="cal-week${isCurrent?' current':''}" onclick="restoreWeek(${wi})">
+      <div class="cal-week-label">${isCurrent?'📍 Current week':wk.label}</div>
+      ${meals}
+      ${wk.plan.length>5?`<div style="font-size:.68rem;color:var(--text-faint);margin-top:3px">+${wk.plan.length-5} more</div>`:''}
+    </div>`;
+  }).join('');
+}
+function dotColor(protein){
+  const map={salmon:'#2A5A8B',beef:'#8B3A2A',chicken:'#3A6B42',pork:'#7A5A1A',vegetarian:'#1A6B5A',weekend:'#8B3A3A',fish:'#2A5A8B'};
+  return map[protein]||'#B0A99E';
+}
+function restoreWeek(idx){
+  if(idx===0){toast('That is already your current week!');return}
+  if(!confirm('Restore this week as your current plan?'))return;
+  previousPlan=JSON.parse(JSON.stringify(plan));
+  plan=JSON.parse(JSON.stringify(weekHistory[idx].plan));
+  checked.clear();dayNotes={};
+  updateRollbackBtn();renderWeek();
+  switchTab('planner');
+  syncSave();toast('Week restored ✓');
+}
+
+// ─── Voting ───────────────────────────────────────────────────────────
+function openVoteModal(){
+  votes={};voteProteinTab='chicken';
+  renderVoteTab();renderVoteGrid();
+  document.getElementById('voteModal').classList.add('open');
+}
+function closeVoteModal(){document.getElementById('voteModal').classList.remove('open')}
+function renderVoteTab(){
+  document.getElementById('voteProteinTabs').innerHTML=PROTEIN_KEYS.map(k=>`
+    <div class="ptab${k===voteProteinTab?' active':''}" onclick="setVoteTab('${k}')">
+      ${PROTEIN_EMOJIS[k]} ${k.charAt(0).toUpperCase()+k.slice(1)}
+    </div>`).join('');
+}
+function setVoteTab(k){voteProteinTab=k;renderVoteTab();renderVoteGrid()}
+function renderVoteGrid(){
+  const pool=MEALS[voteProteinTab]||[];
+  document.getElementById('voteGrid').innerHTML=pool.map(m=>{
+    const voted=votes[m.name];
+    const r=ratings[m.name]||0;
+    return`<div class="vote-card${voted?' voted-yes':''}" onclick="toggleVote('${m.name.replace(/'/g,"\\'")}')">
+      <div class="vote-badge">${voted?'✅':''}</div>
+      <div class="vote-name">${m.name}</div>
+      <div class="vote-meta">${r?'★'.repeat(r)+' · ':''}${m.prepTime?m.prepTime+'m prep · ':''}${m.calories?'~'+m.calories+' kcal':''}</div>
+    </div>`;
+  }).join('')||'<p style="color:var(--text-muted);font-size:.85rem;grid-column:1/-1">No meals in this category yet.</p>';
+  const picks=Object.keys(votes);
+  document.getElementById('votePicksSummary').textContent=picks.length?picks.join(', '):'None yet — tap meals above to vote';
+}
+function toggleVote(name){
+  if(votes[name])delete votes[name];else votes[name]=true;
+  renderVoteGrid();
+}
+function generateFromVotes(){
+  closeVoteModal();
+  const pickedNames=Object.keys(votes);
+  // Build plan preferring voted meals
+  const oldPlan=plan.length>=7?JSON.parse(JSON.stringify(plan)):previousPlan;
+  checked.clear();plan=[];dayNotes={};let prev=null;
+  const usedThisWeek=[];
+  // Pre-assign voted meals to days where protein matches
+  DAYS.forEach((day,i)=>{
+    const isWeekend=isTreatDay(i);
+    let meal,protein;
+    if(isWeekend){
+      const pool=MEALS.weekend||[];
+      if(!pool.length){plan.push({day,protein:'weekend',meal:{name:'(no weekend meals)',i:{}},isWeekend});return}
+      // Try to use a voted weekend meal first
+      const votedPool=pool.filter(m=>pickedNames.includes(m.name)&&!usedThisWeek.includes(m.name));
+      meal=votedPool.length?rand(votedPool):pickWithVariety(pool,usedThisWeek)||rand(pool);
+      protein=meal.protein||'weekend';
+    }else{
+      const keys=["salmon","beef","chicken","pork","vegetarian"].filter(k=>MEALS[k]&&MEALS[k].length);
+      // Try to pick a protein that has voted meals unused
+      const keysWithVotes=keys.filter(k=>(MEALS[k]||[]).some(m=>pickedNames.includes(m.name)&&!usedThisWeek.includes(m.name))&&k!==prev);
+      const usedProteins=plan.map(p=>p.protein);
+      const notPrev=keys.filter(k=>k!==prev);
+      if(keysWithVotes.length){
+        protein=rand(keysWithVotes.filter(k=>!usedProteins.includes(k)).length?keysWithVotes.filter(k=>!usedProteins.includes(k)):keysWithVotes);
+        const votedMeals=(MEALS[protein]||[]).filter(m=>pickedNames.includes(m.name)&&!usedThisWeek.includes(m.name));
+        meal=votedMeals.length?rand(votedMeals):pickWithVariety(MEALS[protein],usedThisWeek)||rand(MEALS[protein]);
+      }else{
+        const freshProteins=notPrev.filter(k=>!usedProteins.includes(k));
+        protein=freshProteins.length?rand(freshProteins):rand(notPrev.length?notPrev:keys);
+        meal=pickWithVariety(MEALS[protein],usedThisWeek)||rand(MEALS[protein]);
+      }
+    }
+    prev=protein;usedThisWeek.push(meal.name);
+    plan.push({day,protein,meal,isWeekend});
+  });
+  mealHistory=[plan.map(p=>p.meal.name),...mealHistory].slice(0,4);
+  if(plan.length>=7){
+    const weekLabel=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    weekHistory=[{label:weekLabel,date:Date.now(),plan:JSON.parse(JSON.stringify(plan))},...weekHistory].slice(0,16);
+  }
+  previousPlan=oldPlan;updateRollbackBtn();renderWeek();
+  document.getElementById('listSection').style.display='none';
+  syncSave();
+  const included=plan.filter(p=>pickedNames.includes(p.meal.name)).length;
+  toast(`Week generated with ${included} of your picks ✓`);
+}
+
+// ─── Seasonal AI ─────────────────────────────────────────────────────
+// (Seasonal context is added automatically in the AI prompt)
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SEASONAL_CONTEXT={
+  0:'winter root veg (carrots, parsnips, swede), citrus fruits, leeks, cauliflower',
+  1:'winter greens, blood oranges, purple sprouting broccoli',
+  2:'spring greens, watercress, purple sprouting broccoli, leeks',
+  3:'asparagus, spinach, spring onions, radishes',
+  4:'asparagus, new potatoes, peas, broad beans, courgettes',
+  5:'courgettes, peas, broad beans, strawberries, tomatoes, lettuce',
+  6:'tomatoes, courgettes, cucumbers, peppers, basil, sweetcorn',
+  7:'tomatoes, sweetcorn, courgettes, runner beans, aubergine',
+  8:'butternut squash, sweetcorn, apples, pears, mushrooms',
+  9:'pumpkin, squash, apples, pears, leeks, parsnips',
+  10:'leeks, parsnips, celeriac, cauliflower, Brussels sprouts',
+  11:'Brussels sprouts, parsnips, red cabbage, clementines, chestnuts'
+};
+
+// ─── Fridge Raid ──────────────────────────────────────────────────────
+function openFridgeModal(){
+  fridgeTags=[];fridgeGeneratedMeal=null;
+  document.getElementById('fridge-input').value='';
+  document.getElementById('fridgeTags').innerHTML='';
+  document.getElementById('fridgeResult').style.display='none';
+  document.getElementById('fridgeLoading').style.display='none';
+  document.getElementById('fridgeError').style.display='none';
+  document.getElementById('fridgeInitActions').style.display='flex';
+  document.getElementById('fridge-cat').value=activeProteinTab==='weekend'?'weekend':activeProteinTab;
+  document.getElementById('fridgeModal').classList.add('open');
+  setTimeout(()=>document.getElementById('fridge-input').focus(),100);
+}
+function closeFridgeModal(){document.getElementById('fridgeModal').classList.remove('open');fridgeGeneratedMeal=null}
+document.addEventListener('DOMContentLoaded',()=>{
+  const fi=document.getElementById('fridge-input');
+  if(fi)fi.addEventListener('keydown',e=>{if(e.key===','||e.key==='Enter'){e.preventDefault();addFridgeTag()}});
+});
+function addFridgeTag(){
+  const inp=document.getElementById('fridge-input');
+  const val=inp.value.replace(/,/g,'').trim();
+  if(val&&!fridgeTags.includes(val)){fridgeTags.push(val);renderFridgeTags()}
+  inp.value='';
+}
+function renderFridgeTags(){
+  document.getElementById('fridgeTags').innerHTML=fridgeTags.map((t,i)=>
+    `<span class="fridge-tag" onclick="removeFridgeTag(${i})">🥦 ${t} ✕</span>`).join('');
+}
+function removeFridgeTag(i){fridgeTags.splice(i,1);renderFridgeTags()}
+async function generateFridgeMeal(){
+  if(!fridgeTags.length){toast('Add some ingredients first!');return}
+  const cat=document.getElementById('fridge-cat').value;
+  document.getElementById('fridgeResult').style.display='none';document.getElementById('fridgeError').style.display='none';
+  document.getElementById('fridgeInitActions').style.display='none';document.getElementById('fridgeLoading').style.display='block';
+  document.getElementById('fridgeGenerateBtn').disabled=true;
+  const month=MONTHS[new Date().getMonth()];
+  const seasonal=SEASONAL_CONTEXT[new Date().getMonth()];
+  const styles=['creative','simple','hearty','fresh','bold','comforting'];
+  const style=styles[Math.floor(Math.random()*styles.length)];
+  const seed=Math.random().toString(36).substring(2,6);
+  const prompt='['+seed+'] Suggest a '+style+' '+cat+' dinner meal for two using mainly these ingredients: '+fridgeTags.join(', ')+'. It is '+month+' in the UK so seasonal produce includes: '+seasonal+'. Return ONLY a JSON object with: name, calories, prepTime, cookTime, tags, notes, ingredients(proteins/produce/fridge/pantry arrays with name/qty/unit), steps. Keep steps under 100 chars.';
+  try{
+    const models=['gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash'];
+    let resp=null,lastErr='';
+    for(const model of models){
+      const needs25=model.includes('2.5');
+      const body={contents:[{parts:[{text:prompt}]}]};
+      if(needs25)body.generationConfig={temperature:1.2,thinkingConfig:{thinkingBudget:0}};
+      else body.generationConfig={temperature:1.2};
+      resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(GEMINI_KEY),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(resp.ok)break;lastErr=model+' -> '+resp.status;
+    }
+    if(!resp||!resp.ok)throw new Error('No working model. '+lastErr);
+    const data=await resp.json();
+    let raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    raw=raw.replace(/```json|```/g,'').trim();
+    const match=raw.match(/\{[\s\S]*\}/);if(!match)throw new Error('No JSON in response');
+    const parsed=JSON.parse(match[0]);
+    fridgeGeneratedMeal={name:parsed.name,notes:parsed.notes||'',steps:parsed.steps||[],i:{},calories:parsed.calories||0,prepTime:parsed.prepTime||0,cookTime:parsed.cookTime||0,tags:parsed.tags||[]};
+    ['proteins','produce','fridge','pantry'].forEach(c=>{if(parsed.ingredients?.[c]?.length)fridgeGeneratedMeal.i[c]=parsed.ingredients[c]});
+    if(cat==='weekend')fridgeGeneratedMeal.protein=cat;
+    const co=[{key:'proteins',label:'🥩'},{key:'produce',label:'🥦'},{key:'fridge',label:'🧊'},{key:'pantry',label:'🫙'}];
+    const ingSections=co.map(c=>{const items=parsed.ingredients?.[c.key]||[];if(!items.length)return'';return`<p class="ai-section-label">${c.label} ${c.key}</p><div class="ai-ing-list">${items.map(it=>{const u=it.unit==='×'?`×${it.qty}`:`${it.qty}${it.qty?' ':''}${it.unit||''}`;return`<span>${it.name}${u?' <strong>'+u+'</strong>':''}</span>`}).join('')}</div>`}).join('');
+    const meta=[parsed.calories?`~${parsed.calories} kcal`:null,parsed.prepTime?`${parsed.prepTime}m prep`:null,parsed.cookTime?`${parsed.cookTime}m cook`:null].filter(Boolean).join(' · ');
+    const stepsHtml=(parsed.steps||[]).map((s,i)=>`<div class="ai-step"><div class="ai-step-num">${i+1}</div><div>${s}</div></div>`).join('');
+    document.getElementById('fridgeResultContent').innerHTML=`<div class="ai-meal-preview"><div class="ai-meal-name">${parsed.name}</div>${meta?`<p style="font-size:.78rem;color:var(--text-muted);margin-bottom:4px">${meta}</p>`:''}${parsed.notes?`<p style="font-size:.8rem;color:var(--text-muted);margin-bottom:6px">💡 ${parsed.notes}</p>`:''}${ingSections}${stepsHtml?`<p class="ai-section-label">📋 Method</p><div class="ai-steps">${stepsHtml}</div>`:''}</div>`;
+    document.getElementById('fridgeLoading').style.display='none';document.getElementById('fridgeResult').style.display='block';
+  }catch(e){
+    document.getElementById('fridgeLoading').style.display='none';document.getElementById('fridgeError').style.display='block';
+    document.getElementById('fridgeError').textContent='Something went wrong: '+e.message;document.getElementById('fridgeInitActions').style.display='flex';
+  }
+  document.getElementById('fridgeGenerateBtn').disabled=false;
+}
+async function saveFridgeMeal(){
+  if(!fridgeGeneratedMeal)return;
+  const cat=document.getElementById('fridge-cat').value;
+  if(!MEALS[cat])MEALS[cat]=[];MEALS[cat].push(fridgeGeneratedMeal);
+  activeProteinTab=cat;closeFridgeModal();renderManage();
+  await syncSave(`"${fridgeGeneratedMeal.name}" added & synced ✓`);fridgeGeneratedMeal=null;
+}
+
 // ─── Toast ────────────────────────────────────────────────────────────
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
 
@@ -1221,19 +1636,32 @@ function loadFromData(data){
   if(data?.favourites)favourites=data.favourites;if(data?.staples)staples=data.staples;if(data?.dayNotes)dayNotes=data.dayNotes;
   if(data?.treatDays&&Array.isArray(data.treatDays))treatDays=data.treatDays;
   if(data?.defaultServings)defaultServings=data.defaultServings;
+  if(data?.cookComments)cookComments=data.cookComments;
+  if(data?.itemPrices)itemPrices=data.itemPrices;
+  if(data?.weekHistory)weekHistory=data.weekHistory;
 }
 async function init(){
   if(!syncConfig){setSyncStatus('amber','⚠️ Add JSONBin credentials to enable sync');generateWeek();return}
-  setSyncStatus('amber','Connecting to shared library…');
+  setSyncStatus('amber','Connecting…');
   try{
-    const data=await fetchFromBin();loadFromData(data);
-    if(plan&&plan.length){
-      const inp=document.getElementById('servingsInput');if(inp)inp.value=defaultServings;
-      renderWeek();document.getElementById('listSection').style.display='none';updateRollbackBtn();setSyncStatus('green','☁️ Synced — both devices share the same week')}
-    else{
-      const inp=document.getElementById('servingsInput');if(inp)inp.value=defaultServings;
-      generateWeek();setSyncStatus('green','☁️ Synced — changes save across both devices')}
-  }catch(e){setSyncStatus('red','⚠️ Sync failed — check credentials');generateWeek()}
+    const data=await fetchFromBin();
+    loadFromData(data);
+    const inp=document.getElementById('servingsInput');if(inp)inp.value=defaultServings;
+    if(plan&&plan.length>=14){
+      // Full 2-week plan loaded
+      renderWeek();document.getElementById('listSection').style.display='none';
+      updateRollbackBtn();setSyncStatus('green','☁️ Synced');
+    }else if(plan&&plan.length>=7){
+      // Old 7-day plan — generate a fresh 2-week plan
+      generateWeek();setSyncStatus('green','☁️ Synced — upgraded to 2-week plan');
+    }else{
+      generateWeek();setSyncStatus('green','☁️ Synced');
+    }
+  }catch(e){
+    console.error('Sync error:',e);
+    setSyncStatus('red','⚠️ Sync failed: '+e.message);
+    generateWeek();
+  }
 }
 init();
 </script>
