@@ -1370,11 +1370,22 @@ async function generateAiMeal(){
     clearInterval(iv);document.getElementById('aiLoadingIcon').classList.remove('ai-pulsing');
     if(!resp||!resp.ok)throw new Error(`No working model found. Tried: ${lastErr}`);
     const data=await resp.json();
-    let raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    console.log('Worker response keys:',Object.keys(data));
+    // Handle both direct Gemini response and Worker-wrapped response
+    let raw='';
+    if(data.candidates?.[0]?.content?.parts?.[0]?.text){
+      raw=data.candidates[0].content.parts[0].text;
+    }else if(data.content?.parts?.[0]?.text){
+      raw=data.content.parts[0].text;
+    }else if(typeof data==='string'){
+      raw=data;
+    }else{
+      console.log('Unexpected response structure:',JSON.stringify(data).substring(0,300));
+      throw new Error('Unexpected response format from AI');
+    }
     console.log('Raw response:',raw.substring(0,200));
-    // Clean up response
+    // Clean up response — strip markdown, find JSON object
     raw=raw.replace(/```json|```/g,'').trim();
-    // Extract just the JSON object if there's surrounding text
     const jsonMatch=raw.match(/\{[\s\S]*\}/);
     if(!jsonMatch)throw new Error('No JSON found in response');
     const parsed=JSON.parse(jsonMatch[0]);
@@ -1609,7 +1620,10 @@ async function generateFridgeMeal(){
     }
     if(!resp||!resp.ok)throw new Error('No working model. '+lastErr);
     const data=await resp.json();
-    let raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    let raw='';
+    if(data.candidates?.[0]?.content?.parts?.[0]?.text){raw=data.candidates[0].content.parts[0].text}
+    else if(data.content?.parts?.[0]?.text){raw=data.content.parts[0].text}
+    else{throw new Error('Unexpected AI response format')}
     raw=raw.replace(/```json|```/g,'').trim();
     const match=raw.match(/\{[\s\S]*\}/);if(!match)throw new Error('No JSON in response');
     const parsed=JSON.parse(match[0]);
